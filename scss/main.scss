@@ -1,0 +1,18 @@
+@import 'settings';
+@import 'foundation';
+
+@include foundation-everything;
+//@include foundation-flex-classes;
+//@include foundation-flex-grid;
+
+body {
+  font-family: Tahoma;
+  font-size: 13pt;
+}
+
+.not-logged-in {
+  border: 5px solid black;
+  border-radius: 10px;
+  font-size: medium;
+  color: #000000;
+}
