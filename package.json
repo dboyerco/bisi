@@ -1,0 +1,26 @@
+{
+  "name": "bisicareportal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrcl3an/BISICarePortal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrcl3an/BISICarePortal/issues"
+  },
+  "homepage": "https://github.com/mrcl3an/BISICarePortal#readme",
+  "dependencies": {
+    "foundation-sites": "^6.4.4-rc1",
+    "grunt": "^1.0.2",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-watch": "^1.1.0"
+  }
+}
