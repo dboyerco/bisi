@@ -5114,13 +5114,40 @@ a.thumbnail {
   .large-flex-dir-column-reverse {
     flex-direction: column-reverse; } }
 body {
+  margin: 5px;
   font-family: Tahoma;
-  font-size: 13pt; }
+  font-size: 13pt;
+  background-color: #E4E8E8;
+  active-link: #010165;
+  visited-link: #010165; }
 
 .not-logged-in {
   border: 5px solid black;
   border-radius: 10px;
+  padding: 10px !important;
   font-size: medium;
   color: #000000; }
+
+.error {
+  font-size: large;
+  color: red; }
+
+.login-display {
+  font-size: 10pt;
+  text-align: left;
+  color: blue;
+  text-align: right; }
+  .login-display a:link {
+    text-decoration: none;
+    color: blue; }
+  .login-display a:visited {
+    text-decoration: none;
+    color: blue; }
+  .login-display a:hover {
+    text-decoration: none;
+    color: blue; }
+  @media print, screen and (min-width: 40em) {
+    .login-display {
+      font-size: 12pt; } }
 
 /*# sourceMappingURL=main.css.map */

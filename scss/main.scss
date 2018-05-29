@@ -6,13 +6,49 @@
 //@include foundation-flex-grid;
 
 body {
+  margin: 5px;
   font-family: Tahoma;
   font-size: 13pt;
+  background-color: #E4E8E8;
+  active-link: #010165;
+  visited-link: #010165;
 }
 
 .not-logged-in {
   border: 5px solid black;
   border-radius: 10px;
+  padding: 10px !important;
   font-size: medium;
   color: #000000;
+}
+
+.error {
+  font-size: large;
+  color: red;
+}
+
+.login-display {
+  font-size: 10pt;
+  text-align: left;
+  color: blue;
+  text-align: right;
+
+  & a:link {
+    text-decoration: none;
+    color: blue;
+  }
+
+  & a:visited {
+    text-decoration: none;
+    color: blue;
+  }
+
+  & a:hover {
+    text-decoration: none;
+    color: blue;
+  }
+
+  @include breakpoint(medium) {
+    font-size: 12pt;
+  }
 }
