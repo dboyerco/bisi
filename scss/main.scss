@@ -7,8 +7,7 @@
 
 body {
   margin: 5px;
-  font-family: Tahoma;
-  font-size: 13pt;
+  font-size: .688rem;
   background-color: #E4E8E8;
   active-link: #010165;
   visited-link: #010165;
@@ -27,13 +26,17 @@ body {
   color: red;
 }
 
+.margins {
+  margin: 10px;
+}
+
 .login-display {
   font-size: 10pt;
   text-align: left;
   color: blue;
   text-align: right;
 
-  & a:link {
+   a:link {
     text-decoration: none;
     color: blue;
   }
@@ -52,3 +55,68 @@ body {
     font-size: 12pt;
   }
 }
+
+h3 {
+  color: #00248E;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: arial,helvetica,sans-serif;
+}
+
+.general-page {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #FFF;
+  padding: 5px;
+
+  @include breakpoint(medium) {
+    width: 763px;
+  }
+}
+
+.submenu {
+  height: 27px;
+  background-image: url('images/banner/white-banner.gif');
+  background-repeat: no-repeat;
+}
+
+.sub-page {
+  background-color: #E4E8E8;
+}
+
+.sub-heading {
+  font-size: .813rem;
+  font-weight: bold;
+}
+
+.person-form {
+  padding: 1px;
+
+  & div {
+    padding: 1px;
+  }
+
+  & input {
+    width: 100%;
+  }
+
+  & .required {
+    color: #FF0000;
+  }
+
+  & .field-label {
+    font-weight: bold;
+  }
+}
+
+// dialogs
+#Alias_dialog {visibility: hidden; position: absolute; left: 0px; top:5%; width:100%; height:100%; text-align:center; z-index: 1000;}
+#Alias_dialog #header {width:600px; height:5px; OVERFLOW: auto; background-color: #fff; position: absolute; right: 100px; top: 5px; border:0px; }
+#Alias_dialog div {width:600px; margin: 100px auto; OVERFLOW: auto; background-color: #fff; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
+
+#nomidialog {visibility: hidden; position: absolute; left: 0px; top:5%; width:100%; height:100%; text-align:center; z-index: 1000;}
+#nomidialog #header {width:600px; height:5px; OVERFLOW: auto; background-color: #fff; position: absolute; right: 100px; top: 5px; border:0px; }
+#nomidialog div {width:600px; margin: 100px auto; OVERFLOW: auto; background-color: #fff; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}

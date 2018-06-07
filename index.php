@@ -1,8 +1,7 @@
 <?php
 //require_once('../pdotriton.php');
-//PersonID=3703&CD=ucmyvnaBFVo7N149
-$PersonID = "3703";
-$CD = "ucmyvnaBFVo7N149";
+$PersonID = "6444";
+$CD = "BnzfFtZQs4Jw6VLX";
 
 //<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 echo '<!DOCTYPE HTML>
@@ -35,8 +34,9 @@ if(!isSet($PersonID)) {
 }
 else {
 	//$compname = $dbo->query("Select Company_Name from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+  $compname = "Mike Test";
 	//$codeid = $dbo->query("Select CodeID from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
-  $codeid = 'ucmyvnaBFVo7N149';
+  $codeid = 'BnzfFtZQs4Jw6VLX';
 
 	if(!isset($CD)) {
 		$CD = '';

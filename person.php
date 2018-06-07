@@ -12,7 +12,6 @@ $homephone = "";
 $cellphone = "";
 $email = "";
 $package = "";
-$compname = "";
 $gender = "";
 $emergcontact = "";
 $emergnumber = "";
@@ -90,283 +89,271 @@ if(isSet($PersonID)) {
 	// }
 }
 
-$FormAction = "address.php?PersonID=" . $PersonID;
-
-//echo "<body bgcolor=\"#E4E8E8\" onload=\"setindexes('".$gender."')\">";
-echo "<FORM METHOD=\"POST\" action=\"$FormAction\" NAME=\"ALCATEL\">";
+	echo '<form method="POST" action="address.php?PersonID=' . $PersonID . '" name="ALCATEL">';
 ?>
-<p><img src="file/hdspacer.gif"></p>
-<table bgcolor="#E4E8E8" border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-  	<tr>
-    	<td></td>
-    	<td class="submenu" height="27" width="763">&nbsp;</td>
-  	</tr>
-	</tbody>
-</table>
-<table bgcolor="#E4E8E8" border="0" cellpadding="0" cellspacing="10" width="763">
-	<tbody>
-		<tr>
-    	<td>
-	 			<h3 align="left">
-					<font color="#00248E"><?php echo $compname; ?> Web Application Portal</font>
-					<img src="file/horizontal-line.gif" height="3" width="700">
+
+<div class="general-page">
+	<div class="submenu"></div>
+
+	<div class="sub-page">
+		<div class="grid-x margins">
+
+			<div class="cell small-12">
+				<h3>
+					<?php echo $compname; ?> Web Application Portal<br>
+					<img src="file/horizontal-line.gif" height="3" width="100%">
 				</h3>
-				<br>
-			</td>
-		</tr>
-	</tbody>
-</table>
-<table width="763" bgcolor="#E4E8E8">
-	<tr>
-		<td>
-			<p><font face="Verdana, Arial, Helvetica, sans-serif"><strong><font size="2">Subject Information</font></strong></font></p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><font face="Verdana, Arial, Helvetica, sans-serif"><strong>Disclaimer: </strong>All information requested in this application is pertinent and necessary. Not filling out all information can delay the hiring process.</font></p>
-		</td>
-	</tr>
+			</div>
+
+			<div class="cell small-12">
+				<span class="sub-heading">Subject Information</span><br>
+				<strong>Disclaimer: </strong>All information requested in this application is pertinent and necessary. Not filling out all information can delay the hiring process.<br>
+				<?php
+					if($No_Email == 'N') {
+						echo '<strong>Note: </strong>You can return to this Application Portal at any time by clicking on the link in the email that was sent to you. All the data you have saved will be displayed when you return.<br>';
+					}
+				?>
+				<strong>Please make sure that the first and last name is as it appears on your government issued ID / SSN card etc.</strong>
+			</div>
+		</div>
+
+		<div class="grid-x margins person-form">
+			<div class="cell small-12 required">
+				* Required Fields To Continue
+			</div>
+
+			<div class="cell small-5 field-label">
+				First Name <span class="required">*</span>
+			</div>
+			<div class="cell small-1 field-label">
+				M.I. <span class="required">*</span>
+			</div>
+			<div class="cell small-1 field-label">
+				No M.I.
+			</div>
+			<div class="cell small-5 field-label">
+				Last Name <span class="required">*</span>
+			</div>
+			<?php
+				echo '<div class="cell small-5">
+								<input name="fname" id="fname" value="' . htmlspecialchars($fname) . '" maxlength="40">
+							</div>
+							<div class="cell small-1">
+								<input name="mi" id="mi" value="' . htmlspecialchars($mi) . '" maxlength="1">
+							</div>
+							<div class="cell small-1">
+								&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="nomi" id="nomi" style="width:25px;height:25px;" onclick="NoMI()">
+							</div>
+							<div class="cell small-5">
+								<input name="lname" id="lname" value="' . htmlspecialchars($lname) . '" maxlength="40">
+							</div>';
+			?>
+
+			<div class="cell small-5 field-label">
+				Maiden Name
+			</div>
+			<div class="cell small-3 field-label">
+				Date Maiden Name Changed
+			</div>
+			<div class="cell"></div>
+			<?php
+				echo '<div class="cell small-5">
+								<input name="maiden" id="maiden" value="' . htmlspecialchars($maiden) . '" maxlength="40" id="maiden">
+							</div>
+							<div class="cell small-3">
+								<input name="namechg" id="namechg" size="13" maxlength="10" id="namechg" value="' . htmlspecialchars($namechg) . '" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+							</div>
+							<div class="cell"></div>';
+			?>
+
+			<div class="cell small-12">
+				<strong>AKAs</strong>&nbsp;(Any names used in the past, nicknames, etc.)<br>
+				<strong>**NOTE: <u>MUST</u> have date last used entered.</strong>
+			</div>
+
+			<div class="cell small-3 field-label">
+				First Name
+			</div>
+			<div class="cell small-3 field-label">
+				Last Name
+			</div>
+			<div class="cell small-3 field-label">
+				Date Last Used
+			</div>
+			<div class="cell small-3 field-label">
+				&nbsp;
+			</div>
+			<?php
+				//$maxAliasID = $dbo->query("select max(AliasID) from App_Alias where PersonID = ".$PersonID.";")->fetchColumn();
+				$maxAliasID = 1;
+
+				if($maxAliasID > 0) {
+					$selectalias = "Select AliasID, FirstName, LastName, Changed from App_Alias where PersonID = :PersonID and AliasType = 'A';";
+					//$alias_result = $dbo->prepare($selectalias);
+					//$alias_result->bindValue(':PersonID', $PersonID);
+					//$alias_result->execute();
+
+					//while($Alias = $alias_result->fetch(PDO::FETCH_BOTH)) {
+					//	$dateUsed = date("m/d/Y", strtotime($Alias[3]));
+						$Alias[0] = "1";
+						$Alias[1] = "Mikey";
+						$Alias[2] = "Pelirojo";
+						$dateUsed = "01/01/2018";
+
+						echo '<div class="cell small-3 field-label">
+										' . htmlspecialchars($Alias[1]) . '
+									</div>
+									<div class="cell small-3 field-label">
+										' . htmlspecialchars($Alias[2]) . '
+									</div>
+									<div class="cell small-3 field-label">
+										' . htmlspecialchars($dateUsed) . '
+									</div>
+									<div class="cell small-3 field-label">
+										<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit AKA" title="Edit AKA"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<a http="#" onclick="dltaka(' . $Alias[0] . ')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete AKA" title="Delete AKA"/></a>
+									</div>';
+					//}
+
+					echo '</table>';
+				}
+			?>
+			<div class="cell small-3">
+				<input maxlength="40" name="newaka" id="newaka">
+			</div>
+			<div class="cell small-3">
+				<input maxlength="40" name="newakalast" id="newakalast">
+			</div>
+			<div class="cell small-3">
+				<input name="newakachange" id="newakachange" maxlength="10" placeholder="mm/dd/yyyy" value="" onKeyUp="return frmtdate(this,\'up\')">
+			</div>
+			<div class="cell small-3">
+				<input type="button" name="btnnewaka" id="btnnewaka" value="Save">
+			</div>
+
+			<div class="cell small-12"><hr></div>
+
+			<div class="cell small-3 field-label">
+				Date of Birth <span class="required">*</span>
+			</div>
+			<div class="cell small-3 field-label">
+				SSN <span class="required">*</span>
+			</div>
+			<div class="cell small-3 field-label">
+
+			</div>
+			<div class="cell small-3 field-label">
+
+			</div>
+			<?php
+				echo '<div class="cell small-3">
+								<input name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . htmlspecialchars($Xbdate) . '" onKeyUp="return frmtdate(this,\'up\')">
+							</div>
+							<div class="cell small-3 field-label">
+								<input id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this,\'up\')" onKeyDown="return frmtssn(this,\'down\')" value="' . htmlspecialchars($ssn) . '" />
+							</div>
+							<div class="cell small-3 field-label">
+
+							</div>
+							<div class="cell small-3 field-label">
+
+							</div>';
+			?>
+
+			<div class="cell small-12"><hr></div>
+
+			<?php
+				if($package == 'zinc') {
+					echo '<div class="cell small-3 field-label">
+									Mother\'s Maiden Name <span class="required">*</span>
+								</div>
+								<div class="cell small-3 field-label">
+									Father\'s Full Name <span class="required">*</span>
+								</div>
+								<div class="cell small-3 field-label">
+
+								</div>
+								<div class="cell small-3 field-label">
+
+								</div>
+								<div class="cell small-3">
+									<input id="mothermaiden" name="mothermaiden" placeholder="Mother\'s Maiden Name" maxlength="30" value="' . htmlspecialchars($MotherMaiden) . '" />
+								</div>
+								<div class="cell small-3">
+									<input id="fathername" name="fathername" placeholder="Father\'s Name" maxlength="50" value="' . htmlspecialchars($FatherName) . '" />
+								</div>
+								<div class="cell small-3">
+
+								</div>
+								<div class="cell small-3">
+
+								</div>';
+				}
+			?>
+
+			<div class="cell small-12"><hr></div>
+
+			<div class="cell small-12 field-label">
+				Enter one or more contact phone number: <span class="required">*</span>
+			</div>
+			<div class="cell small-3 field-label">
+				Business Phone
+			</div>
+			<div class="cell small-3 field-label">
+				Home Phone
+			</div>
+			<div class="cell small-3 field-label">
+				Cell Phone
+			</div>
+			<div class="cell small-3 field-label">
+
+			</div>
+			<?php
+				echo '<div class="cell small-3">
+								<input name="busphone" id="busphone" value="'.htmlspecialchars($busphone).'" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtbphone(this,\'up\')">
+							</div>
+							<div class="cell small-3">
+								<input name="homephone" id="homephone" value="'.htmlspecialchars($homephone).'" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+							</div>
+							<div class="cell small-3">
+								<input name="cellphone" id="cellphone" value="'.htmlspecialchars($cellphone).'" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+							</div>
+							<div class="cell small-3">
+
+							</div>
+
+							<div class="cell small-12"><hr></div>
+
+							<div class="cell small-3 field-label">
+								Enter an E-mail address: ' . ($No_Email == 'N' ? '<span class="required">*</span>' : '') . '
+							</div>
+							<div class="cell small-4">
+								<input name="email" id="email" value="' . htmlspecialchars($email) . '">
+							</div>
+							<div class="cell small-5">
+
+							</div>';
+			?>
+
+			<div class="cell small-12"><hr></div>
+
+		</div>
+	</div>
+
 	<?php
-		if($No_Email == 'N') {
-			echo '<tr>
-							<td>
-								<p><font face="Verdana, Arial, Helvetica, sans-serif"><strong>Note: </strong>You can return to this Application Portal at any time by clicking on the link in the email that was sent to you. All the data you have saved will be displayed when you return.</font></p>
-							</td>
-						</tr>';
-		}
+		echo '<div align="center">
+						<br>
+						<input name="save_person_info" id="save_person_info" type="button" value="Save the Data You Have Entered" style="font-size: medium; color: green; border-radius: 6px; padding: 5px 24px;">&nbsp;&nbsp;<input name="add_person_info" id="add_person_info" type="button" value="Save Subject Data and Continue" style="font-size: medium; color: green; border-radius: 5px; padding: 5px 24px;">
+						<input type="hidden" name="AliasID" id="AliasID">
+						<input type="hidden" name="num" id="num" value="' . $num . '">
+						<input type="hidden" name="fbdate" id="fbdate" value="' . $birthdate . '">
+						<input type="hidden" name="package" id="package" value=" ' . $package . '">
+						<input type="hidden" name="noemail" id="noemail" value="' . $No_Email . '">
+					</div>
+					<input type="hidden" name="compname" id="compname" value="' . $compname . '">';
 	?>
-	<tr>
-		<td>
-			<p><strong>Please make sure that the first and last name is as it appears on your government issued ID / SSN card etc.</strong></p>
-		</td>
-	</tr>
-</table>
-<?php
-	echo '<table border="0" width="763" bgcolor="#E4E8E8">
-					<tr>
-						<td colspan="2"><b><font color="FF0000">*</font><font size="1" color="FF0000" face="Verdana, Arial, Helvetica, sans-serif"> Required Fields To Continue</font></b></td>
-					</tr>
-					<tr>
-						<td width="20%"><b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;First Name</font><font color="#FF0000">*</font></b></td>
-						<td width="5%"><b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;M.I.</font><font color="#FF0000">*</font></td>
-						<td width="10%"><b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;No M.I.</font></b></td>
-						<td width="75%"><b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Last Name</font><font color="#FF0000">*</font></b></td>
-					</tr>
-					<tr>
-						<td width="15%">
-							<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-								<input name="fname" id="fname" value="'.htmlspecialchars($fname).'" size="40" maxlength="40">
-							</font>
-						</td>
-						<td width="5%">
-							<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-								<input name="mi" id="mi" value="'.htmlspecialchars($mi).'" size="1" maxlength="1">
-							</font>
-						</td>
-						<td width="10%">
-							&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="nomi" id="nomi" style="width:25px;height:25px;" onclick="NoMI()">
-						</td>
-						<td width="75%">
-							<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-								<input name="lname" id="lname" value="'.htmlspecialchars($lname).'" size="40" maxlength="40">
-							</font>
-						</td>
-					</tr>
-				</table>
-				<table border="0" width="763" bgcolor="#E4E8E8">
-					<tr>
-						<td width="25%"><b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Maiden Name</font></b></td>
-						<td width="75%"><b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Date Maiden Name Changed</font></b></td>
-					</tr>
-					<tr>
-						<td width="25%">
-							<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-								<input name="maiden" id="maiden" value="'.htmlspecialchars($maiden).'" size="40" maxlength="40" id="maiden">
-							</font>
-						</td>
-						<td width="75%">
-							<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-								<input name="namechg" id="namechg" size="13" maxlength="10" id="namechg" value="'.htmlspecialchars($namechg).'" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
-							</font>
-						</td>
-					</tr>
-				</table>
-				<table border="0" width="763" bgcolor="#E4E8E8">
-					<tr>
-						<td valign="top" colspan="4"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-							<b>AKAs</b>&nbsp;(Any names used in the past, nicknames, etc.)<br /><b>**NOTE: <u>MUST</u> have date last used entered.<br /></b>
-						</td>
-					</tr>
-				</table>
-				<table border="0" width="763" id="Aliastbl" bgcolor="#E4E8E8">
-					<tr>
-						<th align="left" width="25%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;First Name</font></th>
-						<th align="left" width="30%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;&nbsp;Last Name</font></th>
-						<th align="left" width="20%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Date Last Used</font></th>
-						<th align="left" width="25%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;</font></th>
-					</tr>';
+</div>
 
-		$maxAliasID = $dbo->query("select max(AliasID) from App_Alias where PersonID = ".$PersonID.";")->fetchColumn();
-
-		if($maxAliasID > 0) {
-			$selectalias = "Select AliasID, FirstName, LastName, Changed from App_Alias where PersonID = :PersonID and AliasType = 'A';";
-			$alias_result = $dbo->prepare($selectalias);
-			$alias_result->bindValue(':PersonID', $PersonID);
-			$alias_result->execute();
-			while($Alias = $alias_result->fetch(PDO::FETCH_BOTH)) {
-				$dateUsed = date("m/d/Y", strtotime($Alias[3]));
-				echo '<tr>
-								<td width="25%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($Alias[1]).'</font> </td>
-								<td width="30%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($Alias[2]).'</font></td>
-								<td width="20%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($dateUsed).'</font></td>
-								<td width="25%">
-									<a http="#" onclick="updateaka('.$Alias[0].')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit AKA" title="Edit AKA"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<a http="#" onclick="dltaka('.$Alias[0].')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete AKA" title="Delete AKA"/></a>
-								</td>
-							</tr>';
-			}
-
-			echo '</table>';
-		}
-
-		echo '<table width="763" bgcolor="#E4E8E8">
-						<tr>
-							<td width="25%">
-								<input type="text" size="20" maxlength="40" name="newaka" id="newaka">
-							</td>
-							<td width="30%">
-								<input type="text" size="20" maxlength="40" name="newakalast" id="newakalast">
-							</td>
-							<td width="20%">
-								<input name="newakachange" id="newakachange" size="13" maxlength="10" placeholder="mm/dd/yyyy" value="" onKeyUp="return frmtdate(this,\'up\')">
-							</td>
-							<td width="25%">
-								<input type="button" name="btnnewaka" id="btnnewaka" value="Save">
-							</td>
-						</tr>
-					</table>
-					<table border="0" width="763" bgcolor="#E4E8E8">
-						<tr>
-							<td colspan="4"><hr></td>
-						</tr>
-					</table>
-					<table border="0" width="763" bgcolor="#E4E8E8">
-					<tr>
-						<td><b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;Date of Birth</font><font color="#FF0000">*</font></b></td>
-						<td><b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">SSN</font><font color="#FF0000">*</font></b></td>
-						<!--<td><b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Gender</font><font color="#FF0000">*</font></b></td>-->
-					</tr>
-					<tr>
-						<td nowrap>
-							<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-								<input name="birthdate" size="13" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="'.htmlspecialchars($Xbdate).'" onKeyUp="return frmtdate(this,\'up\')">
-							</font>
-						</td>
-						<td>
-							<input type="text" id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this,\'up\')" onKeyDown="return frmtssn(this,\'down\')" value="'.htmlspecialchars($ssn).'" />
-						</td>
-					</tr>
-				</table>
-				<table border="0" width="763" bgcolor="#E4E8E8">
-					<tr>
-						<td colspan="2"><hr></td>
-					</tr>
-				</table>';
-
-		if($package == 'zinc') {
-			echo '<table border="0" width="763" bgcolor="#E4E8E8">
-							<tr>
-								<td>
-									<b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Mother\'s Maiden Name</font><font color="#FF0000">*</font></b>
-								</td>
-								<td>
-									<b><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Father\'s Full Name</font><font color="#FF0000">*</font></b>
-								</td>
-							</tr>
-							</tr>
-								<td>
-									<input type="text" id="mothermaiden" name="mothermaiden" placeholder="Mother\'s Maiden Name" maxlength="30" value="'.htmlspecialchars($MotherMaiden).'" />
-								</td>
-								<td>
-									<input type="text" id="fathername" name="fathername" placeholder="Father\'s Name" maxlength="50" value="'.htmlspecialchars($FatherName).'" />
-								</td>
-							</tr>
-						</table>
-						<table border="0" width="763" bgcolor="#E4E8E8">
-							<tr>
-								<td colspan="2"><hr></td>
-							</tr>
-						</table>';
-		}
-
-		echo '<table border="0" width="763" bgcolor="#E4E8E8">
-						<tr>
-							<td colspan="2"><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Enter one or more contact phone number:</font><font color="#FF0000">*</font></b></td>
-						</tr>
-						<tr>
-							<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Business Phone </font></td>
-							<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Home Phone </font></td>
-							<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Cell Phone</font></td>
-						</tr>
-						<tr>
-							<td>
-								<font size="1">
-									<input name="busphone" type="text" id="busphone" value="'.htmlspecialchars($busphone).'" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtbphone(this,\'up\')">
-								</font>
-							</td>
-							<td>
-								<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-									<input name="homephone" type="text" id="homephone" value="'.htmlspecialchars($homephone).'" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
-								</font>
-							</td>
-							<td>
-								<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-									<input name="cellphone" type="text" id="cellphone" value="'.htmlspecialchars($cellphone).'" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
-								</font>
-							</td>
-						</tr>
-					</table>
-					<table border="0" width="763" bgcolor="#E4E8E8">
-						<tr>
-							<td colspan="2"><hr></td>
-						</tr>
-					</table>
-					<table border="0" width="763" bgcolor="#E4E8E8">
-						<tr>
-							<td width="20%">
-								<font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Enter an E-mail address:</b></font>';
-
-		if($No_Email == 'N') {
-			echo '<font color="#FF0000">*</font>';
-		}
-
-		echo '		</td>
-							<td width="80%">
-								<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-									<input name="email" type="email" id="email" value="'.htmlspecialchars($email).'" size="30">
-								</font>
-							</td>
-						</tr>
-					</table>
-					<table border="0" width="763" bgcolor="#E4E8E8">
-						<tr>
-        			<td colspan="2"><hr></td>
-    				</tr>
-					</table>
-					<font face="Verdana, Arial, Helvetica, sans-serif">
-						<div align="center">
-							<br />
-							<INPUT name=\"save_person_info\" id=\"save_person_info\" TYPE=\"button\" VALUE=\"Save the Data You Have Entered\" style=\"font-size:medium; font-family=Tahoma; color:green; border-radius:6px; padding: 5px 24px;\">&nbsp;&nbsp;<INPUT name=\"add_person_info\" id=\"add_person_info\" TYPE=\"button\" VALUE=\"Save Subject Data and Continue\" style=\"font-size:medium; font-family=Tahoma; color:green; border-radius:5px; padding: 5px 24px;\">
-							<input type=\"hidden\" name=\"AliasID\" id=\"AliasID\">
-							<input type=\"hidden\" name=\"num\" id=\"num\" value=\"$num\">
-							<input type=\"hidden\" name=\"fbdate\" id=\"fbdate\" value=\"$birthdate\">
-							<input type=\"hidden\" name=\"package\" id=\"package\" value=\"$package\">
-							<input type=\"hidden\" name=\"noemail\" id=\"noemail\" value=\"$No_Email\">
-						</div>
-						<input type=\"hidden\" name=\"compname\" id=\"compname\" value=\"$compname\">';
-	?>
 	<div name="Alias_dialog" id="Alias_dialog" title="Dialog Title">
 		<div>
 			<input type="hidden" name="dlgaliasid" id="dlgaliasid">
@@ -434,7 +421,7 @@ echo "<FORM METHOD=\"POST\" action=\"$FormAction\" NAME=\"ALCATEL\">";
 			</table>
 		</div>
 	</div>
-</FORM>
+</form>
 
 <script language="JavaScript" type="text/javascript">
  	$( "#Alias_dialog" ).dialog({ autoOpen: false });
