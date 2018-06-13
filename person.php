@@ -24,7 +24,7 @@ if(isSet($PersonID)) {
 	echo '<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
 				<input type="hidden" name="ipaddr" id="ipaddr" value="' . $ipaddress . '">';
 
-	if(!testLayout) {
+	if(!$testLayout) {
 		if($PersonID > '') {
 			$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Emergency_Contact, Emergency_Number, No_Email from App_Person where PersonID = :PersonID;";
 			$result2 = $dbo->prepare($selectstmt);
@@ -93,7 +93,7 @@ if(isSet($PersonID)) {
 
 echo '<form method="POST" action="address.php?PersonID=' . $PersonID . '" name="ALCATEL">
 				<div class="general-page">
-					<div class="submenu"></div>
+					<div class="submenu">&nbsp;</div>
 
 					<div class="sub-page">
 						<div class="grid-x margins">
@@ -101,7 +101,7 @@ echo '<form method="POST" action="address.php?PersonID=' . $PersonID . '" name="
 							<div class="cell small-12">
 								<h3>
 									' . $compname . ' Web Application Portal<br>
-									<img src="file/horizontal-line.gif" height="3" width="100%">
+									<img src="files/horizontal-line.gif" height="3" width="100%">
 								</h3>
 							</div>
 
@@ -185,7 +185,7 @@ echo '					<strong>Please make sure that the first and last name is as it appear
 								&nbsp;
 							</div>';
 
-if(!testLayout) {
+if(!$testLayout) {
 	$maxAliasID = $dbo->query("select max(AliasID) from App_Alias where PersonID = ".$PersonID.";")->fetchColumn();
 }
 else {
@@ -195,7 +195,7 @@ else {
 if($maxAliasID > 0) {
 	$selectalias = "Select AliasID, FirstName, LastName, Changed from App_Alias where PersonID = :PersonID and AliasType = 'A';";
 
-	if(!testLayout) {
+	if(!$testLayout) {
 		$alias_result = $dbo->prepare($selectalias);
 		$alias_result->bindValue(':PersonID', $PersonID);
 		$alias_result->execute();

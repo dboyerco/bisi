@@ -5181,8 +5181,7 @@ h3 {
 
 .submenu {
   height: 27px;
-  background-image: url("images/banner/white-banner.gif");
-  background-repeat: no-repeat; }
+  background: #FFFFFF url("images/banner/white-banner.gif") no-repeat; }
 
 .sub-page {
   background-color: #E4E8E8; }

@@ -1,7 +1,7 @@
 <?php
 $testLayout = true;
 
-if(!testLayout) {
+if(!$testLayout) {
   require_once('../pdotriton.php');
 }
 else {
@@ -38,7 +38,7 @@ if(!isSet($PersonID)) {
         </div>';
 }
 else {
-  if(!testLayout) {
+  if(!$testLayout) {
     $compname = $dbo->query("Select Company_Name from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
     $codeid = $dbo->query("Select CodeID from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
   }
@@ -55,7 +55,7 @@ else {
 	$end = strrpos($_SERVER['REQUEST_URI'], '/');
 	$appname = substr($_SERVER['REQUEST_URI'], 1, $end - 1);
 
-  if(!testLayout) {
+  if(!$testLayout) {
     $cnt = $dbo->query("Select count(*) from App_Person where PersonID = " . $PersonID . " and App_Name = '" . $appname . "';")->fetchColumn();
   }
 
