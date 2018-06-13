@@ -30,6 +30,16 @@ body {
   margin: 10px;
 }
 
+.padding {
+  padding: 10px;
+}
+.padding-top {
+  padding-top: 10px;
+}
+.padding-bottom {
+  padding-bottom: 10px;
+}
+
 .login-display {
   font-size: 10pt;
   text-align: left;
@@ -100,15 +110,33 @@ h3 {
   }
 
   & input {
-    width: 100%;
+   width: 100%;
+  }
+
+  & input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
   }
 
   & .required {
     color: #FF0000;
   }
 
-  & .field-label {
+  & label {
+    font-size: .688rem;
     font-weight: bold;
+  }
+}
+
+input[type='button'], button {
+  font-size: medium;
+  color: green;
+  border-radius: 6px;
+  padding: 5px 24px;
+
+  @include breakpoint(medium) {
+
   }
 }
 

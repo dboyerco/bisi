@@ -1,9 +1,14 @@
 <?php
-//require_once('../pdotriton.php');
-$PersonID = "6444";
-$CD = "BnzfFtZQs4Jw6VLX";
+$testLayout = true;
 
-//<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+if(!testLayout) {
+  require_once('../pdotriton.php');
+}
+else {
+  $PersonID = "6444";
+  $CD = "BnzfFtZQs4Jw6VLX";
+}
+
 echo '<!DOCTYPE HTML>
       <html>
         <head>
@@ -33,10 +38,14 @@ if(!isSet($PersonID)) {
         </div>';
 }
 else {
-	//$compname = $dbo->query("Select Company_Name from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
-  $compname = "Mike Test";
-	//$codeid = $dbo->query("Select CodeID from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
-  $codeid = 'BnzfFtZQs4Jw6VLX';
+  if(!testLayout) {
+    $compname = $dbo->query("Select Company_Name from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+    $codeid = $dbo->query("Select CodeID from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+  }
+	else {
+    $compname = "Mike Test";
+    $codeid = 'BnzfFtZQs4Jw6VLX';
+  }
 
 	if(!isset($CD)) {
 		$CD = '';
@@ -45,7 +54,10 @@ else {
 	$cnt = 1;
 	$end = strrpos($_SERVER['REQUEST_URI'], '/');
 	$appname = substr($_SERVER['REQUEST_URI'], 1, $end - 1);
-	//$cnt = $dbo->query("Select count(*) from App_Person where PersonID = " . $PersonID . " and App_Name = '" . $appname . "';")->fetchColumn();
+
+  if(!testLayout) {
+    $cnt = $dbo->query("Select count(*) from App_Person where PersonID = " . $PersonID . " and App_Name = '" . $appname . "';")->fetchColumn();
+  }
 
 	if($PersonID == '' || $cnt == 0 || $codeid != $CD) {
 		if($cnt == 0) {

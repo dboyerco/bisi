@@ -1,6 +1,5 @@
 <?php
 $num = "";
-
 $fname = "";
 $mi = "";
 $lname = "";
@@ -21,336 +20,331 @@ $maiden = '';
 
 if(isSet($PersonID)) {
 	$ipaddress = getenv("REMOTE_ADDR");
+
 	echo '<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
 				<input type="hidden" name="ipaddr" id="ipaddr" value="' . $ipaddress . '">';
 
-	//if($PersonID > '') {
-	// 	$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Emergency_Contact, Emergency_Number, No_Email from App_Person where PersonID = :PersonID;";
-	// 	$result2 = $dbo->prepare($selectstmt);
-	// 	$result2->bindValue(':PersonID', $PersonID);
-	//
-	// 	if(!$result2->execute()) {
-	//
-	// 	}
-	// 	else {
-	// 		$row = $result2->fetch(PDO::FETCH_BOTH);
-	// 		$fname = $row[0];
-	// 		$mi = $row[1];
-	// 		$lname = $row[2];
-	//
-	// 		if($row[3] == '1900-01-01') {
-	// 			$birthdate = "";
-	// 			$Xbdate = '';
-	// 		}
-	// 		else {
-	// 			$birthdate = $row[3];
-	// 			$birthdate = date("m/d/Y", strtotime($birthdate));
-	// 			$Xbdate = substr($birthdate, 0, 6).'XXXX';
-	// 		}
-	//
-	// 		if($row[4] == '') {
-	// 			$ssn = "";
-	// 		}
-	// 		else {
-	// 			$ssn = "XXX-XX-" . substr($row[4], 7);
-	// 		}
-	//
-	// 		$num = $row[4];
-	// 		$busphone = $row[5];
-	// 		$homephone = $row[6];
-	// 		$cellphone = $row[7];
-	// 		$email = $row[8];
-	// 		$package = $row[9];
-	// 		$compname = $row[10];
-	// 		$gender = $row[11];
-	// 		$emergcontact = $row[12];
-	// 		$emergnumber = $row[13];
-	// 		$No_Email = $row[14];
-	// 		$selectstmt = "Select LastName, Changed from App_Alias where PersonID = :PersonID and AliasType ='M';";
-	// 		$result2 = $dbo->prepare($selectstmt);
-	// 		$result2->bindValue(':PersonID', $PersonID);
-	// 		$result2->execute();
-	// 		$namechg = "";
-	// 		$maiden = '';
-	// 		$row = $result2->fetch(PDO::FETCH_BOTH);
-	//
-	// 		if($row[0] > '') {
-	// 			$maiden = $row[0];
-	//
-	// 			if($row[1] == '1900-01-01') {
-	// 				$namechg = "";
-	// 			}
-	// 			else {
-	// 				$namechg = $row[1];
-	// 				$namechg = date("m/d/Y", strtotime($namechg));
-	// 			}
-	// 		}
-	// 	}
-	// }
+	if(!testLayout) {
+		if($PersonID > '') {
+			$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Emergency_Contact, Emergency_Number, No_Email from App_Person where PersonID = :PersonID;";
+			$result2 = $dbo->prepare($selectstmt);
+			$result2->bindValue(':PersonID', $PersonID);
+
+			if(!$result2->execute()) {
+
+			}
+			else {
+				$row = $result2->fetch(PDO::FETCH_BOTH);
+				$fname = $row[0];
+				$mi = $row[1];
+				$lname = $row[2];
+
+				if($row[3] == '1900-01-01') {
+					$birthdate = "";
+					$Xbdate = '';
+				}
+				else {
+					$birthdate = $row[3];
+					$birthdate = date("m/d/Y", strtotime($birthdate));
+					$Xbdate = substr($birthdate, 0, 6).'XXXX';
+				}
+
+				if($row[4] == '') {
+					$ssn = "";
+				}
+				else {
+					$ssn = "XXX-XX-" . substr($row[4], 7);
+				}
+
+				$num = $row[4];
+				$busphone = $row[5];
+				$homephone = $row[6];
+				$cellphone = $row[7];
+				$email = $row[8];
+				$package = $row[9];
+				$compname = $row[10];
+				$gender = $row[11];
+				$emergcontact = $row[12];
+				$emergnumber = $row[13];
+				$No_Email = $row[14];
+				$selectstmt = "Select LastName, Changed from App_Alias where PersonID = :PersonID and AliasType ='M';";
+				$result2 = $dbo->prepare($selectstmt);
+				$result2->bindValue(':PersonID', $PersonID);
+				$result2->execute();
+				$namechg = "";
+				$maiden = '';
+				$row = $result2->fetch(PDO::FETCH_BOTH);
+
+				if($row[0] > '') {
+					$maiden = $row[0];
+
+					if($row[1] == '1900-01-01') {
+						$namechg = "";
+					}
+					else {
+						$namechg = $row[1];
+						$namechg = date("m/d/Y", strtotime($namechg));
+					}
+				}
+			}
+		}
+	}
 }
 
-	echo '<form method="POST" action="address.php?PersonID=' . $PersonID . '" name="ALCATEL">';
-?>
+echo '<form method="POST" action="address.php?PersonID=' . $PersonID . '" name="ALCATEL">
+				<div class="general-page">
+					<div class="submenu"></div>
 
-<div class="general-page">
-	<div class="submenu"></div>
+					<div class="sub-page">
+						<div class="grid-x margins">
 
-	<div class="sub-page">
-		<div class="grid-x margins">
-
-			<div class="cell small-12">
-				<h3>
-					<?php echo $compname; ?> Web Application Portal<br>
-					<img src="file/horizontal-line.gif" height="3" width="100%">
-				</h3>
-			</div>
-
-			<div class="cell small-12">
-				<span class="sub-heading">Subject Information</span><br>
-				<strong>Disclaimer: </strong>All information requested in this application is pertinent and necessary. Not filling out all information can delay the hiring process.<br>
-				<?php
-					if($No_Email == 'N') {
-						echo '<strong>Note: </strong>You can return to this Application Portal at any time by clicking on the link in the email that was sent to you. All the data you have saved will be displayed when you return.<br>';
-					}
-				?>
-				<strong>Please make sure that the first and last name is as it appears on your government issued ID / SSN card etc.</strong>
-			</div>
-		</div>
-
-		<div class="grid-x margins person-form">
-			<div class="cell small-12 required">
-				* Required Fields To Continue
-			</div>
-
-			<div class="cell small-5 field-label">
-				First Name <span class="required">*</span>
-			</div>
-			<div class="cell small-1 field-label">
-				M.I. <span class="required">*</span>
-			</div>
-			<div class="cell small-1 field-label">
-				No M.I.
-			</div>
-			<div class="cell small-5 field-label">
-				Last Name <span class="required">*</span>
-			</div>
-			<?php
-				echo '<div class="cell small-5">
-								<input name="fname" id="fname" value="' . htmlspecialchars($fname) . '" maxlength="40">
+							<div class="cell small-12">
+								<h3>
+									' . $compname . ' Web Application Portal<br>
+									<img src="file/horizontal-line.gif" height="3" width="100%">
+								</h3>
 							</div>
-							<div class="cell small-1">
-								<input name="mi" id="mi" value="' . htmlspecialchars($mi) . '" maxlength="1">
-							</div>
-							<div class="cell small-1">
-								&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="nomi" id="nomi" style="width:25px;height:25px;" onclick="NoMI()">
-							</div>
-							<div class="cell small-5">
-								<input name="lname" id="lname" value="' . htmlspecialchars($lname) . '" maxlength="40">
-							</div>';
-			?>
 
-			<div class="cell small-5 field-label">
-				Maiden Name
-			</div>
-			<div class="cell small-3 field-label">
-				Date Maiden Name Changed
-			</div>
-			<div class="cell"></div>
-			<?php
-				echo '<div class="cell small-5">
-								<input name="maiden" id="maiden" value="' . htmlspecialchars($maiden) . '" maxlength="40" id="maiden">
+							<div class="cell small-12">
+								<span class="sub-heading">Subject Information</span><br>
+								<strong>Disclaimer: </strong>All information requested in this application is pertinent and necessary. Not filling out all information can delay the hiring process.<br>';
+
+if($No_Email == 'N') {
+	echo '				<strong>Note: </strong>You can return to this Application Portal at any time by clicking on the link in the email that was sent to you. All the data you have saved will be displayed when you return.<br>';
+}
+
+echo '					<strong>Please make sure that the first and last name is as it appears on your government issued ID / SSN card etc.</strong>
+							</div>
+						</div>
+
+						<div class="grid-x margins person-form">
+							<div class="cell small-12 required">
+								* Required Fields To Continue
+							</div>
+
+							<div class="cell small-12 medium-5">
+								<label>
+									First Name <span class="required">*</span>
+									<input name="fname" id="fname" value="' . htmlspecialchars($fname) . '" maxlength="40">
+								</label>
+							</div>
+							<div class="cell small-6 medium-1">
+								<label>
+									M.I. <span class="required">*</span>
+									<input name="mi" id="mi" value="' . htmlspecialchars($mi) . '" maxlength="1">
+								</label>
+							</div>
+							<div class="cell small-6 medium-1">
+								<label>
+									No M.I.<br />
+									&nbsp;&nbsp;&nbsp;<input type="checkbox" name="nomi" id="nomi" onclick="NoMI()">
+								</label>
+							</div>
+							<div class="cell small-12 medium-5">
+								<label>
+									Last Name <span class="required">*</span>
+									<input name="lname" id="lname" value="' . htmlspecialchars($lname) . '" maxlength="40">
+								</label>
+							</div>
+
+							<div class="cell small-12 medium-5">
+								<label>
+									Maiden Name
+									<input name="maiden" id="maiden" value="' . htmlspecialchars($maiden) . '" maxlength="40" id="maiden">
+								</label>
+							</div>
+							<div class="cell small-12 medium-3">
+								<label>
+									Date Maiden Name Changed
+									<input name="namechg" id="namechg" size="13" maxlength="10" id="namechg" value="' . htmlspecialchars($namechg) . '" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+								</label>
+							</div>
+							<div class="cell medium-4"></div>
+
+							<div class="cell small-12">
+								<strong>AKAs</strong>&nbsp;(Any names used in the past, nicknames, etc.)<br>
+								<strong>**NOTE: <u>MUST</u> have date last used entered.</strong>
+							</div>
+
+							<div class="cell small-3">
+								<label>
+									First Name
+								</label>
 							</div>
 							<div class="cell small-3">
-								<input name="namechg" id="namechg" size="13" maxlength="10" id="namechg" value="' . htmlspecialchars($namechg) . '" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+								<label>
+									Last Name
+								</label>
 							</div>
-							<div class="cell"></div>';
-			?>
-
-			<div class="cell small-12">
-				<strong>AKAs</strong>&nbsp;(Any names used in the past, nicknames, etc.)<br>
-				<strong>**NOTE: <u>MUST</u> have date last used entered.</strong>
-			</div>
-
-			<div class="cell small-3 field-label">
-				First Name
-			</div>
-			<div class="cell small-3 field-label">
-				Last Name
-			</div>
-			<div class="cell small-3 field-label">
-				Date Last Used
-			</div>
-			<div class="cell small-3 field-label">
-				&nbsp;
-			</div>
-			<?php
-				//$maxAliasID = $dbo->query("select max(AliasID) from App_Alias where PersonID = ".$PersonID.";")->fetchColumn();
-				$maxAliasID = 1;
-
-				if($maxAliasID > 0) {
-					$selectalias = "Select AliasID, FirstName, LastName, Changed from App_Alias where PersonID = :PersonID and AliasType = 'A';";
-					//$alias_result = $dbo->prepare($selectalias);
-					//$alias_result->bindValue(':PersonID', $PersonID);
-					//$alias_result->execute();
-
-					//while($Alias = $alias_result->fetch(PDO::FETCH_BOTH)) {
-					//	$dateUsed = date("m/d/Y", strtotime($Alias[3]));
-						$Alias[0] = "1";
-						$Alias[1] = "Mikey";
-						$Alias[2] = "Pelirojo";
-						$dateUsed = "01/01/2018";
-
-						echo '<div class="cell small-3 field-label">
-										' . htmlspecialchars($Alias[1]) . '
-									</div>
-									<div class="cell small-3 field-label">
-										' . htmlspecialchars($Alias[2]) . '
-									</div>
-									<div class="cell small-3 field-label">
-										' . htmlspecialchars($dateUsed) . '
-									</div>
-									<div class="cell small-3 field-label">
-										<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit AKA" title="Edit AKA"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<a http="#" onclick="dltaka(' . $Alias[0] . ')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete AKA" title="Delete AKA"/></a>
-									</div>';
-					//}
-
-					echo '</table>';
-				}
-			?>
-			<div class="cell small-3">
-				<input maxlength="40" name="newaka" id="newaka">
-			</div>
-			<div class="cell small-3">
-				<input maxlength="40" name="newakalast" id="newakalast">
-			</div>
-			<div class="cell small-3">
-				<input name="newakachange" id="newakachange" maxlength="10" placeholder="mm/dd/yyyy" value="" onKeyUp="return frmtdate(this,\'up\')">
-			</div>
-			<div class="cell small-3">
-				<input type="button" name="btnnewaka" id="btnnewaka" value="Save">
-			</div>
-
-			<div class="cell small-12"><hr></div>
-
-			<div class="cell small-3 field-label">
-				Date of Birth <span class="required">*</span>
-			</div>
-			<div class="cell small-3 field-label">
-				SSN <span class="required">*</span>
-			</div>
-			<div class="cell small-3 field-label">
-
-			</div>
-			<div class="cell small-3 field-label">
-
-			</div>
-			<?php
-				echo '<div class="cell small-3">
-								<input name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . htmlspecialchars($Xbdate) . '" onKeyUp="return frmtdate(this,\'up\')">
+							<div class="cell small-4">
+								<label>
+									Date Last Used
+								</label>
 							</div>
-							<div class="cell small-3 field-label">
-								<input id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this,\'up\')" onKeyDown="return frmtssn(this,\'down\')" value="' . htmlspecialchars($ssn) . '" />
-							</div>
-							<div class="cell small-3 field-label">
-
-							</div>
-							<div class="cell small-3 field-label">
-
+							<div class="cell small-2">
+								&nbsp;
 							</div>';
-			?>
 
-			<div class="cell small-12"><hr></div>
+if(!testLayout) {
+	$maxAliasID = $dbo->query("select max(AliasID) from App_Alias where PersonID = ".$PersonID.";")->fetchColumn();
+}
+else {
+	$maxAliasID = 1;
+}
 
-			<?php
-				if($package == 'zinc') {
-					echo '<div class="cell small-3 field-label">
-									Mother\'s Maiden Name <span class="required">*</span>
+if($maxAliasID > 0) {
+	$selectalias = "Select AliasID, FirstName, LastName, Changed from App_Alias where PersonID = :PersonID and AliasType = 'A';";
+
+	if(!testLayout) {
+		$alias_result = $dbo->prepare($selectalias);
+		$alias_result->bindValue(':PersonID', $PersonID);
+		$alias_result->execute();
+
+		while($Alias = $alias_result->fetch(PDO::FETCH_BOTH)) {
+			$dateUsed = date("m/d/Y", strtotime($Alias[3]));
+
+			echo '		<div class="cell small-3 field-label">
+									' . htmlspecialchars($Alias[1]) . '
 								</div>
 								<div class="cell small-3 field-label">
-									Father\'s Full Name <span class="required">*</span>
+									' . htmlspecialchars($Alias[2]) . '
 								</div>
 								<div class="cell small-3 field-label">
-
+									' . htmlspecialchars($dateUsed) . '
 								</div>
 								<div class="cell small-3 field-label">
-
-								</div>
-								<div class="cell small-3">
-									<input id="mothermaiden" name="mothermaiden" placeholder="Mother\'s Maiden Name" maxlength="30" value="' . htmlspecialchars($MotherMaiden) . '" />
-								</div>
-								<div class="cell small-3">
-									<input id="fathername" name="fathername" placeholder="Father\'s Name" maxlength="50" value="' . htmlspecialchars($FatherName) . '" />
-								</div>
-								<div class="cell small-3">
-
-								</div>
-								<div class="cell small-3">
-
+									<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit AKA" title="Edit AKA"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<a http="#" onclick="dltaka(' . $Alias[0] . ')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete AKA" title="Delete AKA"/></a>
 								</div>';
-				}
-			?>
+		}
+	}
+	else {
+		$Alias[0] = "1";
+		$Alias[1] = "Mikey";
+		$Alias[2] = "Pelirojo";
+		$dateUsed = "01/01/2018";
 
-			<div class="cell small-12"><hr></div>
+		echo '		<div class="cell small-3 field-label">
+								' . htmlspecialchars($Alias[1]) . '
+							</div>
+							<div class="cell small-3 field-label">
+								' . htmlspecialchars($Alias[2]) . '
+							</div>
+							<div class="cell small-3 field-label">
+								' . htmlspecialchars($dateUsed) . '
+							</div>
+							<div class="cell small-3 field-label">
+								<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit AKA" title="Edit AKA"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<a http="#" onclick="dltaka(' . $Alias[0] . ')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete AKA" title="Delete AKA"/></a>
+							</div>';
+	}
+}
 
-			<div class="cell small-12 field-label">
-				Enter one or more contact phone number: <span class="required">*</span>
-			</div>
-			<div class="cell small-3 field-label">
-				Business Phone
-			</div>
-			<div class="cell small-3 field-label">
-				Home Phone
-			</div>
-			<div class="cell small-3 field-label">
-				Cell Phone
-			</div>
-			<div class="cell small-3 field-label">
-
-			</div>
-			<?php
-				echo '<div class="cell small-3">
-								<input name="busphone" id="busphone" value="'.htmlspecialchars($busphone).'" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtbphone(this,\'up\')">
+echo '				<div class="cell small-3">
+								<input maxlength="40" name="newaka" id="newaka">
 							</div>
 							<div class="cell small-3">
-								<input name="homephone" id="homephone" value="'.htmlspecialchars($homephone).'" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+								<input maxlength="40" name="newakalast" id="newakalast">
 							</div>
 							<div class="cell small-3">
-								<input name="cellphone" id="cellphone" value="'.htmlspecialchars($cellphone).'" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+								<input name="newakachange" id="newakachange" maxlength="10" placeholder="mm/dd/yyyy" value="" onKeyUp="return frmtdate(this,\'up\')">
 							</div>
 							<div class="cell small-3">
+								<input type="button" class="float-center" name="btnnewaka" id="btnnewaka" value="Save">
+							</div>
+
+							<div class="cell small-12"><hr></div>
+
+							<div class="cell small-6 medium-3">
+								<label>
+									Date of Birth <span class="required">*</span>
+									<input name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . htmlspecialchars($Xbdate) . '" onKeyUp="return frmtdate(this,\'up\')">
+								</label>
+							</div>
+							<div class="cell small-6 medium-3">
+								<label>
+									SSN <span class="required">*</span>
+									<input id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this,\'up\')" onKeyDown="return frmtssn(this,\'down\')" value="' . htmlspecialchars($ssn) . '" />
+								</label>
+							</div>
+							<div class="cell medium-3"></div>
+							<div class="cell medium-3"></div>';
+
+if($package == 'zinc') {
+	echo '			<div class="cell small-12"><hr></div>
+
+							<div class="cell small-12 medium-4">
+								<label>
+									Mother\'s Maiden Name <span class="required">*</span>
+									<input id="mothermaiden" name="mothermaiden" placeholder="Mother\'s Maiden Name" maxlength="30" value="' . htmlspecialchars($MotherMaiden) . '" />
+								</label>
+							</div>
+							<div class="cell small-12 medium-4">
+								<label>
+									Father\'s Full Name <span class="required">*</span>
+									<input id="fathername" name="fathername" placeholder="Father\'s Name" maxlength="50" value="' . htmlspecialchars($FatherName) . '" />
+								</label>
+							</div>
+							<div class="cell medium-4"></div>';
+}
+
+echo '				<div class="cell small-12"><hr></div>
+
+							<div class="cell small-12">
+								<label>
+									Enter one or more contact phone number: <span class="required">*</span>
+								</label>
+							</div>
+							<div class="cell small-4 medium-3">
+								<label>
+									Business Phone
+									<input name="busphone" id="busphone" value="' . htmlspecialchars($busphone) . '" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtbphone(this,\'up\')">
+								</label>
+							</div>
+							<div class="cell small-4 medium-3">
+								<label>
+									Home Phone
+									<input name="homephone" id="homephone" value="' . htmlspecialchars($homephone) . '" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+								</label>
+							</div>
+							<div class="cell small-4 medium-3">
+								<label>
+									Cell Phone
+									<input name="cellphone" id="cellphone" value="' . htmlspecialchars($cellphone) . '" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+								</label>
+							</div>
+							<div class="cell medium-3">
 
 							</div>
 
 							<div class="cell small-12"><hr></div>
 
-							<div class="cell small-3 field-label">
-								Enter an E-mail address: ' . ($No_Email == 'N' ? '<span class="required">*</span>' : '') . '
+							<div class="cell small-12">
+								<label>
+									Enter an E-mail address: ' . ($No_Email == 'N' ? '<span class="required">*</span>' : '') . '
+									<input name="email" id="email" value="' . htmlspecialchars($email) . '">
 							</div>
-							<div class="cell small-4">
-								<input name="email" id="email" value="' . htmlspecialchars($email) . '">
-							</div>
-							<div class="cell small-5">
 
-							</div>';
-			?>
+							<div class="cell small-12"><hr></div>
 
-			<div class="cell small-12"><hr></div>
+						</div>
+					</div>
 
-		</div>
-	</div>
+					<div class="grid-x margins">
+						<div class="cell small-12 medium-6 padding-bottom">
+							<input name="save_person_info" class="float-center" id="save_person_info" type="button" value="Save the Data You Have Entered">
+						</div>
+						<div class="cell small-12 medium-6">
+							<input name="add_person_info" class="float-center" id="add_person_info" type="button" value="Save Subject Data and Continue">
+						</div>
 
-	<?php
-		echo '<div align="center">
-						<br>
-						<input name="save_person_info" id="save_person_info" type="button" value="Save the Data You Have Entered" style="font-size: medium; color: green; border-radius: 6px; padding: 5px 24px;">&nbsp;&nbsp;<input name="add_person_info" id="add_person_info" type="button" value="Save Subject Data and Continue" style="font-size: medium; color: green; border-radius: 5px; padding: 5px 24px;">
 						<input type="hidden" name="AliasID" id="AliasID">
 						<input type="hidden" name="num" id="num" value="' . $num . '">
 						<input type="hidden" name="fbdate" id="fbdate" value="' . $birthdate . '">
 						<input type="hidden" name="package" id="package" value=" ' . $package . '">
 						<input type="hidden" name="noemail" id="noemail" value="' . $No_Email . '">
-					</div>
-					<input type="hidden" name="compname" id="compname" value="' . $compname . '">';
+						<input type="hidden" name="compname" id="compname" value="' . $compname . '">
+					</div>';
 	?>
 </div>
 
@@ -515,7 +509,7 @@ if(isSet($PersonID)) {
 	});
 
 	function updateaka(aliasid) {
-		var personid = document.getElementById("PersonID").value;
+		var personid = $('#PersonID').val();
 		alert(personid);
 		$.ajax({
 			type: "POST",
