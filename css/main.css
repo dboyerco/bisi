@@ -5175,13 +5175,12 @@ h3 {
   margin-right: auto;
   background-color: #FFF;
   padding: 5px; }
+  .general-page .sub-menu {
+    height: 27px;
+    background-image: url("images/banner/white-banner.gif"); }
   @media print, screen and (min-width: 40em) {
     .general-page {
       width: 763px; } }
-
-.submenu {
-  height: 27px;
-  background: #FFFFFF url("images/banner/white-banner.gif") no-repeat; }
 
 .sub-page {
   background-color: #E4E8E8; }
@@ -5213,34 +5212,8 @@ input[type='button'], button {
   padding: 5px 24px; }
 
 #Alias_dialog {
-  visibility: hidden;
-  position: absolute;
-  left: 0px;
-  top: 5%;
-  width: 100%;
-  height: 100%;
-  text-align: center;
+  position: relative;
   z-index: 1000; }
-
-#Alias_dialog #header {
-  width: 600px;
-  height: 5px;
-  OVERFLOW: auto;
-  background-color: #fff;
-  position: absolute;
-  right: 100px;
-  top: 5px;
-  border: 0px; }
-
-#Alias_dialog div {
-  width: 600px;
-  margin: 100px auto;
-  OVERFLOW: auto;
-  background-color: #fff;
-  border: 5px solid #696969;
-  border-radius: 10px;
-  padding: 15px;
-  text-align: left; }
 
 #nomidialog {
   visibility: hidden;

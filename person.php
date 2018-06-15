@@ -93,7 +93,7 @@ if(isSet($PersonID)) {
 
 echo '<form method="POST" action="address.php?PersonID=' . $PersonID . '" name="ALCATEL">
 				<div class="general-page">
-					<div class="submenu">&nbsp;</div>
+					<div class="sub-menu">&nbsp;</div>
 
 					<div class="sub-page">
 						<div class="grid-x margins">
@@ -203,19 +203,19 @@ if($maxAliasID > 0) {
 		while($Alias = $alias_result->fetch(PDO::FETCH_BOTH)) {
 			$dateUsed = date("m/d/Y", strtotime($Alias[3]));
 
-			echo '		<div class="cell small-3 field-label">
-									' . htmlspecialchars($Alias[1]) . '
-								</div>
-								<div class="cell small-3 field-label">
-									' . htmlspecialchars($Alias[2]) . '
-								</div>
-								<div class="cell small-3 field-label">
-									' . htmlspecialchars($dateUsed) . '
-								</div>
-								<div class="cell small-3 field-label">
-									<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit AKA" title="Edit AKA"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<a http="#" onclick="dltaka(' . $Alias[0] . ')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete AKA" title="Delete AKA"/></a>
-								</div>';
+			echo '	<div class="cell small-3 field-label">
+								' . htmlspecialchars($Alias[1]) . '
+							</div>
+							<div class="cell small-3 field-label">
+								' . htmlspecialchars($Alias[2]) . '
+							</div>
+							<div class="cell small-3 field-label">
+								' . htmlspecialchars($dateUsed) . '
+							</div>
+							<div class="cell small-3 field-label">
+								<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit AKA" title="Edit AKA"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<a http="#" onclick="dltaka(' . $Alias[0] . ')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete AKA" title="Delete AKA"/></a>
+							</div>';
 		}
 	}
 	else {
@@ -313,9 +313,7 @@ echo '				<div class="cell small-12"><hr></div>
 									<input name="cellphone" id="cellphone" value="' . htmlspecialchars($cellphone) . '" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
 								</label>
 							</div>
-							<div class="cell medium-3">
-
-							</div>
+							<div class="cell medium-3"></div>
 
 							<div class="cell small-12"><hr></div>
 
@@ -346,132 +344,137 @@ echo '				<div class="cell small-12"><hr></div>
 						<input type="hidden" name="compname" id="compname" value="' . $compname . '">
 					</div>';
 	?>
-</div>
+				</div>
+			</form>
 
-	<div name="Alias_dialog" id="Alias_dialog" title="Dialog Title">
-		<div>
-			<input type="hidden" name="dlgaliasid" id="dlgaliasid">
-			<table width="100%" align="left" border="3" bgcolor="#eeeeee">
-				<tr>
-					<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">First Name</font></td>
-					<td width="351">
-						<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-							<input type="text" name="dlgfistname" id="dlgfirstname" size="20" maxlength="100">
-						</font>
-					</td>
-				</tr>
-				<tr>
-					<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Last Name</font></td>
-					<td width="351">
-						<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-							<input type="text" name="dlglastname" id="dlglastname" size="20" maxlength="100">
-						</font>
-					</td>
-				</tr>
-				<tr>
-					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date Last Used</font></td>
-					<td nowrap>
-						<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-							<input type="text" name="dlgchanged" id="dlgchanged" size="10" maxlength="10" placeholder="mm/dd/yyyy"
-							onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,'up')">
-						</font>
-					</td>
-				</tr>
-			</table>
-			<table width="100%" bgcolor="#eeeeee">
-				<tr><td>&nbsp;</td></tr>
-				<tr>
-					<td align="center">
-						<INPUT TYPE="button" id="save_alias" VALUE="Save AKA">
-						<INPUT TYPE="button" id="close_alias" VALUE="Close">
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>
-	<div id="nomidialog" name="nomidialog">
-		<div>Confirm Middle Initial Optout
-			<img onclick="nomidialogclose()" style="cursor:pointer; float:right; position:relative; top:0px; left:0px;" class="close" height="15" width="15" src="images/dialog_close.png" alt="Close" title="Close"/>
-			<br/>
-			<hr>
-			<br />
-			<table name="resultInfo" id="resultInfo" cellpadding="0" cellspacing="0" class="db-table" width="100%">
-				<tbody>
-					<tr>
-						<td>
-							Middle Name is required to ensure maximum possible accuracy.<br /> Are you sure you do not have a middle name?
-						</td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td>
-							<input name="nomiyes" id="nomiyes" type="button" value="I do not have a middle initial" style="font-size:medium; font-family=Tahoma; color:red; background-color: #fff; border:1px solid #000000; border-radius:6px; padding: 5px 24px;">&nbsp;&nbsp;
-							<input name="nomino" id="nomino" type="button" value="I do have a middle initial" style="font-size:medium; font-family=Tahoma; color:blue; background-color: #fff; border:1px solid #000000; border-radius:5px; padding: 5px 24px;">
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</form>
+			<div name="Alias_dialog" id="Alias_dialog" title="Dialog Title">
+				<div>
+					<input type="hidden" name="dlgaliasid" id="dlgaliasid">
+					<table width="100%" align="left" border="3" bgcolor="#eeeeee">
+						<tr>
+							<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">First Name</font></td>
+							<td width="351">
+								<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+									<input type="text" name="dlgfistname" id="dlgfirstname" size="20" maxlength="100">
+								</font>
+							</td>
+						</tr>
+						<tr>
+							<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Last Name</font></td>
+							<td width="351">
+								<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+									<input type="text" name="dlglastname" id="dlglastname" size="20" maxlength="100">
+								</font>
+							</td>
+						</tr>
+						<tr>
+							<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date Last Used</font></td>
+							<td nowrap>
+								<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+									<input type="text" name="dlgchanged" id="dlgchanged" size="10" maxlength="10" placeholder="mm/dd/yyyy"
+									onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,'up')">
+								</font>
+							</td>
+						</tr>
+					</table>
+					<table width="100%" bgcolor="#eeeeee">
+						<tr><td>&nbsp;</td></tr>
+						<tr>
+							<td align="center">
+								<INPUT TYPE="button" id="save_alias" VALUE="Save AKA">
+								<INPUT TYPE="button" id="close_alias" VALUE="Close">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div id="nomidialog" name="nomidialog">
+				<div>Confirm Middle Initial Optout
+					<img onclick="nomidialogclose()" style="cursor:pointer; float:right; position:relative; top:0px; left:0px;" class="close" height="15" width="15" src="images/dialog_close.png" alt="Close" title="Close"/>
+					<br />
+					<hr>
+					<br />
+					<table name="resultInfo" id="resultInfo" cellpadding="0" cellspacing="0" class="db-table" width="100%">
+						<tbody>
+							<tr>
+								<td>
+									Middle Name is required to ensure maximum possible accuracy.<br /> Are you sure you do not have a middle name?
+								</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>
+									<input name="nomiyes" id="nomiyes" type="button" value="I do not have a middle initial" style="font-size:medium; font-family=Tahoma; color:red; background-color: #fff; border:1px solid #000000; border-radius:6px; padding: 5px 24px;">&nbsp;&nbsp;
+									<input name="nomino" id="nomino" type="button" value="I do have a middle initial" style="font-size:medium; font-family=Tahoma; color:blue; background-color: #fff; border:1px solid #000000; border-radius:5px; padding: 5px 24px;">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 
 <script language="JavaScript" type="text/javascript">
- 	$( "#Alias_dialog" ).dialog({ autoOpen: false });
+ 	$("#Alias_dialog").dialog({ autoOpen: false });
 
-	function setindexes(gender) {
-//		alert('In setindexes - '+gender);
-		var gendr = document.getElementById("gender");
-
-		for(var x=0;x < gendr.length; x++) {
-			if (gender == gendr.options[x].value)
-				gendr.selectedIndex = x;
-		}
-	}
+	// function setindexes(gender) {
+	// 	alert('In setindexes - '+gender);
+	// 	var gendr = $("#gender");
+	//
+	// 	for(var x = 0; x < gendr.length; x++) {
+	// 		if(gender == gendr.options[x].value)
+	// 			gendr.selectedIndex = x;
+	// 	}
+	// }
 
 	function NoMI() {
-//		alert('In setindexes - '+gender);
-		if (document.getElementById("nomi").checked) {
+		if(document.getElementById("nomi").checked) {
 			$("#nomidialog").css("visibility","visible");
 		}
 	}
-    function nomidialogclose() {
+
+	function nomidialogclose() {
 		el = document.getElementById("nomidialog");
 		el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 	}
 
-	$( "#nomiyes" ).click(function() {
-		$("#nomidialog").css("visibility","hidden");
+	$("#nomiyes").click(function() {
+		$("#nomidialog").css("visibility", "hidden");
 	});
 
-	$( "#nomino" ).click(function() {
+	$("#nomino").click(function() {
 		document.getElementById("nomi").checked = false;
 		document.ALCATEL.mi.focus();
-		$("#nomidialog").css("visibility","hidden");
+		$("#nomidialog").css("visibility", "hidden");
 	});
 
-	$( "#btnnewaka" ).click(function() {
-//		alert('In btnnewaka');
-		var personid = document.getElementById("PersonID").value;
-		if (document.getElementById("newaka").value == '' && document.getElementById("newakalast").value == '' ) {
+	$("#btnnewaka").click(function() {
+		//alert('In btnnewaka');
+		var personid = $("#PersonID").val();
+
+		if($("#newaka").val() == '' && $("#newakalast").val() == '' ) {
 			document.ALCATEL.newaka.focus();
 			alert("AKA's First Name and/or AKA's Last Name must be emtered to add an AKA");
 			return false;
-		} else {
-			var aka = document.getElementById("newaka").value;
-			var akalast = document.getElementById("newakalast").value
+		}
+		else {
+			var aka = $("#newaka").val();
+			var akalast = $("#newakalast").val();
 		}
 
-		if (document.getElementById("newakachange").value > '') {
-			if (!isValidDate('newakachange')) {
+		if($("#newakachange").val() > '') {
+			if(!isValidDate('newakachange')) {
 				$('#newakachange').focus();
 				alert("Invalid Date Last Used");
 				return false;
-			} else {
-				var akachange = document.getElementById("newakachange").value;
 			}
-		} else {
+			else {
+				var akachange = $("#newakachange").val();
+			}
+		}
+		else {
 			document.ALCATEL.newakachange.focus();
 			alert("Date Last Used is required");
 			return false;
@@ -484,448 +487,532 @@ echo '				<div class="cell small-12"><hr></div>
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
-				if (obj2 > '') {
+
+				if(obj2 > '') {
 					alert(obj2);
+
 					return false;
-				} else {
+				}
+				else {
 					var rows = $("#Aliastbl tr").length;
-					if (rows == 0) {
+
+					if(rows == 0) {
 						rows++;
 					}
 
 					aliastblrow = '<tr><td width="25%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'+aka+'</font></td><td width="30%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'+akalast+'</font></td><td width="20%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'+akachange+'</font></td><td width="25%"><a http="#" onclick="updateaka('+rows+')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a http="#" onclick="dltaka('+rows+')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>';
 
 					$("#Aliastbl").append(aliastblrow);
-					document.getElementById("newaka").value = '';
-					document.getElementById("newakalast").value = '';
-					document.getElementById("newakachange").value = '';
+
+					$("#newaka").val('');
+					$("#newakalast").val('');
+					$("#newakachange").val('');
+
 					return;
 				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: '+textStatus); alert('Error: '+errorThrown);
+				alert('Status: ' + textStatus);
+				alert('Error: ' + errorThrown);
 			}
 		});
 	});
 
 	function updateaka(aliasid) {
 		var personid = $('#PersonID').val();
-		alert(personid);
+
+		//alert(personid);
+
 		$.ajax({
 			type: "POST",
 			url: "../App_Ajax/ajax_find_alias.php",
-			data: {personid: personid, aliasid: aliasid},
+			data: { personid: personid, aliasid: aliasid },
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
-				if (valor.length > 0) {
-					for (var i = 0; i < obj2.length; i++) {
+
+				if(valor.length > 0) {
+					for(var i = 0; i < obj2.length; i++) {
 						var AliasID = obj2[i].AliasID;
 						var LastName = obj2[i].LastName;
 						var FirstName = obj2[i].FirstName;
 						var MidlleName = obj2[i].MiddleName;
 						var cd = obj2[i].Changed;
-						var Changed = cd.substr(5,2)+"/"+cd.substr(8)+"/"+cd.substr(0,4);
-			    	}
+						var Changed = cd.substr(5, 2) + "/" + cd.substr(8) + "/" + cd.substr(0, 4);
+			    }
 
-					document.getElementById("dlgaliasid").value = AliasID;
-					document.getElementById("dlglastname").value = LastName;
-					document.getElementById("dlgfirstname").value = FirstName;
-					document.getElementById("dlgchanged").value = Changed;
+					$("#dlgaliasid").val(AliasID);
+					$("#dlglastname").val(LastName);
+					$("#dlgfirstname").val(FirstName);
+					$("#dlgchanged").val(Changed);
 
-					$( "#Alias_dialog" ).dialog( "option", "title", "Edit AKA");
-					$( "#Alias_dialog" ).dialog( "option", "modal", true );
-					$( "#Alias_dialog" ).dialog( "option", "width", 500 );
-					$( "#Alias_dialog" ).dialog( "open" );
-				} else {
+					$("#Alias_dialog").dialog("option", "title", "Edit AKA");
+					$("#Alias_dialog").dialog("option", "modal", true);
+					$("#Alias_dialog").dialog("open");
+				}
+				else {
 					alert('No AKA Data Found');
 				}
+
 				return;
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: '+textStatus); alert('Error: '+errorThrown);
+				alert('Status: ' + textStatus);
+				alert('Error: ' + errorThrown);
 			}
 		});
 	}
+
  	$("#save_alias").click(function() {
-		var personid = document.getElementById("PersonID").value;
-		var aliasid = document.getElementById("dlgaliasid").value;
-		if (document.getElementById("dlgfirstname").value == '' && document.getElementById("dlglastname").value == '' ) {
+		var personid = $("#PersonID").val();
+		var aliasid = $("#dlgaliasid").val();
+
+		if($("#dlgfirstname").val() == '' && $("#dlglastname").val() == '' ) {
 			document.ALCATEL.dlgfirstname.focus();
 			alert("First or Last Name is required");
+
 			return;
-		} else {
-			var firstname = document.getElementById("dlgfirstname").value;
-			var lastname = document.getElementById("dlglastname").value;
+		}
+		else {
+			var firstname = $("#dlgfirstname").val();
+			var lastname = $("#dlglastname").val();
 		}
 
-		if (document.getElementById("dlgchanged").value > '') {
-			if (!isValidDate('dlgchanged')) {
+		if($("#dlgchanged").val() > '') {
+			if(!isValidDate('dlgchanged')) {
 				$('#dlgchanged').focus();
 				alert("Invalid Date Last Used");
+
 				return false;
-			} else {
-				var changed = document.getElementById("dlgchanged").value;
 			}
-		} else {
+			else {
+				var changed = $("#dlgchanged").val();
+			}
+		}
+		else {
 			document.ALCATEL.dlgchanged.focus();
 			alert("Date Last Used is required");
+
 			return;
 		}
+
 		var middlename = '';
 
 		$.ajax({
 			type: "POST",
 			url: "../App_Ajax/ajax_save_alias.php",
-			data: {personid: personid, aliasid: aliasid, firstname: firstname, lastname: lastname, middlename: middlename, changed: changed},
+			data: { personid: personid, aliasid: aliasid, firstname: firstname, lastname: lastname, middlename: middlename, changed: changed },
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
-				if (obj2 > '' ) {
+
+				if(obj2 > '' ) {
 					alert(obj2);
-				} else {
-					$( "#Alias_dialog" ).dialog( "close" );
+				}
+				else {
+					$("#Alias_dialog").dialog("close");
 					location.reload();
 				}
+
 				return;
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: '+textStatus); alert('Error: '+errorThrown);
+				alert('Status: ' + textStatus);
+				alert('Error: ' + errorThrown);
 			}
 		});
 	});
 
 	function dltaka(AliasID) {
-//		alert("In dltaka");
-		if (confirm('Are you sure you want to delete this AKA record?')) {
-			var personid = document.getElementById("PersonID").value;
+		//alert("In dltaka");
+		if(confirm('Are you sure you want to delete this AKA record?')) {
+			var personid = $("#PersonID").val();
+
 			$.ajax({
 				type: "POST",
 				url: "../App_Ajax/ajax_delete_aka.php",
-				data: {personid: personid, AliasID: AliasID},
+				data: { personid: personid, AliasID: AliasID },
 				datatype: "JSON",
 				success: function(valor) {
 					var obj2 = $.parseJSON(valor);
-					if (obj2.substring(0,4) == 'Error') {
+
+					if(obj2.substring(0, 4) == 'Error') {
 						alert(obj2);
 						return false;
-					} else {
+					}
+					else {
 						location.reload();
 						return;
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					alert('Status: '+textStatus); alert('Error: '+errorThrown);
+					alert('Status: ' + textStatus);
+					alert('Error: ' + errorThrown);
 				}
 			});
 		}
 	}
 
-	$( "#close_alias" ).click(function() {
-		$( "#Alias_dialog" ).dialog( "close" );
+	$("#close_alias").click(function() {
+		$("#Alias_dialog").dialog("close");
 	});
 
-</script>
-<script language="JavaScript" type="text/javascript">
-	$( "#add_person_info" ).click(function() {
-//		alert("In add_person_info");
-		var packagename = document.getElementById("package").value;
-		if (document.getElementById("newaka").value > '' || document.getElementById("newakalast").value > '' ) {
+	$("#add_person_info").click(function() {
+		//alert("In add_person_info");
+		var packagename = $("#package").val();
+
+		if($("#newaka").val() > '' || $("#newakalast").val() > '' ) {
 			alert("Please Save the AKA record before moving on.");
 			return false;
 		}
 
-		var personid = document.getElementById("PersonID").value;
-		var ipaddress = document.getElementById("ipaddr").value;
+		var personid = $("#PersonID").val();
+		var ipaddress = $("#ipaddr").val();
 
-		if (document.getElementById("fname").value > '') {
-			var fname = document.getElementById("fname").value;
-		} else {
+		if($("#fname").val() > '') {
+			var fname = $("#fname").val();
+		}
+		else {
 			document.ALCATEL.fname.focus();
 			alert("First Name is required");
 			return false;
 		}
-		if (document.getElementById("nomi").checked) {
+
+		if($("#nomi").checked) {
 			var mi = '';
-		} else {
-			if (document.getElementById("mi").value > '') {
-				var mi = document.getElementById("mi").value;
-			} else {
+		}
+		else {
+			if($("#mi").val() > '') {
+				var mi = $("#mi").val();
+			}
+			else {
 				document.ALCATEL.mi.focus();
 				alert("Middle Initial is required");
 				return false;
 			}
 		}
-		if (document.getElementById("lname").value > '') {
-			var lname = document.getElementById("lname").value;
-		} else {
+
+		if($("#lname").val() > '') {
+			var lname = $("#lname").val();
+		}
+		else {
 			document.ALCATEL.lname.focus();
 			alert("Last Name is required");
 			return false;
 		}
-		if (document.getElementById("maiden").value > '') {
-			var maiden = document.getElementById("maiden").value;
-		} else {
+
+		if($("#maiden").val() > '') {
+			var maiden = $("#maiden").val();
+		}
+		else {
 			var maiden = '';
 		}
-		if (document.getElementById("namechg").value == '') {
-			if (maiden > '') {
+
+		if($("#namechg").val() == '') {
+			if(maiden > '') {
 				document.ALCATEL.namechg.focus();
 				alert("Date Maiden Name Changed is required");
 				return false;
-			} else {
+			}
+			else {
 				var namechg = '1900-01-01';
 			}
-		} else {
-			if (!isValidDate('namechg')) {
+		}
+		else {
+			if(!isValidDate('namechg')) {
 				$('#namechg').focus();
 				alert("Invalid Date Maiden Name Changed");
 				return false;
-			} else {
-				var namechg = document.getElementById("namechg").value;
+			}
+			else {
+				var namechg = $("#namechg").val();
 			}
 		}
-		if (document.getElementById("birthdate").value > '') {
+
+		if($("#birthdate").val() > '') {
 			var birthdate = document.getElementById("birthdate").value;
-			if (birthdate.indexOf('XXXX') > 0) {
-				birthdate = document.getElementById("fbdate").value;
-				document.getElementById("birthdate").value = document.getElementById("fbdate").value;
+
+			if(birthdate.indexOf('XXXX') > 0) {
+				birthdate = $("#fbdate").val();
+				$("#birthdate").val($("#fbdate").val());
 			}
-		} else {
+		}
+		else {
 			document.ALCATEL.birthdate.focus();
 			alert("Date of Birth is required");
 			return false;
 		}
-//		alert(birthdate);
-		if (!isValidDOB('birthdate')) {
+
+		//alert(birthdate);
+		if(!isValidDOB('birthdate')) {
 			$('#birthdate').focus();
 			alert("Invalid Date of Birth");
 			return false;
 		}
-		if (packagename == 'zinc') {
+
+		if(packagename == 'zinc') {
 			var ssn = '';
-			if (document.getElementById("ins").value > '') {
-				var ins = document.getElementById("ins").value;
-			} else {
+
+			if($("#ins").val() > '') {
+				var ins = $("#ins").val();
+			}
+			else {
 				$('#ins').focus();
 				alert("National Ins # or N/A is required");
 				return false;
 			}
-			if (document.getElementById("passport").value > '') {
-				var passport = document.getElementById("passport").value;
-			} else {
+
+			if($("#passport").val() > '') {
+				var passport = $("#passport").val();
+			}
+			else {
 				$('#passport').focus();
 				alert("Passport # is required");
 				return false;
 			}
-			if (document.getElementById("nationality").value > '') {
-				var nationality = document.getElementById("nationality").value;
-			} else {
+
+			if($("#nationality").val() > '') {
+				var nationality = $("#nationality").val();
+			}
+			else {
 				$('#nationality').focus();
 				alert("Nationality is required");
 				return false;
 			}
-			if (document.getElementById("mothermaiden").value > '') {
-				var mothermaiden = document.getElementById("mothermaiden").value;
-			} else {
+
+			if($("#mothermaiden").val() > '') {
+				var mothermaiden = $("#mothermaiden").val();
+			}
+			else {
 				$('#mothermaiden').focus();
 				alert("Mother's Maiden Name is required");
 				return false;
 			}
-			if (document.getElementById("fathername").value > '') {
-				var fathername = document.getElementById("fathername").value;
-			} else {
+
+			if($("#fathername").val() > '') {
+				var fathername = $("#fathername").val();
+			}
+			else {
 				$('#fathername').focus();
 				alert("Father's Full Name is required");
 				return false;
 			}
-		} else {
+		}
+		else {
 			var ins = '';
 			var passport = '';
 			var nationality = '';
 			var mothermaiden = '';
 			var fathername = '';
-			if (document.getElementById("ssn").value > '') {
-				var ssn = document.getElementById("ssn").value;
-				if (ssn.length < 11) {
+
+			if($("#ssn").val() > '') {
+				var ssn = $("#ssn").val();
+
+				if(ssn.length < 11) {
 					document.ALCATEL.ssn.focus();
 					alert("Invalid SSN - Require format ###-##-####");
 					return false;
-				} else {
-					if (ssn.substring(0,3) == 'XXX') {
-						ssn = document.getElementById("num").value;
+				}
+				else {
+					if(ssn.substring(0,3) == 'XXX') {
+						ssn = $("#num").val();
 					}
 				}
-			} else {
+			}
+			else {
 				document.ALCATEL.ssn.focus();
 				alert("SSN is required");
 				return false;
 			}
 		}
-/*
-		if (document.getElementById("gender").value > '') {
-			var gender = document.getElementById("gender").value;
-		} else {
-			document.ALCATEL.gender.focus();
-			alert("Gender is required");
-			return false;
-		}
-*/
+
+		// if($("#gender").val() > '') {
+		// 	var gender = $("#gender").val();
+		// }
+		// else {
+		// 	document.ALCATEL.gender.focus();
+		// 	alert("Gender is required");
+		// 	return false;
+		// }
+
 		var gender = '';
 
-		if (document.getElementById("busphone").value == '' && document.getElementById("homephone").value == '' &&
-			document.getElementById("cellphone").value == '') {
+		if($("#busphone").val() == '' && $("#homephone").val() == '' && $("#cellphone").val() == '') {
 			document.ALCATEL.busphone.focus();
 			alert("Please enter at least one contact phone number");
 			return false;
-		} else {
-			var busphone = document.getElementById("busphone").value;
-			var homephone = document.getElementById("homephone").value;
-			var cellphone = document.getElementById("cellphone").value;
 		}
-/*
-		if (document.getElementById("emergcontact").value > '') {
-			var emergcontact = document.getElementById("emergcontact").value;
-		} else {
-			document.ALCATEL.emergcontact.focus();
-			alert("Emergency Contact is required");
-			return false;
+		else {
+			var busphone = $("#busphone").val();
+			var homephone = $("#homephone").val();
+			var cellphone = $("#cellphone").val();
 		}
-		if (document.getElementById("emergnumber").value > '') {
-			var emergnumber = document.getElementById("emergnumber").value;
-		} else {
-			document.ALCATEL.emergnumber.focus();
-			alert("Emergency Phone Number is required");
-			return false;
-		}
-*/
+
+		// if($("#emergcontact").val() > '') {
+		// 	var emergcontact = $("#emergcontact").val();
+		// }
+		// else {
+		// 	document.ALCATEL.emergcontact.focus();
+		// 	alert("Emergency Contact is required");
+		// 	return false;
+		// }
+		//
+		// if($("#emergnumber").val() > '') {
+		// 	var emergnumber = $("#emergnumber").val();
+		// }
+		// else {
+		// 	document.ALCATEL.emergnumber.focus();
+		// 	alert("Emergency Phone Number is required");
+		// 	return false;
+		// }
+
 		var emergcontact = '';
 		var emergnumber =  '';
 
-		if (document.getElementById("noemail").value == 'N') {
-			if (document.getElementById("email").value > '') {
-				var email = document.getElementById("email").value;
-			} else {
+		if($("#noemail").val() == 'N') {
+			if($("#email").val() > '') {
+				var email = $("#email").val();
+			}
+			else {
 				document.ALCATEL.email.focus();
 				alert("Email Address is required");
 				return false;
 			}
-		} else {
-			var email = document.getElementById("email").value;
 		}
+		else {
+			var email = $("#email").val();
+		}
+
 		$.ajax({
 			type: "POST",
 			url: "../App_Ajax/ajax_add_person.php",
-			data: {personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber,ipaddress: ipaddress},
+			data: { personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber,ipaddress: ipaddress },
 			datatype: "JSON",
 			success: function(valor) {
-//				alert('Valor: '+valor);
+				//alert('Valor: '+valor);
 				var obj2 = $.parseJSON(valor);
-				if (obj2 > '') {
+
+				if(obj2 > '') {
 					alert(obj2);
 					return false;
-				} else {
-		 			window.location ='address.php?PersonID='+personid;
+				}
+				else {
+		 			window.location ='address.php?PersonID=' + personid;
 				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: '+textStatus);
-				alert('Error: '+errorThrown);
+				alert('Status: ' + textStatus);
+				alert('Error: ' + errorThrown);
 			}
 		});
 	});
 
-	$( "#save_person_info" ).click(function() {
-		var packagename = document.getElementById("package").value;
+	$("#save_person_info").click(function() {
+		var packagename = $("#package").val();
 
-		if (document.getElementById("newaka").value > '' || document.getElementById("newakalast").value > '' ) {
+		if($("#newaka").val() > '' || $("#newakalast").val() > '' ) {
 			alert("Please Save the AKA record before moving on.");
 			return false;
 		}
 
-		var personid = document.getElementById("PersonID").value;
-		var ipaddress = document.getElementById("ipaddr").value;
+		var personid = $("#PersonID").val();
+		var ipaddress = $("#ipaddr").val();
 
-		var fname = document.getElementById("fname").value;
-		var mi = document.getElementById("mi").value;
-		var lname = document.getElementById("lname").value;
-		var maiden = document.getElementById("maiden").value;
-		if (document.getElementById("namechg").value == '') {
+		var fname = $("#fname").val();
+		var mi = $("#mi").val();
+		var lname = $("#lname").val();
+		var maiden = $("#maiden").val();
+
+		if($("#namechg").val() == '') {
 			var namechg = '1900-01-01';
-		} else {
-			var namechg = document.getElementById("namechg").value;
 		}
-		if (document.getElementById("birthdate").value > '') {
-			var birthdate = document.getElementById("birthdate").value;
-			if (birthdate.indexOf('XXXX') > 0) {
-				birthdate = document.getElementById("fbdate").value;
+		else {
+			var namechg = $("#namechg").val();
+		}
+
+		if($("#birthdate").val() > '') {
+			var birthdate = $("#birthdate").val();
+
+			if(birthdate.indexOf('XXXX') > 0) {
+				birthdate = $("#fbdate").val();
 			}
-		} else {
+		}
+		else {
 			birthdate = '1900-01-01';
 		}
-		if (packagename == 'zinc') {
+
+		if(packagename == 'zinc') {
 			var ssn = '';
-			var ins = document.getElementById("ins").value;
-			var passport = document.getElementById("passport").value;
-			var nationality = document.getElementById("nationality").value;
-			var mothermaiden = document.getElementById("mothermaiden").value;
-			var fathername = document.getElementById("fathername").value;
-		} else {
+			var ins = $("#ins").val();
+			var passport = $("#passport").val();
+			var nationality = $("#nationality").val();
+			var mothermaiden = $("#mothermaiden").val();
+			var fathername = $("#fathername").val();
+		}
+		else {
 			var ins = '';
 			var passport = '';
 			var nationality = '';
 			var mothermaiden = '';
 			var fathername = '';
-			if (document.getElementById("ssn").value > '') {
-				var ssn = document.getElementById("ssn").value;
-				if (ssn.substring(0,3) == 'XXX') {
-					ssn = document.getElementById("num").value;
+
+			if($("#ssn").val() > '') {
+				var ssn = $("#ssn").val();
+
+				if(ssn.substring(0,3) == 'XXX') {
+					ssn = $("#num").val();
 				}
-			} else {
+			}
+			else {
 				ssn = '';
 			}
 		}
 
-		var busphone = document.getElementById("busphone").value;
-		var homephone = document.getElementById("homephone").value;
-		var cellphone = document.getElementById("cellphone").value;
-/*
-		var gender = document.getElementById("gender").value;
-		var emergcontact = document.getElementById("emergcontact").value;
-		var emergnumber = document.getElementById("emergnumber").value;
-*/
+		var busphone = $("#busphone").val();
+		var homephone = $("#homephone").val();
+		var cellphone = $("#cellphone").val();
+
+		// var gender = $("#gender").val();
+		// var emergcontact = $("#emergcontact").val();
+		// var emergnumber = $("#emergnumber").val();
+
 		var gender = '';
 		var emergcontact = '';
 		var emergnumber = '';
 
-		var email = document.getElementById("email").value;
+		var email = $("#email").val();
 
 		$.ajax({
 			type: "POST",
 			url: "../App_Ajax/ajax_add_person.php",
-			data: {personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber, ipaddress: ipaddress},
+			data: { personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber, ipaddress: ipaddress },
 			datatype: "JSON",
 			success: function(valor) {
-//				alert('Valor: '+valor);
+				//alert('Valor: '+valor);
 				var obj2 = $.parseJSON(valor);
-				if (obj2 > '') {
+
+				if(obj2 > '') {
 					alert(obj2);
 					return false;
-				} else {
+				}
+				else {
 					alert('Data saved successfully');
 				}
+
 				return false;
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: '+textStatus);
-				alert('Error: '+errorThrown);
+				alert('Status: ' + textStatus);
+				alert('Error: ' + errorThrown);
 			}
 		});
 	});
+
 	function validateSSN() {
    		var patt = new RegExp("\d{3}[\-]\d{2}[\-]\d{4}");
-   		var x = document.getElementById("ssn");
+   		var x = $("#ssn");
    		var res = patt.test(x.value);
+
    		if(!res){
     		x.value = x.value
         	.match(/\d*/g).join('')
@@ -933,5 +1020,4 @@ echo '				<div class="cell small-12"><hr></div>
         	.replace(/-*$/g, '');
    		}
 	}
-
 </script>
