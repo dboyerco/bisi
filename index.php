@@ -1,5 +1,5 @@
 <?php
-$testLayout = true;
+$testLayout = false;
 
 if(!$testLayout) {
   require_once('../pdotriton.php');
@@ -40,6 +40,7 @@ if(!isSet($PersonID)) {
 else {
   if(!$testLayout) {
     $compname = $dbo->query("Select Company_Name from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+    $package = $dbo->query("Select Package from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
     $codeid = $dbo->query("Select CodeID from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
   }
 	else {
@@ -97,18 +98,12 @@ else {
             </div>
           </div>';
 
-    include_once('person.php');
-    // echo '<frameset rows="100,*" cols="*" frameborder="NO" border="0" framespacing="0">
-    //         <frame src="heading.html" name="topFrame" scrolling="NO" noresize>
-    //         <frameset bgcolor="#E5EAE4" rows="*" cols="80,790,*" bgcolor="#E5EAE4" framespacing="0" frameborder="NO" border="0">
-    //           <frame rows="*" cols="40,*" src="nav.html" name="leftFrame" scrolling="NO" >
-    //           <frame rows="*" cols="763,*" src="person.php?PersonID=' . $PersonID . '" name="mainFrame">
-    //           <frame rows="*" cols="*,*" src="nav.html" name="leftFrame" scrolling="NO">
-    //         </frameset>
-    //       </frameset>
-    //       <noframes>
-    //         <body></body>
-    //       </noframes>';
+    if($pg) {
+      include_once("{$pg}.php");
+    }
+    else {
+      include_once("person.php");
+    }
 	}
 }
 ?>

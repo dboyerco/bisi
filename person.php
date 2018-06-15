@@ -22,6 +22,7 @@ if(isSet($PersonID)) {
 	$ipaddress = getenv("REMOTE_ADDR");
 
 	echo '<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
+				<input type="hidden" name="CD" id="CD" value="' . $CD . '">
 				<input type="hidden" name="ipaddr" id="ipaddr" value="' . $ipaddress . '">';
 
 	if(!$testLayout) {
@@ -91,7 +92,7 @@ if(isSet($PersonID)) {
 	}
 }
 
-echo '<form method="POST" action="address.php?PersonID=' . $PersonID . '" name="ALCATEL">
+echo '<form method="POST" action="index.php?pg=address&PersonID=' . $PersonID . '&CD=' . $CD . '" name="ALCATEL">
 				<div class="general-page">
 					<div class="sub-menu">&nbsp;</div>
 
@@ -667,6 +668,7 @@ echo '				<div class="cell small-12"><hr></div>
 		}
 
 		var personid = $("#PersonID").val();
+		var cd = $("#CD").val();
 		var ipaddress = $("#ipaddr").val();
 
 		if($("#fname").val() > '') {
@@ -897,7 +899,7 @@ echo '				<div class="cell small-12"><hr></div>
 					return false;
 				}
 				else {
-		 			window.location ='address.php?PersonID=' + personid;
+		 			window.location = 'index.php?pg=address&PersonID=' + personid + '&CD=' + cd;
 				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {

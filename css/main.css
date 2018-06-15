@@ -5245,4 +5245,11 @@ input[type='button'], button {
   padding: 15px;
   text-align: left; }
 
+.nobord {
+  outline: none;
+  border-color: transparent;
+  background: #E4E8E8;
+  -webkit-box-shadow: none;
+  box-shadow: none; }
+
 /*# sourceMappingURL=main.css.map */
