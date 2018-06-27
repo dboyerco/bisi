@@ -12,10 +12,10 @@ $MO = 0;
 $DY = 0;
 
 if($noemail == 'Y') {
-	$FormAction = "certification.php?PersonID=" . $PersonID; // certification is not on this pass
+	$FormAction = "index.php?pg=certification&PersonID=" . $PersonID . "&CD=" . $CD; // certification is not on this pass
 }
 else {
-	$FormAction = "disclosure1.php?PersonID=" . $PersonID;
+	$FormAction = "index.php?pg=disclosure1&PersonID=" . $PersonID . "&CD=" . $CD;
 }
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
