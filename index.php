@@ -1,5 +1,5 @@
 <?php
-$testLayout = false;
+$testLayout = true;
 
 if(!$testLayout) {
   require_once('../pdotriton.php');
@@ -45,7 +45,8 @@ else {
   }
 	else {
     $compname = "Mike Test";
-    $codeid = 'BnzfFtZQs4Jw6VLX';
+    $codeid = "BnzfFtZQs4Jw6VLX";
+    //$package = "zinc";
   }
 
 	if(!isset($CD)) {
@@ -100,6 +101,9 @@ else {
 
     if($pg) {
       include_once("{$pg}.php");
+    }
+    else if(isSet($_GET["pg"])) {
+      include_once("{$_GET['pg']}.php");
     }
     else {
       include_once("person.php");
