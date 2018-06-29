@@ -323,11 +323,11 @@ echo '				<div class="cell medium-6 small-12">
 							</div>
 						</div>
 
-						<INPUT TYPE="hidden" NAME="PersonID" ID="PersonID" VALUE="' . $PersonID . '">
-					  <INPUT TYPE="hidden" NAME="AddrID" ID="AddrID" VALUE="' . $maxAddrID . '">
-					  <INPUT TYPE="hidden" name="Current" id="Current" VALUE="' . $currentaddress . '">
-					  <INPUT TYPE="hidden" name="package" id="package" VALUE="' . $package . '">
-					  <INPUT TYPE="hidden" NAME="days" ID="days" VALUE="' . $days . '">
+						<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
+					  <input type="hidden" name="AddrID" id="AddrID" value="' . $maxAddrID . '">
+					  <input type="hidden" name="Current" id="Current" value="' . $currentaddress . '">
+					  <input type="hidden" name="package" id="package" value="' . $package . '">
+					  <input type="hidden" name="days" id="days" value="' . $days . '">
 					</div>
 				</div>
 
