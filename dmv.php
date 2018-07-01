@@ -106,22 +106,9 @@ echo '<div class="cell small-12">
 			<div class="cell medium-6 small-12">
 				<select name="newdlstate" id="newdlstate">
 					<option value="">Select a State</option>
-					<option value="">-Other-</option>';
-
-if(!$testLayout) {
-	$sql = "select Name, Abbrev from State order by Name";
-	$state_result = $dbo->prepare($sql);
-	$state_result->execute();
-
-	while($rows = $state_result->fetch(PDO::FETCH_BOTH)) {
-		echo '<option value="' . $rows[1] . '">' . $rows[0] . '</option>';
-	}
-}
-else {
-	echo '	<option value="co">CO</option>';
-}
-
-echo '	</select>
+					<option value="">-Other-</option>
+					' . $state_options . '
+				</select>
 			</div>
 			<div class="cell small-12">
 				OR If license issued out of the US, please select the Country
@@ -184,26 +171,11 @@ echo '	</select>
 						<tr>
 							<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">State of Issue</font></td>
 							<td>
-								<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
 								<select name="dlgDLstate" id="dlgDLstate">
 									<option value="">Select a State</option>
-									<option value="">-Other-</option>';
-
-if(!$testLayout) {
-	$sql = "Select Name, Abbrev from State order by Name";
-	$state_result = $dbo->prepare($sql);
-	$state_result->execute();
-
-	while($rows = $state_result->fetch(PDO::FETCH_BOTH)) {
-		echo '				<option value="' . $rows[1] . '">' . $rows[0] . '</option>';
-	}
-}
-else {
-	echo '					<option value="co">CO</option>';
-}
-
-echo '					</select>
-								</font>
+									<option value="">-Other-</option>
+									' . $state_options . '
+								</select>
 							</td>
 						</tr>
 						<tr>

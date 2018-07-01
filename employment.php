@@ -41,49 +41,29 @@ if(!$testLayout) {
 			if($row[16] == 'Y') {
 				$currentEmployer = 'Y';
 
-				echo '<table width="763" bgcolor="#E4E8E8">
-								<tr>
-									<td width="240" valign="top" align="left"><font size="1"><strong> Current Employment. </strong></font></td>
-								</tr>
-								<tr>
-									<td width="240" valign="top" align="left"><font size="1"><strong> May we contact your current employer?</strong></font>&nbsp;&nbsp;';
+				echo '<div class="cell small-12">
+								<h3>Current Employment</h3>
+							</div>
 
-				if($row[15] == 'Y') {
-					echo '	<td><font size="1">Yes';
-				}
-				else {
-					echo '	<td><font size="1">No';
-				}
-
-				echo '			</font>
-									</td>
-								</tr>
-							</table>';
+							<div class="cell small-12 medium-6">
+								May we contact your current employer?
+							</div>
+							<div class="cell small-12 medium-6">
+								' . ($row[15] == "Y" ? "Yes" : "No") . '
+							</div>';
 			}
 
-			echo '<table width="763" bgcolor="#E4E8E8">
-							<tr valign="top">
-								<td width="15%"><font size="1">Company Name:&nbsp;</font></td>
-								<td width="30%">
-									<font size="1">
-										<input name="empname" value="'.htmlspecialchars($row[1]).'" class="nobord" readonly>
-									</font>
-								</td>
-								<td width="30%">
-									<font size="1">
-										'.htmlspecialchars($row[5]).'<br />
-										'.htmlspecialchars($row[2]).',&nbsp;';
-
-			if($row[4] > '') {
-				echo htmlspecialchars($row[4]);
-			}
-			else {
-				echo htmlspecialchars($row[3]);
-			}
-
-			echo '			</font>
-								</td>
-							</tr>';
+			echo '<div class="cell small-12 medium-6">
+							Company Name:
+						</div>
+						<div class="cell small-12 medium-3">
+							' . htmlspecialchars($row[1]) . '
+						</div>
+						<div class="cell small-12 medium-3">
+							' . htmlspecialchars($row[5]) . '<br />
+							' . htmlspecialchars($row[2]) . '<br />
+							' . ($row[4] > '' ? htmlspecialchars($row[4]) : htmlspecialchars($row[3])) . '
+						</div>';
 
 			if($row[7] == '1900-01-01') {
 				$fromdate = '';
@@ -99,64 +79,65 @@ if(!$testLayout) {
 				$todate = date("m/d/Y", strtotime($row[8]));
 			}
 
-			if ($fromdate != '' && $todate != '') {
+			if($fromdate != '' && $todate != '') {
 				$datediff = strtotime($todate) - strtotime($fromdate);
 				$days = $days + floor($datediff / (60 * 60 * 24));
 			}
 
-			echo '	<tr valign="top">
-								<td><font size="1">Dates:</font></td>
-								<td>
-									<font size="1">
-										'.htmlspecialchars($fromdate).' - '.htmlspecialchars($todate).'
-									</font>
-								</td>
-							</tr>
-							<tr>
-								<td><font size="1">Position:</font></td>
-								<td>
-									<font size="1">
-										<input name="empposition" value="'.htmlspecialchars($row[11]).'" class="nobord" readonly>
-									</font>
-								</td>
-								<td><font size="1">Supervisor:&nbsp;&nbsp;'.htmlspecialchars($row[9]).'</font></td>
-							</tr>
-							<tr>
-								<td><font size="1">Phone:</font></td>
-								<td>
-									<font size="1">
-										<input name="empphone" value="'.htmlspecialchars($row[12]).'" class="nobord" readonly>
-									</font>
-								</td>
-								<td><font size="1">Supervisor Phone:&nbsp;&nbsp;'.htmlspecialchars($row[13]).'</font></td>
-							</tr>
-							<tr>
-								<td><font size="1">Reason for Leaving:</font></td>
-								<td>
-									<font size="1">
-										<input name="empreason" value="'.htmlspecialchars($row[10]).'" class="nobord" readonly>
-									</font>
-								</td>
-								<td><font size="1">Supervisor Email:&nbsp;&nbsp;'.htmlspecialchars($row[14]).'</font></td>
-							</tr>
-						</table>
+			echo '  <div class="cell small-12 medium-6">
+								Dates:
+							</div>
+							<div class="cell small-12 medium-6">
+								' . htmlspecialchars($fromdate) . ' - ' . htmlspecialchars($todate) . '
+							</div>
 
-						<table width="763" bgcolor="#E4E8E8">
-							<tr>
-								<td>&nbsp;</td>
-								<td align="center">
-									<a http="#" onclick="updateemp('.$row[0].')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Employment" title="Edit Employment"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<a http="#" onclick="deleteemp('.$row[0].')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete Employment" title="Delete Employment"/></a>
-								</td>
-								<td>&nbsp;</td>
-							</tr>
-						</table>
+							<div class="cell small-12 medium-3">
+								Position:
+							</div>
+							<div class="cell small-12 medium-3">
+								' . htmlspecialchars($row[11]) . '
+							</div>
+							<div class="cell small-12 medium-3">
+								Supervisor:
+							</div>
+							<div class="cell small-12 medium-3">
+								' . htmlspecialchars($row[9]) . '
+							</div>
 
-						<table width="763" bgcolor="#E4E8E8">
-							<tr>
-								<td><hr></td>
-							</tr>
-						</table>';
+							<div class="cell small-12 medium-3">
+								Phone:
+							</div>
+							<div class="cell small-12 medium-3">
+								' . htmlspecialchars($row[12]) . '
+							</div>
+							<div class="cell small-12 medium-3">
+								Supervisor Phone:
+							</div>
+							<div class="cell small-12 medium-3">
+								' . htmlspecialchars($row[13]) . '
+							</div>
+
+							<div class="cell small-12 medium-3">
+								Reason for Leaving:
+							</div>
+							<div class="cell small-12 medium-3">
+								' . htmlspecialchars($row[10]) . '
+							</div>
+							<div class="cell small-12 medium-3">
+								Supervisor Email:
+							</div>
+							<div class="cell small-12 medium-3">
+								' . htmlspecialchars($row[14]) . '
+							</div>
+
+							<div class="cell small-12" right>
+								<span onclick="updateemp(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Employment" title="Edit Employment"/></span>&nbsp;&nbsp;&nbsp;
+								<span onclick="deleteemp(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" alt="Delete Employment" title="Delete Employment"/></span>
+							</div>
+
+							<div class="cell small-12">
+								<hr>
+							</div>';
 		} // end while
 
 		if($days > 0){
@@ -310,22 +291,9 @@ echo '<div class="cell small-12">
 				<div class="cell small-12 medium-6">
 					<select name="newempstate" id="newempstate">
 						<option value="">Select a State</option>
-						<option value="">-Other-</option>';
-
-if(!$testLayout) {
-	$sql = "Select Name, Abbrev from State order by Name";
-	$state_result = $dbo->prepare($sql);
-	$state_result->execute();
-
-	while($rows = $state_result->fetch(PDO::FETCH_BOTH)) {
-		echo '	<option value="' . $rows[1] . '">' . $rows[0] . '</option>';
-	}
-}
-else {
-	echo '		<option value="co">CO</option>';
-}
-
-echo '		</select>
+						<option value="">-Other-</option>
+						' . $state_options . '
+					</select>
 				</div>
 
 				<div class="cell small-12">

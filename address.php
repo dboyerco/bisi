@@ -1,11 +1,4 @@
 <?php
-if(!$testLayout) {
-	$noemail = $dbo->query("Select No_Email from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
-}
-else {
-	$noemail = "Y";
-}
-
 $days = 0;
 $YR = 0;
 $MO = 0;
@@ -141,7 +134,7 @@ else {
 								02/03/2007&nbsp;&nbsp;-&nbsp;&nbsp;05/30/2018
 							</div>
 							<div class="cell small-6 right">
-								<span onclick="updateaddr(1)"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Address" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span onclick="updateaddr(1)"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Address" title="Edit Address"/></span>&nbsp;&nbsp;
 								<span onclick="deleteaddr(1)"><img class="icon" src="images/deletetrashcan.png" alt="Delete Address" title="Delete Address"/></span>
 							</div>
 							<div class="cell small-12 medium-3">
@@ -240,22 +233,9 @@ else {
 							<div class="cell medium-6 small-12">
 								<select name="newstate" id="newstate" onchange="loadcounties(\'newstate\',\'\')">
 									<option value="">Select a State</option>
-									<option value="">-Other-</option>';
-
-	if(!$testLayout) {
-		$sql = "Select Name, Abbrev from State order by Name";
-		$state_result = $dbo->prepare($sql);
-		$state_result->execute();
-
-		while($rows = $state_result->fetch(PDO::FETCH_BOTH)) {
-			echo '			<option value="' . $rows[1] . '">' . $rows[0] . '</option>';
-		}
-	}
-	else {
-		echo '				<option value="co">CO</option>';
-	}
-
-	echo '				</select>
+									<option value="">-Other-</option>
+									' . $state_options . '
+								</select>
 							</div>
 
 							<div class="cell small-12">
@@ -396,22 +376,9 @@ else {
 									<span style="font-size:small; font-family=Tahoma; color:#000000;">
 										<select name="dlgstate" id="dlgstate" onchange="loadcounties(\'dlgstate\',\'\')">
 											<option value="">Select a State</option>
-											<option value="other">-Other-</option>';
-
-	if(!$testLayout) {
-		$sql = "Select Name, Abbrev from State order by Name";
-		$state_result = $dbo->prepare($sql);
-		$state_result->execute();
-
-		while($rows = $state_result->fetch(PDO::FETCH_BOTH)) {
-			echo '					<option value="' . $rows[1] . '">' . $rows[0] . '</option>';
-		}
-	}
-	else {
-		echo '						<option value="co">CO</option>';
-	}
-
-	echo '						</select>
+											<option value="other">-Other-</option>
+											' . $state_options . '
+										</select>
 									</span>
 								</td>
 							</tr>
