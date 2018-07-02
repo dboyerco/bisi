@@ -1,8 +1,8 @@
 <?php
 if(!$testLayout) {
-	$etype = $dbo->query("Select Email_Type from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
-	$state = $dbo->query("Select State_Addr from App_Address where PersonID = ".$PersonID." and Current_Address = 'Y';")->fetchColumn();
-	$rights = $dbo->query("Select SummaryOfRightsURL from State where Abbrev = '".$state."';")->fetchColumn();
+	$etype = $dbo->query("Select Email_Type from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+	$state = $dbo->query("Select State_Addr from App_Address where PersonID = " . $PersonID . " and Current_Address = 'Y';")->fetchColumn();
+	$rights = $dbo->query("Select SummaryOfRightsURL from State where Abbrev = '" . $state . "';")->fetchColumn();
 }
 else {
 	$etype = "B";
