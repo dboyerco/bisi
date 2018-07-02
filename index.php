@@ -17,6 +17,7 @@ echo '<!DOCTYPE HTML>
           <meta name="viewport" content="width=device-width, initial-scale=1">
       		<link rel="stylesheet" href="jquery-ui/jquery-ui.css">
           <link rel="stylesheet" href="css/main.css">
+          <link rel="stylesheet" href="Upload/Upload.css">
           <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
       		<script language="JavaScript" type="text/javascript" src="js/validate.js"></script>
       		<script language="JavaScript" type="text/javascript" src="js/autoTab.js"></script>
