@@ -305,22 +305,9 @@ echo '<div class="cell small-12">
 				</div>
 				<div class="cell small-12 medium-6">
 					<select name="newempstateother" id="newempstateother">
-						<option value="">Select a Country</option>';
-
-if(!$testLayout) {
-	$sql = "Select Alpha2Code, FullName from isocountrycodes Order By FullName;";
-	$country_result = $dbo->prepare($sql);
-	$country_result->execute();
-
-	while($rows = $country_result->fetch(PDO::FETCH_BOTH)) {
-		echo '	<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
-	}
-}
-else {
-	echo '		<option value="usa">USA</option>';
-}
-
-echo '		</select>
+						<option value="">Select a Country</option>
+						' . $country_options . '
+					</select>
 				</div>
 
 				<div class="cell small-12 medium-6">
@@ -471,18 +458,7 @@ echo '<div class="cell small-12 padding-bottom">
 							<option value="">Select a State</option>
 							<option value="other">-Other-</option>
 <?php
-if(!$testLayout) {
-	$sql = "Select Name, Abbrev from State order by Name";
-	$state_result = $dbo->prepare($sql);
-	$state_result->execute();
-
-	while($rows = $state_result->fetch(PDO::FETCH_BOTH)) {
-		echo '<option value="' . $rows[1] . '">' . $rows[0] . '</option>';
-	}
-}
-else {
-	echo '<option value="co">CO</option>';
-}
+echo $state_options
 ?>
 
 						</select></span>
@@ -499,18 +475,7 @@ else {
 							<option value="">Select a Country</option>
 
 <?php
-if(!$testLayout) {
-	$sql = "Select Alpha2Code, FullName from isocountrycodes Order By FullName;";
-	$country_result = $dbo->prepare($sql);
-	$country_result->execute();
-
-	while($rows = $country_result->fetch(PDO::FETCH_BOTH)) {
-		echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
-	}
-}
-else {
-	echo '<option value="usa">USA</option>';
-}
+echo $country_options
 ?>
 
 						</select></span>

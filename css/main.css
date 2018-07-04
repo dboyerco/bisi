@@ -5146,6 +5146,9 @@ body {
 .right {
   text-align: right; }
 
+.center {
+  text-align: center; }
+
 .login-display {
   font-size: 10pt;
   text-align: left;
@@ -5245,6 +5248,9 @@ input[type='button'], input[type='submit'], button, .button {
 #Alias_dialog {
   position: relative;
   z-index: 1000; }
+
+.ui-dialog {
+  max-width: 700px; }
 
 #nomidialog {
   visibility: hidden;

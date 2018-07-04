@@ -1,6 +1,8 @@
 <?php
 $testLayout = true;
 
+$page_order = Array('person', 'address', 'dmv');
+
 if(!$testLayout) {
   require_once('../pdotriton.php');
 }
@@ -120,10 +122,10 @@ else {
             </div>
           </div>';
 
-    if($pg) {
+    if(isSet($pg)) {
       include_once("{$pg}.php");
     }
-    else if(isSet($_GET["pg"])) {
+    else if(isSet($_GET['pg'])) {
       include_once("{$_GET['pg']}.php");
     }
     else {

@@ -208,22 +208,9 @@ if($package == 'zinc') {
 							</div>
 							<div class="cell medium-6 small-12">
 								<select name="newstateother" id="newstateother">
-									<option value="">Select Province/Country</option>';
-
-	if(!$testLayout) {
-		$sql = "Select Alpha2Code, FullName from isocountrycodes Order By FullName;";
-		$country_result = $dbo->prepare($sql);
-		$country_result->execute();
-
-		while($rows = $country_result->fetch(PDO::FETCH_BOTH)) {
-			echo '			<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
-		}
-	}
-	else {
-		echo '				<option value="usa">USA</option>';
-	}
-
-	echo '				</select>
+									<option value="">Select Province/Country</option>
+									' . $country_options . '
+								</select>
 							</div>';
 }
 else {
@@ -247,22 +234,9 @@ else {
 							</div>
 							<div class="cell medium-6 small-12">
 								<select name="newstateother" id="newstateother">
-									<option value="">Select a Country</option>';
-
-	if(!$testLayout) {
-		$sql = "Select Alpha2Code, FullName from isocountrycodes Order By FullName;";
-		$country_result = $dbo->prepare($sql);
-		$country_result->execute();
-
-		while($rows = $country_result->fetch(PDO::FETCH_BOTH)) {
-			echo '			<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
-		}
-	}
-	else {
-		echo '				<option value="usa">USA</option>';
-	}
-
-	echo '				</select>
+									<option value="">Select a Country</option>
+									' . $country_options . '
+								</select>
 							</div>
 
 							<div class="cell medium-6 small-12">
@@ -349,22 +323,9 @@ if($package == 'zinc') {
 								<td>
 									<span style="font-size:small; font-family=Tahoma; color:#000000;">
 										<select name="dlgstateother" id="dlgstateother">
-											<option value="">Select Province/Country</option>';
-
-	if(!$testLayout) {
-		$sql = "Select Alpha2Code, FullName from isocountrycodes Order By FullName;";
-		$country_result = $dbo->prepare($sql);
-		$country_result->execute();
-
-		while($rows = $country_result->fetch(PDO::FETCH_BOTH)) {
-			echo '					<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
-		}
-	}
-	else {
-		echo '						<option value="usa">USA</option>';
-	}
-
-	echo '						</select>
+											<option value="">Select Province/Country</option>
+											' . $country_options . '
+										</select>
 									</span>
 								</td>
 							</tr>';
@@ -391,22 +352,9 @@ else {
 								<td>
 									<span style="font-size:small; font-family=Tahoma; color:#000000;">
 										<select name="dlgstateother" id="dlgstateother">
-											<option value="">Select a Country</option>';
-
-	if(!$testLayout) {
-		$sql = "Select Alpha2Code, FullName from isocountrycodes Order By FullName;";
-		$country_result = $dbo->prepare($sql);
-		$country_result->execute();
-
-		while($rows = $country_result->fetch(PDO::FETCH_BOTH)) {
-			echo '					<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
-		}
-	}
-	else {
-		echo '						<option value="usa">USA</option>';
-	}
-
-	echo '						</select>
+											<option value="">Select a Country</option>
+											' . $country_options . '
+										</select>
 									</span>
 								</td>
 							</tr>
