@@ -25,6 +25,11 @@ echo '<!DOCTYPE HTML>
       		<script language="JavaScript" type="text/javascript" src="js/autoTab.js"></script>
       		<script language="JavaScript" type="text/javascript" src="js/autoFormats.js"></script>
       		<script src="jquery-ui/jquery-ui.js"></script>
+		<script language="JavaScript" type="text/javascript">
+      			$(document).ready(function() {
+      				$("#submitid").hide();
+			});
+		</script	
         </head>
 
         <body>';
