@@ -1,7 +1,21 @@
 <?php
 require_once('../pdotriton.php');
-
+$FormAction = "";
 #echo 'PersonID = '.$PersonID;
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>BIS Online Background Screen Application</title><!-- InstanceEndEditable -->
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link href="files/default.css" type="text/css" rel="stylesheet">
+		<link href="Upload/Upload.css" rel="stylesheet" type="text/css" />		
+		<link rel="stylesheet" href="jquery-ui/jquery-ui.css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	</head>
+<?php
+echo '<body bgcolor="#E4E8E8">';
+echo "<FORM METHOD=\"POST\" ACTION=\"$FormAction\" NAME=\"ALCATEL\">";
 
 $sql = "select * from App_Person where PersonID=".$PersonID.";";
 $result=$dbo->prepare($sql);
@@ -36,6 +50,17 @@ $etype=$row['Email_Type'];
 $noemail=$row['No_Email'];
 $datetime = Date('Y-m-d H:i:s');
 
+$Date = date("m/d/Y");			
+$datediff = strtotime($Date) - strtotime($birthdate);
+$days = floor($datediff / (60 * 60 * 24));
+$parentdocneeded = false;
+if ($days < 6570) {	
+	$pdoc = $dbo->query("Select count(*) from App_Uploads where PersonID = ".$PersonID." and UploadType = 'Disclosure Authorization Parent';")->fetchColumn();	
+	if ($pdoc > 0) {
+	} else {
+		$parentdocneeded = true;
+	}	
+}	
 $dsignature = $dbo->query("select Signature from App_Signature where PersonID = ".$PersonID." and Signature_Type = 'Disclosure';")->fetchColumn();
 $dsigndate = $dbo->query("select Signature_Date from App_Signature where PersonID = ".$PersonID." and Signature_Type = 'Disclosure';")->fetchColumn();
 $dsigndate = date("m/d/Y", strtotime($dsigndate));
@@ -426,9 +451,8 @@ IP:     $ipaddress
 #	$msg = txt2pdf($hellobody4, $pdfAuthfilename);
 	$msg = '';
 	$Comment = '';
-if ($noemail == 'N') {
+if ($noemail == 'N' || $noemail == 'S') {
 	$Semail = '';
-#	$Semail = $dbo->query("select email from App_HR_Users where Company_Name = '".$compname."' and username = '".$Sponsor."';")->fetchColumn();	
 	$Semail = $dbo->query("select emailnotification from ReportLinkCustids where custid = '".$custid."';")->fetchColumn();
 	$cname = str_replace(',','',$compname);
 	$hellofrom = $cname." Application Submission <service@bisi.com>";
@@ -436,11 +460,15 @@ if ($noemail == 'N') {
 	$helloto = "";
 	$hellosubject = $compname." Application Submission for $fname $lname";
 	$hellobody = '<html><body><table style="border:5px solid black; border-radius:10px;">';
-	$hellobody .= '<tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">'.$fname.'&nbsp;'.$lname.' has completed the authorization for their background check and is Ready to Screen. Please <a href="https://proteus.bisi.com/'.$appname.'/HR">Click Here</a> to submit the order to BIS.</span></td></tr>';
+	if ($parentdocneeded) {	
+		$hellobody .= '<tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">'.$fname.'&nbsp;'.$lname.' has completed the authorization for their background check but neededs the Parent Release form. You can <a href="https://proteus.bisi.com/'.$appname.'/HR">Click Here</a> to view applicants data.</span></td></tr>';
+	} else {
+		$hellobody .= '<tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">'.$fname.'&nbsp;'.$lname.' has completed the authorization for their background check and is Ready to Screen. Please <a href="https://proteus.bisi.com/'.$appname.'/HR">Click Here</a> to submit the order to BIS.</span></td></tr>';
+	}
 	$hellobody .= '<tr><td>&nbsp;</td></tr>';
 #	$hellobody .= '<tr><td><a href="https://proteus.bisi.com/disclaimers/PersonID-'.$PersonID.'.pdf">Click Here</a> to view applicants submission</td></tr>';
 #	$hellobody .= '<tr><td>&nbsp;</td></tr>';
-	$hellobody .= '<tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">If you have questions or need assistance, please contact us at <a href="mailto:service@bisi.com">Service@BISI.com</a> or 800-442-3960. We are in the office Monday - Friday, 8:00am - 5:00 pm MT.</span></td></tr>';
+	$hellobody .= '<tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">If you have questions or need assistance, please contact us at <a href="mailto:service@bisi.com">Service@BISI.com</a> or 800-433-6010. We are in the office Monday - Friday, 8:00am - 5:00 pm MT.</span></td></tr>';
 	$hellobody .= '<tr><td>&nbsp;</td></tr>';
 	$hellobody .= '<tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">Thank you!</span></td></tr>';
 	$hellobody .= '</table></body></html>';
@@ -453,41 +481,74 @@ if ($noemail == 'N') {
 	mail($helloto, $hellosubject, $hellobody, $header);
 
 	if ($Status != 'In Progress' && $Status != 'Completed') { 
-		$sql = "update App_Person set AppCompleted = 'Y', Status = 'Ready to Screen' where PersonID = :PersonID";
+		if ($parentdocneeded) {	
+			$Status = 'Parent Release Needed';
+			$AppCompleted = 'N';
+			$Comment = $fname.' '.$lname.' has completed the online web app but Parent Release is needed.';
+		} else {
+			$Status = 'Ready to Screen';
+			$AppCompleted = 'Y';
+			$Comment = $fname.' '.$lname.' has completed the online web app and is ready to be submitted to BIS';
+		}
+		$sql = "update App_Person set AppCompleted = :AppCompleted, Status = :Status where PersonID = :PersonID";
 		$updt=$dbo->prepare($sql);
 		$updt->bindValue(':PersonID', $PersonID);
+		$updt->bindValue(':AppCompleted', $AppCompleted);
+		$updt->bindValue(':Status', $Status);
 		$updt->execute();
 
-		$Status = 'Ready to Screen';
-		$Comment = $fname.' '.$lname.' has completed the online web app and is ready to be submitted to BIS';
+#		$Status = 'Ready to Screen';
+#		$Comment = $fname.' '.$lname.' has completed the online web app and is ready to be submitted to BIS';
 	}
-	echo "<p><strong>Thank you for your submission to ".$compname.".</strong></p><br />
-	<P>Submission Complete</P>";
+	if ($Status == 'Ready to Screen') {
+		echo "<p><strong>Thank you for your submission to ".$compname.".</strong></p><br />
+		<P>Submission Complete</P>";
+	} else {	
+		echo "<p><strong>Thank you for your submission to ".$compname.".</strong></p><br />
+		<P><strong>Parent Release form is still needed.&nbsp;&nbsp;<a href='#openPhotoDialog'>Upload the Document.</a></strong></P>";
+	}
+	if ($noemail == 'S') {
+		echo '<br /><br /><INPUT TYPE="button" name="return" id="return" onclick="redir()" VALUE="Close" style="font-size:medium; font-family=Tahoma; color:green; border-radius:5px; padding: 5px 24px;">';
+	}
+	
 } else {	
-	$sql = "update App_Person set AppCompleted = 'Y', Submitted = 'Y', CertifiedBy = :CertifiedBy, CertifiedDate = :CertifiedDate, Status = :Status, Status_Date = :Status_Date where PersonID = :PersonID";
+	$OKSend = false;
+	if ($parentdocneeded) {	
+		$Status = 'Parent Release Needed';
+		$Comment = $fname.' '.$lname.' has completed the online web app but Parent Release is needed.';
+		$sql = "update App_Person set AppCompleted = 'N', Submitted = 'N', CertifiedBy = :CertifiedBy, CertifiedDate = :CertifiedDate, Status = :Status, Status_Date = :Status_Date where PersonID = :PersonID";
+	} else {
+		$OKSend = true;
+		$Status = 'In Progress';
+		$Comment = $fname.' '.$lname.' was submitted to BIS for a background check';
+		$sql = "update App_Person set AppCompleted = 'Y', Submitted = 'Y', CertifiedBy = :CertifiedBy, CertifiedDate = :CertifiedDate, Status = :Status, Status_Date = :Status_Date where PersonID = :PersonID";
+	}
 	$updt=$dbo->prepare($sql);
 	$updt->bindValue(':PersonID', $PersonID);
 	$updt->bindValue(':CertifiedBy', $Sponsor);
 	$updt->bindValue(':CertifiedDate', $datetime);
-	$updt->bindValue(':Status', 'In Progress');
+	$updt->bindValue(':Status', $Status);
 	$updt->bindValue(':Status_Date', $datetime);
 	if (!$updt->execute()) {
 		$msg .= "Error Updating App_Person: \nSQL is ".$sql."\n".$update->errorCode()."\n";
 	}
 
-	$Status = 'In Progress';
-	$Comment = $fname.' '.$lname.' was submitted to BIS for a background check';
+#		$Status = 'In Progress';
+#		$Comment = $fname.' '.$lname.' was submitted to BIS for a background check';
+	if ($OKSend) {
+		$sql = "insert into App_Ready_Send (PersonID) Values(:PersonID);"; 
+		$isrt=$dbo->prepare($sql);
+		$isrt->bindValue(':PersonID', $PersonID);
+		$isrt->execute();
+		if (!$isrt->execute()) {
+			$msg .= "Error Submitting Applicant to BIS: <br />SQL is ".$sql."\n".$isrt->errorCode()."\n";
+		}
 	
-	$sql = "insert into App_Ready_Send (PersonID) Values(:PersonID);"; 
-	$isrt=$dbo->prepare($sql);
-	$isrt->bindValue(':PersonID', $PersonID);
-	$isrt->execute();
-	if (!$isrt->execute()) {
-		$msg .= "Error Submitting Applicant to BIS: <br />SQL is ".$sql."\n".$isrt->errorCode()."\n";
+		echo "<p><strong>Thank you for your submission.<br />".$fname." ".$lname." submitted to BIS </strong></p><br />
+		<P>Submission Complete</P>";
+	} else {
+		echo "<p><strong>Thank you for your submission.<br />Parent Release form is still needed.&nbsp;&nbsp;<a href='#openPhotoDialog'>Upload the Document.</a></strong></p><br />";	
 	}
-	
-	echo "<p><strong>Thank you for your submission.<br />".$fname." ".$lname." submitted to BIS </strong></p><br />
-	<P>Submission Complete</P>";
 }
 $entered = date("Y-m-d H:i:s");
 $sql2 = "insert into App_Log (PersonID, Status, Status_Date, Email, Comment) values(:PersonID, :Status, :Status_Date, :Email, :Comment);";
@@ -519,5 +580,20 @@ if ($msg > '') {
 	$hellofrom = "Thanks Errors <info@bisi.com>";
 	mail($to, $hellosubject, $hellobody, "From: $hellofrom"); 	
 } 
+include ('Upload/UploadDialog.php');
+echo	"<INPUT TYPE=\"hidden\" NAME=\"PersonID\" id=\"PersonID\" VALUE=\"$PersonID\">
+		<INPUT TYPE=\"hidden\" NAME=\"UploadType\" id=\"UploadType\"VALUE=\"Disclosure Authorization Parent\">";
 
 ?>
+</FORM>
+</body>
+</html>
+
+<script language="JavaScript" type="text/javascript">
+	function redir() {
+//		alert('Bye');
+		window.top.close();
+
+	}
+</script>
+<script src="Upload/Upload.js"></script>
