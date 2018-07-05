@@ -53,7 +53,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							</div>
 
 							<div class="cell small-12">
-								<input type="submit" name="submitid" id="submitid" value="Next" style="visibility: hidden;">
+								<input type="submit" name="submitid" id="submitid" value="Next">
 							</div>
 						</div>
 					</div>';
@@ -69,10 +69,8 @@ echo '				<input type="hidden" name="PersonID" id="PersonID" value=" ' . $Person
 <script src="Upload/Upload.js"></script>
 <script language="JavaScript" type="text/javascript">
 	function downloadForm() {
-		el = $("#submitid");
-		elbutton = $("#dlform");
-		elbutton.style.visibility = "hidden";
-		el.style.visibility = "visible";
+		$("#dlform").hide();
+		$("#submitid").show();
 		window.open('https://proteus.bisi.com/docs/Foothills%20Park%20and%20Recreation%20District.pdf');
 	}
 
