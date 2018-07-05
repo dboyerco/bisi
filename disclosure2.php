@@ -110,7 +110,7 @@ echo '					<br /><br />
 							</div>
 
 							<div class="cell small-12 padding-bottom">
-								<input class="float-center" id="savesign" type="button" value="Submit Data to BISI">
+								<input class="float-center" id="savesign" type="button" value="Next">
 							</div>
 
 							<input type="hidden" name="signdate2" id="signdate2" value="' . $Date . '">
