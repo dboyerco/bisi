@@ -1,4 +1,5 @@
 <?php
+$date = date("m/d/Y");
 if(!$testLayout) {
 	$etype = $dbo->query("Select Email_Type from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
 	$state = $dbo->query("Select State_Addr from App_Address where PersonID = " . $PersonID . " and Current_Address = 'Y';")->fetchColumn();
@@ -89,6 +90,8 @@ echo '					<br /><br />
 
 							<input type="hidden" name="signdate" id="signdate" value="' . $date . '">
 							<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
+							<input type="hidden" name="cd" id="cd" value="' . $CD . '">
+
 						</form>';
 ?>
 
@@ -122,7 +125,7 @@ echo '					<br /><br />
 					alert(obj2);
 				}
 				else {
-					window.location = 'disclosure2.php?PersonID='+personid;
+					window.location = 'index.php?pg=disclosure2&PersonID=' + personid + '&CD=' + cd;
 				}
 
 				return;
