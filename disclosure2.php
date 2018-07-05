@@ -3,6 +3,11 @@ if(!$testLayout) {
 	$etype = $dbo->query("Select Email_Type from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
 	$state = $dbo->query("Select State_Addr from App_Address where PersonID = " . $PersonID . " and Current_Address = 'Y';")->fetchColumn();
 	$rights = $dbo->query("Select SummaryOfRightsURL from State where Abbrev = '" . $state . "';")->fetchColumn();
+	$DOB = $dbo->query("Select Date_of_Birth from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
+	$DOB = date("m/d/Y", strtotime($DOB));
+	$Date = date("m/d/Y");
+	$datediff = strtotime($Date) - strtotime($DOB);
+	$days = floor($datediff / (60 * 60 * 24));	
 }
 else {
 	$etype = "B";
@@ -108,8 +113,10 @@ echo '					<br /><br />
 								<input class="float-center" id="savesign" type="button" value="Submit Data to BISI">
 							</div>
 
-							<input type="hidden" name="signdate2" id="signdate2" value="' . $date . '">
+							<input type="hidden" name="signdate2" id="signdate2" value="' . $Date . '">
 							<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
+							<input type="hidden" name="cd" id="cd" value="' . $CD . '">
+							<input type="hidden" name="days" id="days" value="' . $days .'">
 
 							<div name="overlay" id="overlay" style="visibility: hidden; width:300px;margin: auto auto;background-color:White;border:5px solid #696969; border-radius:20px; position:absolute;top:75%;left:25%;padding:5px;text-align:center;">Processing data. Please Wait....<br />It should take less than a minute. <br /></div>
 						</form>';
@@ -155,7 +162,11 @@ echo '					<br /><br />
 					eldiv = $("#overlay");
 					el.style.visibility = "hidden";
 					eldiv.style.visibility = "visible";
-					window.location = 'Thanks.php?PersonID=' + personid;
+					if (nodays < 6570) {	
+						window.location = 'index.php?pg=under18release&PersonID=' + personid + '&CD=' + cd;
+					} else {
+						window.location = 'index.php?pg=Thanks&PersonID=' + personid + '&CD=' + cd;
+					}	
 				}
 
 				return;
