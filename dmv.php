@@ -19,8 +19,8 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 								<span class="sub-heading">Driver License Information</span><br>
 								List all your driver licenses.<br />&nbsp;
 							</div>
-							<div class="cell small-4">
-								<span onclick="adddmv()"><img class="icon" src="images/plus.png" alt="Add License" title="Edit License"/></span>&nbsp;&nbsp;&nbsp;
+							<div class="cell small-4 right">
+								<span onclick="addDMV()"><img class="icon" src="images/plus.png" alt="Add License" title="Add License"/></span>
 							</div>';
 
 $currentDMV = 'N';
@@ -162,7 +162,7 @@ if($maxRecID == 0) {
 
 	$("#add_dmv").click(function() {
 		addDMV();
-	};
+	});
 
 	$("#save_dmv").click(function() {
 		var personid = $("#PersonID").val();
@@ -285,70 +285,6 @@ if($maxRecID == 0) {
 			}
 		});
 	}
-
-	// $("#save_dmv").click(function() {
-	// 	var personid = $("#PersonID").val();
-	// 	var recid = $("#dlgrecid").val();
-	//
-	// 	if($("#dlgDL").val() > '') {
-	// 		var DL = $("#dlgDL").val();
-	// 	}
-	// 	else {
-	// 		document.ALCATEL.dlgDL.focus();
-	// 		alert("Driver's License is required");
-	// 		return false;
-	// 	}
-	//
-	// 	if($("#dlgDLE").val() > '') {
-	// 		if(!isValidEDate('dlgDLE')) {
-	// 			$('#dlgDLE').focus();
-	// 			alert("Invalid Expiration Date");
-	// 			return false;
-	// 		}
-	// 		else {
-	// 			var DLE = $("#dlgDLE").val();
-	// 		}
-	// 	}
-	// 	else {
-	// 		document.ALCATEL.dlgDLE.focus();
-	// 		alert("Expiration Date is required");
-	// 		return false;
-	// 	}
-	//
-	// 	if($("#dlgDLstate").val() == '' && $("#dlgDLstateother").val() == '' ) {
-	// 		document.ALCATEL.dlgDLstate.focus();
-	// 		alert("State or Country of Issue is required");
-	// 		return false;
-	// 	}
-	// 	else {
-	// 		var DLstate = $("#dlgDLstate").val();
-	// 		var DLstateother = $("#dlgDLstateother").val();
-	// 	}
-	//
-	// 	$.ajax({
-	// 		type: "POST",
-	// 		url: "../App_Ajax/ajax_save_dmv.php",
-	// 		data: {personid: personid, recid: recid, DL: DL, DLE: DLE, DLstate: DLstate, DLstateother: DLstateother},
-	// 		datatype: "JSON",
-	// 		success: function(valor) {
-	// 			var obj2 = $.parseJSON(valor);
-	//
-	// 			if (obj2 > '' ) {
-	// 				alert(obj2);
-	// 			}
-	// 			else {
-	// 				$( "#DMV_dialog" ).dialog( "close" );
-	// 				location.reload(true);
-	// 			}
-	//
-	// 			return;
-	// 		},
-	// 		error: function(XMLHttpRequest, textStatus, errorThrown) {
-	// 			alert('Status: ' + textStatus);
-	// 			alert('Error: ' + errorThrown);
-	// 		}
-	// 	});
-	// });
 
 	function dltdmv(RecID) {
 		alert("In dltdmv");

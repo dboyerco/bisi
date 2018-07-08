@@ -57,11 +57,6 @@ if(!$testLayout) {
 				$todate = date("m/d/Y", strtotime($row[9]));
 			}
 
-			// $fd = new DateTime($fromdate);
-			// $td = new DateTime($todate);
-			// $diff = $fd->diff($td);
-			// echo $diff->y . ' year(s) ' . $diff->m . ' month(s) '. $diff->d . ' day(s)<br />';
-
 			if($fromdate != '' && $todate != '') {
 				$datediff = strtotime($todate) - strtotime($fromdate);
 				$days = $days + floor($datediff / (60 * 60 * 24));
@@ -71,8 +66,17 @@ if(!$testLayout) {
 
 			if($row[10] == 'Y') {
 				$currentaddress = $row[10];
-				echo '<div class="cell small-12">
+
+				echo '<div class="cell small-8">
 								<h3>Current Address</h3>
+							</div>
+							<div class="cell small-4 right">
+								<span onclick="addAddress()"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
+							</div>';
+			}
+			else {
+				echo '<div class="cell small-12 right">
+								<span onclick="addAddress()"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
 							</div>';
 			}
 
@@ -107,8 +111,10 @@ if(!$testLayout) {
 							<div class="cell small-2">
 								' . htmlspecialchars($row[7]) . '
 							</div>
-							<hr>
-							<table width="763" id="addrtbl2" bgcolor="#E4E8E8"></table>';
+
+							<div class="cell small-12">
+								<hr>
+							</div>';
 		}
 
 		if($days > 0){
@@ -127,9 +133,13 @@ else {
 	$maxAddrID = 0;
 	$days = 2557;
 
-	echo '			<div class="cell small-12">
+	echo '			<div class="cell small-8">
 								<h3>Current Address</h3>
 							</div>
+							<div class="cell small-4 right">
+								<span onclick="addAddress()"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
+							</div>
+
 							<div class="cell small-6 sub-heading">
 								02/03/2007&nbsp;&nbsp;-&nbsp;&nbsp;05/30/2018
 							</div>
@@ -152,10 +162,10 @@ else {
 							<div class="cell small-2">
 								80537
 							</div>
+
 							<div class="cell small-12">
 								<hr>
-							</div>
-							<table width="763" id="addrtbl2" bgcolor="#E4E8E8"></table>';
+							</div>';
 }
 
 if($days >= 2557) {
@@ -164,7 +174,10 @@ if($days >= 2557) {
 							</div>';
 }
 
-echo '				<div class="cell small-12">
+echo '			</div>
+
+						<div class="grid-x margins person-form" name="Address_dialog" id="Address_dialog" title="Dialog Title">
+							<div class="cell small-12">
 								<h3>Add Address</h3>
 							</div>
 							<div class="cell medium-6 small-12 required">
@@ -179,27 +192,30 @@ if($currentaddress == 'N') {
 								Current Address <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<select name="newcurrent" id="newcurrent" onchange="setdate()">
+								<select name="current" id="current" onchange="setdate()">
 									<option value="Y">Yes</option>
-									<option VALUE="N">No</OPTION>
+									<option value="N">No</OPTION>
 								</select>
 							</div>';
+}
+else {
+	echo '			<input type="hidden" name="current" id="current" value="Y">';
 }
 
 echo '				<div class="cell medium-6 small-12">
 								Street <span class="required">*</span>
 							</div>
 							<div class="cell medium-4 small-8">
-								<input type="text" name="newaddr1" id="newaddr1" size="20" maxlength="100" placeholder="Required">
+								<input type="text" name="addr1" id="addr1" size="20" maxlength="100" placeholder="Required">
 							</div>
 							<div class="cell medium-2 small-4">
-								<input type="text" name="newapt" id="newapt" size="5" maxlength="9" value="" placeholder="Apt/Suite">
+								<input type="text" name="apt" id="apt" size="5" maxlength="9" value="" placeholder="Apt/Suite">
 							</div>
 							<div class="cell medium-6 small-12">
 								City <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="newcity" id="newcity" size="20" maxlength="40" placeholder="Required">
+								<input type="text" name="city" id="city" size="20" maxlength="40" placeholder="Required">
 							</div>';
 
 if($package == 'zinc') {
@@ -207,7 +223,7 @@ if($package == 'zinc') {
 								Province/Country <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<select name="newstateother" id="newstateother">
+								<select name="country" id="country">
 									<option value="">Select Province/Country</option>
 									' . $country_options . '
 								</select>
@@ -218,7 +234,7 @@ else {
 								State <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<select name="newstate" id="newstate" onchange="loadcounties(\'newstate\',\'\')">
+								<select name="state" id="state" onchange="loadcounties(\'state\',\'\')">
 									<option value="">Select a State</option>
 									<option value="">-Other-</option>
 									' . $state_options . '
@@ -233,7 +249,7 @@ else {
 								Country <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<select name="newstateother" id="newstateother">
+								<select name="country" id="country">
 									<option value="">Select a Country</option>
 									' . $country_options . '
 								</select>
@@ -243,7 +259,7 @@ else {
 								County <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<select name="newcounty" id="newcounty">
+								<select name="county" id="county">
 									<option value="">Select a County</option>
 								</select>
 							</div>';
@@ -253,172 +269,63 @@ echo '				<div class="cell medium-6 small-12">
 								Postal Code <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="newzip" id="newzip" size="10" maxlength="10" placeholder="Required">
+								<input type="text" name="zip" id="zip" size="10" maxlength="10" placeholder="Required">
 							</div>
 
 							<div class="cell medium-6 small-12">
 								From Date <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="newfromdate" id="newfromdate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')" >
+								<input type="text" name="fromdate" id="fromdate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')" >
 							</div>
 
 							<div class="cell medium-6 small-12">
 								To Date <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="newtodate" id="newtodate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="text" name="todate" id="todate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
 							</div>
-						</div>
 
-						<div class="grid-x margins">
 							<div class="cell small-12 padding-bottom">
-								<input id="add_new_address" class="float-center" type="button" value="Save Address">
+								<input id="save_address" class="float-center" type="button" value="Save Address">
 							</div>
 						</div>
 
 						<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
-					  <input type="hidden" name="AddrID" id="AddrID" value="' . $maxAddrID . '">
-					  <input type="hidden" name="Current" id="Current" value="' . $currentaddress . '">
+					  <input type="hidden" name="addrid" id="addrid" value="' . $maxAddrID . '">
 					  <input type="hidden" name="package" id="package" value="' . $package . '">
 					  <input type="hidden" name="days" id="days" value="' . $days . '">
-					</div>
-				</div>
-
-				<div name="Address_dialog" id="Address_dialog" title="Dialog Title">
-					<div>
-						<br/>
-						<input type="hidden" name="dlgaddrid" id="dlgaddrid">
-						<table width="100%" align="left" border="0" bgcolor="#eeeeee">
-							<tr>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Current Address</font></td>
-								<td>
-									<select name="dlgcurrent" id="dlgcurrent">
-										<option VALUE="N">No</OPTION>
-										<option value="Y">Yes</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Street</font></td>
-								<td width="351">
-									<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-										<input name="dlgaddr1" id="dlgaddr1" size="20" maxlength="100">
-											&nbsp;&nbsp;&nbsp;Apt &nbsp;
-										<input name="dlgapt" id="dlgapt" size="5" maxlength="9" value="">
-									</font>
-								</td>
-							</tr>
-							<tr>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">City</font></td>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-										<input name="dlgcity" id="dlgcity" size="20" maxlength="40" >
-									</font>
-								</td>
-							</tr>';
-
-if($package == 'zinc') {
-	echo '			<tr>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Province/Country</font></td>
-								<td>
-									<span style="font-size:small; font-family=Tahoma; color:#000000;">
-										<select name="dlgstateother" id="dlgstateother">
-											<option value="">Select Province/Country</option>
-											' . $country_options . '
-										</select>
-									</span>
-								</td>
-							</tr>';
-}
-else {
-	echo '			<tr>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">State</font></td>
-								<td>
-									<span style="font-size:small; font-family=Tahoma; color:#000000;">
-										<select name="dlgstate" id="dlgstate" onchange="loadcounties(\'dlgstate\',\'\')">
-											<option value="">Select a State</option>
-											<option value="other">-Other-</option>
-											' . $state_options . '
-										</select>
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td><font size="2">&nbsp;</font></td>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> OR If address is out of the US, please select the Country</font></td>
-							</tr>
-							<tr>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Country</font></td>
-								<td>
-									<span style="font-size:small; font-family=Tahoma; color:#000000;">
-										<select name="dlgstateother" id="dlgstateother">
-											<option value="">Select a Country</option>
-											' . $country_options . '
-										</select>
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">County</font></td>
-								<td>
-									<span style="font-size:small; color:#000000;">
-										<select name="dlgcounty" id="dlgcounty">
-											<option value="">Select a County</option>
-										</select>
-									</span>
-								</td>
-							</tr>';
-	}
-
-	echo '			<tr>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Postal Code</font></td>
-								<td>
-									<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-										<input name="dlgzip" id="dlgzip" size="10" maxlength="10">
-									</font>
-								</td>
-							</tr>
-							<tr>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">From Date</font></td>
-								<td nowrap>
-									<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-										<input name="dlgfromdate" id="dlgfromdate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
-									</font>
-								</td>
-							</tr>
-							<tr>
-								<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">To Date</font></td>
-								<td nowrap>
-									<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-										<input name="dlgtodate" id="dlgtodate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
-									</font>
-								</td>
-							</tr>
-						</table>
-
-						<table width="100%" bgcolor="#eeeeee">
-							<tr>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td align="center">
-									<INPUT TYPE="button" id="save_address" VALUE="Save Address">
-									<INPUT TYPE="button" id="close_address" VALUE="Close">
-								</td>
-							</tr>
-						</table>
 					</div>
 				</div>
 			</form>';
 ?>
 
 <script>
+	$("#Address_dialog").dialog({ autoOpen: false });
+
+<?php
+	if($days < 2557) {
+		echo 'addAddress();';
+	}
+?>
+
+	function addAddress() {
+		$("#Address_dialog").dialog("option", "title", "Add Address");
+		$("#Address_dialog").dialog("option", "modal", true);
+		$("#Address_dialog").dialog("option", "width", "100%");
+		$("#Address_dialog").dialog("open");
+	}
+
+	$("#add_address").click(function() {
+		addAddress();
+	});
+
 	$().ready(function() {
-		if($("#Current").val() != 'Y') {
+		if($("#current").val() != 'Y') {
 			var today = getToday();
 
-			$("#newtodate").placeholder = '';
-			$("#newtodate").val(today);
+			$("#todate").placeholder = '';
+			$("#todate").val(today);
 		}
 	});
 
@@ -440,52 +347,57 @@ else {
 	}
 
 	function setdate() {
-		if($("#newcurrent").val() == 'Y') {
+		if($("#current").val() == 'Y') {
 			var today = getToday();
 
-			$("#newtodate").placeholder = '';
-			$("#newtodate").val(today);
+			$("#todate").placeholder = '';
+			$("#todate").val(today);
 		}
 		else {
-			$("#newtodate").placeholder = 'mm/dd/yyyy';
-			$("#newtodate").val() = '';
+			$("#todate").placeholder = 'mm/dd/yyyy';
+			$("#todate").val() = '';
 		}
 	}
 
-	$("#Address_dialog").dialog({ autoOpen: false });
-
- 	$("#add_new_address").click(function() {
+ 	$("#save_address").click(function() {
 		var personid = $("#PersonID").val();
 		var pname = $("#package").val();
+		var addrid = $("#addrid").val();
 
-		if($("#Current").val() == 'N') {
-			var current_address = $("#newcurrent").val();
+		var saveLocation = "../App_Ajax/ajax_add_address.php";
+
+		if(recid > 0) {
+			saveLocation = "../App_Ajax/ajax_save_address.php";
+		}
+
+		if($("#current").val() == 'N') {
+			var current_address = $("#current").val();
 		}
 		else {
 			var current_address = 'N';
 		}
 
-		if($("#newaddr1").val() > '') {
-			var addr1 = $("#newaddr1").val();
+		if($("#addr1").val() > '') {
+			var addr1 = $("#addr1").val();
 		}
 		else {
-			document.ALCATEL.newaddr1.focus();
+			document.ALCATEL.addr1.focus();
 			alert("Street is required");
 			return;
 		}
 
-		if($("#newapt").val() > '') {
-			var apt = $("#newapt").val();
+		if($("#apt").val() > '') {
+			var apt = $("#apt").val();
 		}
 		else {
 			var apt = '';
 		}
 
-		if($("#newcity").val() > '') {
-			var city = $("#newcity").val();
+		if($("#city").val() > '') {
+			var city = $("#city").val();
 		}
 		else {
-			document.ALCATEL.newcity.focus();
+			document.ALCATEL.city.focus();
 			alert("City is required");
 			return;
 		}
@@ -494,89 +406,89 @@ else {
 			var state = '';
 			var county = '';
 
-			if($("#newstateother").val() == '' ) {
-				$('#newstateother').focus();
+			if($("#country").val() == '' ) {
+				$('#country').focus();
 				alert("Province/Country is required");
 				return;
 			}
 			else {
-				var stateother = $("#newstateother").val();
+				var stateother = $("#country").val();
 			}
 		}
 		else {
-			if($("#newstate").val() == '' && $("#newstateother").val() == '' ) {
-				document.ALCATEL.newstate.focus();
+			if($("#state").val() == '' && $("#country").val() == '' ) {
+				document.ALCATEL.state.focus();
 				alert("State or Country is required");
 				return;
 			}
 			else {
-				var state = $("#newstate").val();
-				var stateother = $("#newstateother").val();
+				var state = $("#state").val();
+				var stateother = $("#country").val();
 			}
 
-			if($("#newstate").val() != '') {
-				if($("#newcounty").val() > '') {
-					var county = $("#newcounty").val();
+			if($("#state").val() != '') {
+				if($("#county").val() > '') {
+					var county = $("#county").val();
 				}
 				else {
-					document.ALCATEL.newcounty.focus();
+					document.ALCATEL.county.focus();
 					alert("County is required");
 					return;
 				}
 			}
 		}
 
-		if($("#newzip").val() > '') {
-			var zipcode = $("#newzip").val();
+		if($("#zip").val() > '') {
+			var zipcode = $("#zip").val();
 		}
 		else {
-			document.ALCATEL.newzip.focus();
+			document.ALCATEL.zip.focus();
 			alert("Postal Code is required");
 			return;
 		}
 
-		if($("#newfromdate").val() > '') {
-			if(!isValidDate('newfromdate')) {
-				$('#newfromdate').focus();
+		if($("#fromdate").val() > '') {
+			if(!isValidDate('fromdate')) {
+				$('#fromdate').focus();
 				alert("Invalid From Date");
 				return false;
 			}
 			else {
-				var fromdate = $("#newfromdate").val();
+				var fromdate = $("#fromdate").val();
 			}
 		}
 		else {
-			document.ALCATEL.newfromdate.focus();
+			document.ALCATEL.fromdate.focus();
 			alert("From Date is required");
 			return;
 		}
 
-		if($("#newtodate").val() > '') {
-			if(!isValidDate('newtodate')) {
-				$('#newtodate').focus();
+		if($("#todate").val() > '') {
+			if(!isValidDate('todate')) {
+				$('#todate').focus();
 				alert("Invalid To Date");
 				return false;
 			}
 			else {
-				var todate = $("#newtodate").val();
+				var todate = $("#todate").val();
 			}
 		}
 		else {
-			document.ALCATEL.newtodate.focus();
+			document.ALCATEL.todate.focus();
 			alert("To Date is required");
 			return;
 		}
 
 		if(!isValidDiff(fromdate, todate)) {
-			$('#newfromdate').focus();
+			$('#fromdate').focus();
 			alert("From Date can not be greater than To Date");
 			return false;
 		}
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_add_address.php",
-			data: {personid: personid, addr1: addr1, apt: apt, city: city, state: state, stateother: stateother, zipcode: zipcode, fromdate: fromdate, todate: todate, current_address: current_address, county: county},
+			url: saveLocation,
+			data: {personid: personid, addrid: addrid, addr1: addr1, apt: apt, city: city, state: state, stateother: stateother, zipcode: zipcode, fromdate: fromdate, todate: todate, current_address: current_address, county: county},
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
@@ -586,8 +498,8 @@ else {
 				else {
 					var AddrID = obj2;
 
-					if($("#Current").val() == 'N') {
-						$("#newcurrent").val() = 'N';
+					if($("#current").val() == 'N') {
+						$("#current").val() = 'N';
 					}
 
 					location.reload();
@@ -602,12 +514,7 @@ else {
 	});
 
 	function loadcounties(ddl, county) {
-		if(ddl == 'newstate') {
-			st = $("#newstate").val();
-		}
-		else {
-			st = $("#dlgstate").val();
-		}
+		st = $("#state").val();
 
 		$.ajax({
 			type: "POST",
@@ -618,27 +525,16 @@ else {
 				var obj2 = $.parseJSON(valor);
 
 				if(valor.length > 0) {
-					if(ddl == 'newstate') {
-						$('#newcounty').find('option').remove();
-						$('#newcounty').append('<option value="">Select a County</option>');
-					}
-					else {
-						$('#dlgcounty').find('option').remove();
-						$('#dlgcounty').append('<option value="">Select a County</option>');
-					}
+					$('#county').find('option').remove();
+					$('#county').append('<option value="">Select a County</option>');
 
 					for(var i = 0; i < obj2.length; i++) {
 						var County_Name = obj2[i].County_Name;
 
-						if(ddl == 'newstate') {
-							$('#newcounty').append('<option value="' + County_Name + '">' + County_Name + '</option>');
-						}
-						else {
-							$('#dlgcounty').append('<option value="' + County_Name + '">' + County_Name + '</option>');
-						}
+						$('#county').append('<option value="' + County_Name + '">' + County_Name + '</option>');
 					}
 
-					$("#dlgcounty").val() = county;
+					$("#county").val() = county;
 				}
 				else {
 					alert('No Counties Data Found for State Selected');
@@ -682,22 +578,22 @@ else {
 						var DateTo = td.substr(5,2) + "/" + td.substr(8) + "/" + td.substr(0,4);
 			    }
 
-					$("#dlgcurrent").val(Current_Address);
-					$("#dlgaddrid").val(AddrID);
-					$("#dlgaddr1").val(Addr1);
-					$("#dlgapt").val(Apt);
-					$("#dlgcity").val(City);
+					$("#current").val(Current_Address);
+					$("#addrid").val(AddrID);
+					$("#addr1").val(Addr1);
+					$("#apt").val(Apt);
+					$("#city").val(City);
 
 					if(pname != 'zinc') {
-						$("#dlgstate").val(State);
-						loadcounties("dlgstate", County);
-						$("#dlgcounty").val(County);
+						$("#dstate").val(State);
+						loadcounties("state", County);
+						$("#county").val(County);
 					}
 
-					$("#dlgstateother").val(StateOther);
-					$("#dlgzip").val(ZipCode);
-					$("#dlgfromdate").val(DateFrom);
-					$("#dlgtodate").val(DateTo);
+					$("#stateother").val(StateOther);
+					$("#zip").val(ZipCode);
+					$("#fromdate").val(DateFrom);
+					$("#todate").val(DateTo);
 
 					$("#Address_dialog").dialog("option", "title", "Edit Address");
 					$("#Address_dialog").dialog("option", "modal", true);
@@ -717,149 +613,8 @@ else {
 		});
 	}
 
- 	$("#save_address").click(function() {
-		// alert('In save_address');
-
-		var pname = $("#package").val();
-		var personid = $("#PersonID").val();
-		var addrid = $("#dlgaddrid").val();
-		var current_address = $("#dlgcurrent").val();
-
-		if($("#dlgaddr1").val() > '') {
-			var addr1 = $("#dlgaddr1").val();
-		}
-		else {
-			document.ALCATEL.dlgaddr1.focus();
-			alert("Street is required");
-			return;
-		}
-
-		if($("#dlgapt").val() > '') {
-			var apt = $("#dlgapt").val();
-		}
-		else {
-			var apt = '';
-		}
-
-		if($("#dlgcity").val() > '') {
-			var city = $("#dlgcity").val();
-		}
-		else {
-			document.ALCATEL.dlgcity.focus();
-			alert("City is required");
-			return;
-		}
-
-		if(pname == 'zinc') {
-			var state = '';
-			var county = '';
-
-			if($("#dlgstateother").val() == '' ) {
-				$('#dlgstateother').focus();
-				alert("Province/Country is required");
-				return;
-			}
-			else {
-				var stateother = $("#dlgstateother").val();
-			}
-		}
-		else {
-			if($("#dlgstate").val() == '' && $("#dlgstateother").val() == '' ) {
-				document.ALCATEL.dlgstate.focus();
-				alert("State or Country is required");
-				return;
-			}
-			else {
-				var state = $("#dlgstate").val();
-				var stateother = $("#dlgstateother").val();
-			}
-
-			if($("#dlgstate").val() != '') {
-				if($("#dlgcounty").val() > '') {
-					var county = $("dlgcounty").val();
-				}
-				else {
-					document.ALCATEL.dlgcounty.focus();
-					alert("County is required");
-					return;
-				}
-			}
-		}
-
-		if($("#dlgzip").val() > '') {
-			var zipcode = $("#dlgzip").val();
-		}
-		else {
-			document.ALCATEL.dlgzip.focus();
-			alert("Postal Code is required");
-			return;
-		}
-
-		if($("#dlgfromdate").val() > '') {
-			if(!isValidDate('dlgfromdate')) {
-				$('#dlgfromdate').focus();
-				alert("Invalid From Date");
-				return false;
-			}
-			else {
-				var fromdate = $("#dlgfromdate").val();
-			}
-		}
-		else {
-			document.ALCATEL.dlgfromdate.focus();
-			alert("From Date is required");
-			return;
-		}
-
-		if($("#dlgtodate").val() > '') {
-			if(!isValidDate('dlgtodate')) {
-				$('##dlgtodate').focus();
-				alert("Invalid To Date");
-				return false;
-			}
-			else {
-				var todate = $("#dlgtodate").val();
-			}
-		}
-		else {
-			document.ALCATEL.dlgtodate.focus();
-			alert("To Date is required");
-			return;
-		}
-
-		if(!isValidDiff(fromdate,todate)) {
-			$('#dlgfromdate').focus();
-			alert("From Date can not be greater than To Date");
-			return false;
-		}
-
-		$.ajax({
-			type: "POST",
-			url: "../App_Ajax/ajax_save_address.php",
-			data: { personid: personid, addrid: addrid, addr1: addr1, apt: apt, city: city, state: state, stateother: stateother, zipcode: zipcode, fromdate: fromdate, todate: todate, current_address: current_address, county: county },
-			datatype: "JSON",
-			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
-
-				if(obj2 > '' ) {
-					alert(obj2);
-				}
-				else {
-					$("#Address_dialog").dialog("close");
-					location.reload();
-				}
-
-				return;
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: ' + textStatus);
-				alert('Error: ' + errorThrown);
-			}
-		});
-	});
-
 	function deleteaddr(AddrID) {
-		alert("In dltaka");
+		alert("In deleteaddr");
 
 		if(confirm('Are you sure you want to delete this address?')) {
 			var personid = $("#PersonID").val();
@@ -890,7 +645,7 @@ else {
 	}
 
 	$("#close_address").click(function() {
-		$("#Address_dialog").dialog( "close" );
+		$("#Address_dialog").dialog("close");
 	});
 
 	var frmvalidator = new Validator("ALCATEL");
