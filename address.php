@@ -62,8 +62,6 @@ if(!$testLayout) {
 				$days = $days + floor($datediff / (60 * 60 * 24));
 			}
 
-			echo '	<div class="grid-x margins person-form">';
-
 			if($row[10] == 'Y') {
 				$currentaddress = $row[10];
 
@@ -75,7 +73,7 @@ if(!$testLayout) {
 							</div>';
 			}
 			else {
-				echo '<div class="cell small-12 right">
+				echo '<div class="cell small-4 right">
 								<span onclick="addAddress()"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
 							</div>';
 			}
@@ -310,6 +308,23 @@ echo '				<div class="cell medium-6 small-12">
 ?>
 
 	function addAddress() {
+		$("#current").val('');
+		$("#addrid").val('');
+		$("#addr1").val('');
+		$("#apt").val('');
+		$("#city").val('');
+
+		if($("#package").val() != 'zinc') {
+			$("#state").val('');
+			loadcounties("state", '');
+			$("#county").val('');
+		}
+
+		$("#country").val('');
+		$("#zip").val('');
+		$("#fromdate").val('');
+		$("#todate").val('');
+
 		$("#Address_dialog").dialog("option", "title", "Add Address");
 		$("#Address_dialog").dialog("option", "modal", true);
 		$("#Address_dialog").dialog("option", "width", "100%");
@@ -534,7 +549,7 @@ echo '				<div class="cell medium-6 small-12">
 						$('#county').append('<option value="' + County_Name + '">' + County_Name + '</option>');
 					}
 
-					$("#county").val() = county;
+					$("#county").val(county);
 				}
 				else {
 					alert('No Counties Data Found for State Selected');
@@ -569,7 +584,7 @@ echo '				<div class="cell medium-6 small-12">
 						var Apt = obj2[i].Apt;
 						var City = obj2[i].City;
 						var State = obj2[i].State_addr;
-						var StateOther = obj2[i].StateOther;
+						var Country = obj2[i].StateOther;
 						var County = obj2[i].County;
 						var ZipCode = obj2[i].ZipCode;
 						var fd = obj2[i].FromDate;
@@ -590,7 +605,7 @@ echo '				<div class="cell medium-6 small-12">
 						$("#county").val(County);
 					}
 
-					$("#stateother").val(StateOther);
+					$("#country").val(Country);
 					$("#zip").val(ZipCode);
 					$("#fromdate").val(DateFrom);
 					$("#todate").val(DateTo);
