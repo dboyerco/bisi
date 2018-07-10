@@ -20,7 +20,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 								List all your driver licenses.<br />&nbsp;
 							</div>
 							<div class="cell small-4 right">
-								<span onclick="addDMV()"><img class="icon" src="images/plus.png" alt="Add License" title="Add License"/></span>
+								<span class="add-dmv"><img class="icon" src="images/plus.png" alt="Add License" title="Add License"/></span>
 							</div>';
 
 $currentDMV = 'N';
@@ -160,7 +160,7 @@ if($maxRecID == 0) {
 		$("#DMV_dialog").dialog("open");
 	}
 
-	$("#add_dmv").click(function() {
+	$(".add-dmv").click(function() {
 		addDMV();
 	});
 
@@ -208,12 +208,19 @@ if($maxRecID == 0) {
 			var dlcountry = $("#dlcountry").val();
 		}
 
-		// console.log("saving to " + saveLocation);
-		// console.log({ personid: personid, recid: recid, DL: dl, DLE: dle, DLstate: dlstate, DLstateother: dlcountry });
+		var data = {
+			personid: personid,
+			recid: recid,
+			DL: dl,
+			DLE: dle,
+			DLstate: dlstate,
+			DLstateother: dlcountry
+		};
+
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
-			data: { personid: personid, recid: recid, DL: dl, DLE: dle, DLstate: dlstate, DLstateother: dlcountry },
+			data: data,
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
@@ -250,23 +257,17 @@ if($maxRecID == 0) {
 			data: { personid: personid, recid: recid },
 			datatype: "JSON",
 			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
+				var obj2 = $.parseJSON(valor)[0];
 
-				if(valor.length > 0) {
-					for(var i = 0; i < obj2.length; i++) {
-						var RecID = obj2[i].RecID;
-						var Driver_License = obj2[i].Driver_License;
-						var de = obj2[i].Date_Expires;
-						var Issue_State = obj2[i].Issue_State;
-						var Issue_StateOther = obj2[i].Issue_StateOther;
-						var Date_Expires = de.substr(5, 2) + "/" + de.substr(8) + "/" + de.substr(0, 4);
-			    }
+				if(obj2) {
+					var de = obj2.Date_Expires;
+					var Date_Expires = de.substr(5, 2) + "/" + de.substr(8) + "/" + de.substr(0, 4);
 
-					$("#RecID").val(RecID);
-					$("#dl").val(Driver_License);
+					$("#RecID").val(obj2.RecID);
+					$("#dl").val(obj2.Driver_License);
 					$("#dle").val(Date_Expires);
-					$("#dlstate").val(Issue_State);
-					$("#dlcountry").val(Issue_StateOther);
+					$("#dlstate").val(obj2.Issue_State);
+					$("#dlcountry").val(obj2.Issue_StateOther);
 
 					$("#DMV_dialog").dialog("option", "title", "Edit DMV");
 					$("#DMV_dialog").dialog("option", "modal", true);
