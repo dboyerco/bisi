@@ -73,7 +73,7 @@ if(!$testLayout) {
 							</div>';
 			}
 			else {
-				echo '<div class="cell small-4 right">
+				echo '<div class="cell small-12 right">
 								<span class="add-address"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
 							</div>';
 			}
@@ -82,8 +82,8 @@ if(!$testLayout) {
 								&nbsp;' . htmlspecialchars($fromdate) . '&nbsp;&nbsp;-&nbsp;&nbsp;' . htmlspecialchars($todate) . '
 							</div>
 							<div class="cell small-6 right">
-								<span onclick="updateaddr(' . $row[0] . ')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Address" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<span onclick="deleteaddr(' . $row[0] . ')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete Address" title="Delete Address"/></span>
+								<span onclick="updateaddr(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Address" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span onclick="deleteaddr(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Address" title="Delete Address"/></span>
 							</div>
 							<div class="cell small-12 medium-3">
 								' . htmlspecialchars($row[1]) . ' ' . ($row[2] > '' ? '&nbsp;&nbsp;&nbsp;Apt:&nbsp;' . htmlspecialchars($row[2]) : '') . '
@@ -381,7 +381,7 @@ echo '				<div class="cell medium-6 small-12">
 
 		var saveLocation = "../App_Ajax/ajax_add_address.php";
 
-		if(recid > 0) {
+		if(addrid > 0) {
 			saveLocation = "../App_Ajax/ajax_save_address.php";
 		}
 
@@ -500,10 +500,25 @@ echo '				<div class="cell medium-6 small-12">
 			return false;
 		}
 
+		var data = {
+			personid: personid,
+			addrid: addrid,
+			addr1: addr1,
+			apt: apt,
+			city: city,
+			state: state,
+			stateother: stateother,
+			zipcode: zipcode,
+			fromdate: fromdate,
+			todate: todate,
+			current_address: current_address,
+			county: county
+		};
+
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
-			data: {personid: personid, addrid: addrid, addr1: addr1, apt: apt, city: city, state: state, stateother: stateother, zipcode: zipcode, fromdate: fromdate, todate: todate, current_address: current_address, county: county},
+			data: data,
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
@@ -514,7 +529,7 @@ echo '				<div class="cell medium-6 small-12">
 					var AddrID = obj2;
 
 					if($("#current").val() == 'N') {
-						$("#current").val() = 'N';
+						$("#current").val('N');
 					}
 
 					location.reload();
@@ -574,39 +589,29 @@ echo '				<div class="cell medium-6 small-12">
 			data: { personid: personid, addrid: addrid },
 			datatype: "JSON",
 			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
+				var obj2 = $.parseJSON(valor)[0];
 
-				if(valor.length > 0) {
-					for(var i = 0; i < obj2.length; i++) {
-						var AddrID = obj2[i].AddrID;
-						var Current_Address = obj2[i].Current_Address;
-						var Addr1 = obj2[i].Addr1;
-						var Apt = obj2[i].Apt;
-						var City = obj2[i].City;
-						var State = obj2[i].State_addr;
-						var Country = obj2[i].StateOther;
-						var County = obj2[i].County;
-						var ZipCode = obj2[i].ZipCode;
-						var fd = obj2[i].FromDate;
-						var DateFrom = fd.substr(5,2) + "/" + fd.substr(8) + "/" + fd.substr(0,4);
-						var td = obj2[i].ToDate;
-						var DateTo = td.substr(5,2) + "/" + td.substr(8) + "/" + td.substr(0,4);
-			    }
+				if(obj2) {
+					console.log(obj2);
+					var fd = obj2.FromDate;
+					var DateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
+					var td = obj2.ToDate;
+					var DateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
 
-					$("#current").val(Current_Address);
-					$("#addrid").val(AddrID);
-					$("#addr1").val(Addr1);
-					$("#apt").val(Apt);
-					$("#city").val(City);
+					$("#current").val(obj2.Current_Address);
+					$("#addrid").val(obj2.AddrID);
+					$("#addr1").val(obj2.Addr1);
+					$("#apt").val(obj2.Apt);
+					$("#city").val(obj2.City);
 
 					if(pname != 'zinc') {
-						$("#dstate").val(State);
-						loadcounties("state", County);
-						$("#county").val(County);
+						$("#state").val(obj2.State_addr);
+						loadcounties("state", obj2.County);
+						$("#county").val(obj2.County);
 					}
 
-					$("#country").val(Country);
-					$("#zip").val(ZipCode);
+					$("#country").val(obj2.StateOther);
+					$("#zip").val(obj2.ZipCode);
 					$("#fromdate").val(DateFrom);
 					$("#todate").val(DateTo);
 

@@ -66,7 +66,7 @@ else {
   	$country_result->execute();
 
   	while($country_rows = $country_result->fetch(PDO::FETCH_BOTH)) {
-  		$country_options = '<option value="' . $country_rows[0] . '">' . $country_rows[1] . '</option>';
+  		$country_options .= '<option value="' . $country_rows[0] . '">' . $country_rows[1] . '</option>';
   	}
   }
 	else {
