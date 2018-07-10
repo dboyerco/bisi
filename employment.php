@@ -262,7 +262,11 @@ else {
 				</div>';
 }
 
-echo '</div>
+echo '	<div class="cell small-12 padding-bottom">
+					<input class="float-center" type="submit" value="Next">
+				</div>
+			</div>
+
 			<div class="grid-x margins person-form" name="Employment_dialog" id="Employment_dialog" title="Dialog Title">
 				<div class="cell small-12">
 					<h3>Add Employment</h3>
@@ -427,10 +431,6 @@ echo '<div class="cell small-12 padding-bottom">
 				<input id="save_employment" class="float-center" type="button" value="Save Employment">
 			</div>
 
-			<div class="cell small-12 padding-bottom">
-				<input class="float-center" type="submit" value="Next">
-			</div>
-
 			<input type="hidden" name="PersonID" id="PersonID" VALUE="' . $PersonID . '">
 	  	<input type="hidden" name="EmpID" id="EmpID" VALUE=" ' . $maxEmpID . '">
 	  	<input type="hidden" name="Package" id="Package" VALUE="' . $Package . '">
@@ -456,6 +456,7 @@ echo '<div class="cell small-12 padding-bottom">
 		$("#current").val('');
 		$("#empid").val('');
 
+
 		$("#Employment_dialog").dialog("option", "title", "Add Address");
 		$("#Employment_dialog").dialog("option", "modal", true);
 		$("#Employment_dialog").dialog("option", "width", "100%");
@@ -471,52 +472,35 @@ echo '<div class="cell small-12 padding-bottom">
 			data: { personid: personid, empid: empid },
 			datatype: "JSON",
 			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
+				var obj2 = $.parseJSON(valor)[0];
 
-				if(valor.length > 0) {
-					for(var i = 0; i < obj2.length; i++) {
-						var EmpID = obj2[i].EmpID;
-						var EmpName = obj2[i].EmpName;
-						var EmpStreet = obj2[i].EmpStreet;
-						var EmpCity = obj2[i].EmpCity;
-						var EmpState = obj2[i].EmpState;
-						var EmpCountry = obj2[i].EmpStateOther;
-						var fd = obj2[i].EmpDateFrom;
-						var EmpDateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
-						var td = obj2[i].EmpDateTo;
-						var EmpDateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
-						var EmpSupervisor = obj2[i].EmpSupervisor;
-						var EmpReasonForLeaving = obj2[i].EmpReasonForLeaving;
-						var EmpTitle = obj2[i].EmpTitle;
-						var EmpPhone = obj2[i].EmpPhone;
-						var EmpCurrent = obj2[i].EmpCurrent;
-						var EmpMayWeContact = obj2[i].EmpMayWeContact;
-						var EmpSupervisorPhone = obj2[i].EmpSupervisorPhone;
-						var EmpSupervisorEmail = obj2[i].EmpSupervisorEmail;
-						var EmpDotReg = obj2[i].EmpDotReg;
-						var EmpDotTst = obj2[i].EmpDotTst;
-			    }
+				console.log(obj2);
+				if(obj2) {
+					var fd = obj2.EmpDateFrom;
+					var EmpDateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
+					var td = obj2.EmpDateTo;
+					var EmpDateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
 
-					$("#empid").val(EmpID);
-					$("#contact").val(EmpMayWeContact);
-					$("#current").val(EmpCurrent);
-					$("#empname").val(EmpName);
-					$("#addr").val(EmpStreet);
-					$("#city").val(EmpCity);
-					$("#state").val(EmpState);
-					$("#country").val(EmpCountry);
-					$("#fromdate").val(EmpDateFrom);
-					$("#todate").val(EmpDateTo);
-					$("#super").val(EmpSupervisor);
-					$("#reason").val(EmpReasonForLeaving);
-					$("#title").val(EmpTitle);
-					$("#phone").val(EmpPhone);
-					$("#sphone").val(EmpSupervisorPhone);
-					$("#semail").val(EmpSupervisorEmail);
+					$("#EmpID").val(obj2.EmpID);
+					$("#contact").val(obj2.EmpMayWeContact);
+					$("#current").val(obj2.EmpCurrent);
+					$("#empname").val(obj2.EmpName);
+					$("#empstreet").val(obj2.EmpStreet);
+					$("#empcity").val(obj2.EmpCity);
+					$("#empstate").val(obj2.EmpState);
+					$("#empcountry").val(obj2.EmpStateOther);
+					$("#empfromdate").val(EmpDateFrom);
+					$("#emptodate").val(EmpDateTo);
+					$("#empsuper").val(obj2.EmpSupervisor);
+					$("#reason").val(obj2.EmpReasonForLeaving);
+					$("#emptitle").val(obj2.EmpTitle);
+					$("#empphone").val(obj2.EmpPhone);
+					$("#sphone").val(obj2.EmpSupervisorPhone);
+					$("#semail").val(obj2.EmpSupervisorEmail);
 
 					if($("#Package").val() == 'mountain') {
-						$("#empdotreg").val(EmpDotReg);
-						$("#empdottst").val(EmpDotTst);
+						$("#empdotreg").val(obj2.EmpDotReg);
+						$("#empdottst").val(obj2.EmpDotTst);
 					}
 
 					$("#Employment_dialog").dialog("option", "title", "Edit Employment");
@@ -538,8 +522,8 @@ echo '<div class="cell small-12 padding-bottom">
 
  	$("#save_employment").click(function() {
 		var personid = $("#PersonID").val();
-		var empid = $("#empid").val();
-		var current_employment = $("#current").val();
+		var empid = $("#EmpID").val();
+		var current = $("#current").val();
 
 		var saveLocation = "../App_Ajax/ajax_add_employment.php";
 
@@ -556,97 +540,97 @@ echo '<div class="cell small-12 padding-bottom">
 			return;
 		}
 
-		contact = $("#contact").val();
+		empcontact = $("#empcontact").val();
 
-		if($("#addr").val() > '') {
-			var addr = $("#addr").val();
+		if($("#empstreet").val() > '') {
+			var empstreet = $("#empstreet").val();
 		}
 		else {
-			document.ALCATEL.dlgaddr.focus();
+			document.ALCATEL.empstreet.focus();
 			alert("Street is required");
 			return;
 		}
 
-		if($("#city").val() > '') {
-			var city = $("#city").val();
+		if($("#empcity").val() > '') {
+			var empcity = $("#empcity").val();
 		}
 		else {
-			document.ALCATEL.dlgcity.focus();
+			document.ALCATEL.empcity.focus();
 			alert("City is required");
 			return;
 		}
 
-		if($("#state").val() == '' && $("#country").val() == '' ) {
-			document.ALCATEL.dlgstate.focus();
+		if($("#empstate").val() == '' && $("#empcountry").val() == '' ) {
+			document.ALCATEL.empstate.focus();
 			alert("State or Country is required");
 			return;
 		}
 		else {
-			var state = $("#state").val();
-			var stateother = $("#country").val();
+			var empstate = $("#empstate").val();
+			var empcountry = $("#empcountry").val();
 		}
 
-		if($("#phone").val() > '') {
-			var phone = $("#phone").val();
+		if($("#empphone").val() > '') {
+			var empphone = $("#empphone").val();
 		}
 		else {
-			document.ALCATEL.dlgphone.focus();
+			document.ALCATEL.empphone.focus();
 			alert("Phone is required");
 			return;
 		}
 
-		if($("#fromdate").val() > '') {
-			if(!isValidDate('fromdate')) {
-				$('#fromdate').focus();
+		if($("#empfromdate").val() > '') {
+			if(!isValidDate('empfromdate')) {
+				$('#empfromdate').focus();
 				alert("Invalid From Date");
 				return false;
 			}
 			else {
-				var fromdate = $("#fromdate").val();
+				var empfromdate = $("#empfromdate").val();
 			}
 		}
 		else {
-			document.ALCATEL.dlgfromdate.focus();
+			document.ALCATEL.empfromdate.focus();
 			alert("From Date is required");
 			return;
 		}
 
-		if($("#todate").val() > '') {
-			if(!isValidDate('todate')) {
-				$('#todate').focus();
+		if($("#emptodate").val() > '') {
+			if(!isValidDate('emptodate')) {
+				$('#emptodate').focus();
 				alert("Invalid To Date");
 				return false;
 			}
 			else {
-				var todate = $("#todate").val();
+				var emptodate = $("#emptodate").val();
 			}
 		}
 		else {
-			document.ALCATEL.dlgtodate.focus();
+			document.ALCATEL.emptodate.focus();
 			alert("To Date is required");
 			return;
 		}
 
-		if(!isValidDiff(fromdate, todate)) {
-			$('#fromdate').focus();
+		if(!isValidDiff(empfromdate, emptodate)) {
+			$('#empfromdate').focus();
 			alert("From Date can not be greater than To Date");
 			return false;
 		}
 
-		if($("#title").val() > '') {
-			var position = $("#title").val();
+		if($("#emptitle").val() > '') {
+			var emptitle = $("#emptitle").val();
 		}
 		else {
-			document.ALCATEL.dlgtitle.focus();
+			document.ALCATEL.emptitle.focus();
 			alert("Position is required");
 			return;
 		}
 
-		if($("#super").val() > '') {
-			var supervisor = $("#super").val();
+		if($("#empsuper").val() > '') {
+			var empsuper = $("#empsuper").val();
 		}
 		else {
-			document.ALCATEL.dlgsuper.focus();
+			document.ALCATEL.empsuper.focus();
 			alert("Supervisor is required");
 			return;
 		}
@@ -681,21 +665,45 @@ echo '<div class="cell small-12 padding-bottom">
 			var empdottst = '';
 		}
 
+		var data = {
+			personid: personid,
+			empid: empid,
+			empname: empname,
+			addr: empstreet,
+			city: empcity,
+			state: empstate,
+			stateother: empcountry,
+			phone: empphone,
+			fromdate: empfromdate,
+			todate: emptodate,
+			current_employment: current,
+			contact: empcontact,
+			position: emptitle,
+			supervisor: empsuper,
+			sphone: sphone,
+			semail: semail,
+			reason: reason,
+			empdotreg: empdotreg,
+			empdottst: empdottst
+		};
+
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
-			data: { personid: personid, empid: empid, empname: empname, addr: addr, city: city, state: state, stateother: stateother, phone: phone, fromdate: fromdate, todate: todate, current_employment: current_employment, contact: contact, position: position, supervisor: supervisor, sphone: sphone, semail: semail, reason: reason, empdotreg: empdotreg, empdottst: empdottst },
+			data: data,
 			datatype: "JSON",
 			success: function(valor) {
+				console.log(valor);
 				var obj2 = $.parseJSON(valor);
 
 				if(obj2 > '' ) {
 					alert(obj2);
 				}
 				else {
-					$( "#Employment_dialog" ).dialog( "close" );
+					$("#Employment_dialog").dialog("close");
 					location.reload();
 				}
+
 				return;
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -706,14 +714,16 @@ echo '<div class="cell small-12 padding-bottom">
 	});
 
 	function deleteemp(EmpID) {
-//		alert("In dltaka");
 		if(confirm('Are you sure you want to delete this employment record?')) {
 			var personid = $("#PersonID").val();
 
 			$.ajax({
 				type: "POST",
 				url: "../App_Ajax/ajax_delete_employment.php",
-				data: { personid: personid, EmpID: EmpID },
+				data: {
+					personid: personid,
+					EmpID: EmpID
+				},
 				datatype: "JSON",
 				success: function(valor) {
 					var obj2 = $.parseJSON(valor);
@@ -746,7 +756,6 @@ echo '<div class="cell small-12 padding-bottom">
 		var empid = $("#EmpID").val();
 		var nodays = $("#nodays").val();
 
-//		alert('Number of Days: '+nodays);
 		if(empid > 2 || nodays >= 2555) {
 			return true;
 		}
