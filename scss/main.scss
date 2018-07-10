@@ -149,8 +149,11 @@ h3 {
   }
 
   & label {
-    font-size: .688rem;
     font-weight: bold;
+
+    @include breakpoint(medium) {
+      font-size: .688rem;
+    }
   }
 
   & img.icon {

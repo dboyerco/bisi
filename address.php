@@ -69,12 +69,12 @@ if(!$testLayout) {
 								<h3>Current Address</h3>
 							</div>
 							<div class="cell small-4 right">
-								<span onclick="addAddress()"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
+								<span class="add-address"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
 							</div>';
 			}
 			else {
 				echo '<div class="cell small-4 right">
-								<span onclick="addAddress()"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
+								<span class="add-address"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
 							</div>';
 			}
 
@@ -135,7 +135,7 @@ else {
 								<h3>Current Address</h3>
 							</div>
 							<div class="cell small-4 right">
-								<span onclick="addAddress()"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
+								<span class="add-address"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
 							</div>
 
 							<div class="cell small-6 sub-heading">
@@ -307,6 +307,10 @@ echo '				<div class="cell medium-6 small-12">
 	}
 ?>
 
+	$(".add-address").click(function() {
+		addAddress();
+	});
+
 	function addAddress() {
 		$("#current").val('');
 		$("#addrid").val('');
@@ -330,10 +334,6 @@ echo '				<div class="cell medium-6 small-12">
 		$("#Address_dialog").dialog("option", "width", "100%");
 		$("#Address_dialog").dialog("open");
 	}
-
-	$("#add_address").click(function() {
-		addAddress();
-	});
 
 	$().ready(function() {
 		if($("#current").val() != 'Y') {

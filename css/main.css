@@ -5223,8 +5223,10 @@ h3 {
   .person-form .required {
     color: #FF0000; }
   .person-form label {
-    font-size: .688rem;
     font-weight: bold; }
+    @media print, screen and (min-width: 40em) {
+      .person-form label {
+        font-size: .688rem; } }
   .person-form img.icon {
     height: 25px;
     width: 25px;
