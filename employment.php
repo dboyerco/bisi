@@ -51,12 +51,13 @@ if(!$testLayout) {
 								<span class="add-employment"><img class="icon" src="images/plus.png" alt="Add Employment" title="Add Employment"/></span>
 							</div>
 
-							<div class="cell small-12 medium-6">
-								May we contact your current employer?
+							<div class="cell small-12 medium-3">
+								<label>May we contact your current employer?</label>
 							</div>
-							<div class="cell small-12 medium-6">
+							<div class="cell small-12 medium-3">
 								' . ($row[15] == "Y" ? "Yes" : "No") . '
-							</div>';
+							</div>
+							<div class="cell small-12 medium-6"></div>';
 			}
 			else {
 				echo '<div class="cell small-12 right">
@@ -64,17 +65,23 @@ if(!$testLayout) {
 							</div>';
 			}
 
-			echo '<div class="cell small-12 medium-6">
-							Company Name:
+			echo '<div class="cell small-12 medium-3">
+							<label>Company Name:</label>
 						</div>
 						<div class="cell small-12 medium-3">
 							' . htmlspecialchars($row[1]) . '
+						</div>
+						<div class="cell small-12 medium-6"></div>
+
+						<div class="cell small-12 medium-3">
+							<label>Company Address:</label>
 						</div>
 						<div class="cell small-12 medium-3">
 							' . htmlspecialchars($row[5]) . '<br />
 							' . htmlspecialchars($row[2]) . '<br />
 							' . ($row[4] > '' ? htmlspecialchars($row[4]) : htmlspecialchars($row[3])) . '
-						</div>';
+						</div>
+						<div class="cell small-12 medium-6"></div>';
 
 			if($row[7] == '1900-01-01') {
 				$fromdate = '';
@@ -95,47 +102,48 @@ if(!$testLayout) {
 				$days = $days + floor($datediff / (60 * 60 * 24));
 			}
 
-			echo '  <div class="cell small-12 medium-6">
-								Dates:
+			echo '  <div class="cell small-12 medium-3">
+								<label>Dates:</label>
 							</div>
-							<div class="cell small-12 medium-6">
+							<div class="cell small-12 medium-3">
 								' . htmlspecialchars($fromdate) . ' - ' . htmlspecialchars($todate) . '
 							</div>
+							<div class="cell small-12 medium-6"></div>
 
 							<div class="cell small-12 medium-3">
-								Position:
+								<label>Position:</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								' . htmlspecialchars($row[11]) . '
 							</div>
 							<div class="cell small-12 medium-3">
-								Supervisor:
+								<label>Supervisor:</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								' . htmlspecialchars($row[9]) . '
 							</div>
 
 							<div class="cell small-12 medium-3">
-								Phone:
+								<label>Phone:</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								' . htmlspecialchars($row[12]) . '
 							</div>
 							<div class="cell small-12 medium-3">
-								Supervisor Phone:
+								<label>Supervisor Phone:</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								' . htmlspecialchars($row[13]) . '
 							</div>
 
 							<div class="cell small-12 medium-3">
-								Reason for Leaving:
+								<label>Reason for Leaving:</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								' . htmlspecialchars($row[10]) . '
 							</div>
 							<div class="cell small-12 medium-3">
-								Supervisor Email:
+								<label>Supervisor Email:</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								' . htmlspecialchars($row[14]) . '
