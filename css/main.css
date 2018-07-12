@@ -5113,12 +5113,15 @@ a.thumbnail {
 
   .large-flex-dir-column-reverse {
     flex-direction: column-reverse; } }
+html, body {
+  overflow-x: hidden; }
+
 body {
-  margin: 5px;
   font-size: 1rem;
   background-color: #E4E8E8;
   active-link: #010165;
-  visited-link: #010165; }
+  visited-link: #010165;
+  margin: 5px; }
 
 .not-logged-in {
   border: 5px solid black;
@@ -5202,7 +5205,14 @@ h3 {
     @media print, screen and (min-width: 40em) {
       .person-form div {
         font-size: 11px; } }
-  .person-form input[type='text'], .person-form select {
+  .person-form th, .person-form td {
+    padding: .2rem;
+    font-size: .813rem; }
+    @media print, screen and (min-width: 40em) {
+      .person-form th, .person-form td {
+        padding: .5rem;
+        font-size: 11px; } }
+  .person-form input[type='text'], .person-form input[type='tel'], .person-form input[type='date'], .person-form input[type='email'], .person-form select {
     width: 100%;
     height: 2.4375rem;
     margin: 0 0 1rem;
@@ -5213,7 +5223,7 @@ h3 {
     line-height: 1.5;
     padding-right: 1.5rem; }
     @media print, screen and (min-width: 40em) {
-      .person-form input[type='text'], .person-form select {
+      .person-form input[type='text'], .person-form input[type='tel'], .person-form input[type='date'], .person-form input[type='email'], .person-form select {
         height: 18px;
         font-size: 11px; } }
   .person-form input[type='checkbox'] {
@@ -5252,7 +5262,10 @@ input[type='button'], input[type='submit'], button, .button {
   z-index: 1000; }
 
 .ui-dialog {
-  max-width: 700px; }
+  max-with: 100%; }
+  @media print, screen and (min-width: 40em) {
+    .ui-dialog {
+      max-width: 700px; } }
 
 #nomidialog {
   visibility: hidden;

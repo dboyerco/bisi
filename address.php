@@ -218,7 +218,7 @@ echo '				<div class="cell medium-6 small-12">
 
 if($package == 'zinc') {
 	echo '			<div class="cell medium-6 small-12">
-								Province/Country <span class="required">*</span>
+								Province/Country
 							</div>
 							<div class="cell medium-6 small-12">
 								<select name="country" id="country">

@@ -1,7 +1,8 @@
 <?php
 $testLayout = true;
 
-$page_order = Array('person', 'address', 'dmv');
+$page_order = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'cardinfo');
+$ipaddress = getenv("REMOTE_ADDR");
 
 if(!$testLayout) {
   require_once('../pdotriton.php');
@@ -57,6 +58,7 @@ else {
     // states & countries (almost all forms use this)
   	$state_result = $dbo->prepare("Select Name, Abbrev from State order by Name");
   	$state_result->execute();
+    $state_options = "";
 
 		while($state_rows = $state_result->fetch(PDO::FETCH_BOTH)) {
 			$state_options .= '<option value="' . $state_rows[1] . '">' . $state_rows[0] . '</option>';
@@ -64,6 +66,7 @@ else {
 
   	$country_result = $dbo->prepare("Select Alpha2Code, FullName from isocountrycodes Order By FullName;");
   	$country_result->execute();
+    $country_options = "";
 
   	while($country_rows = $country_result->fetch(PDO::FETCH_BOTH)) {
   		$country_options .= '<option value="' . $country_rows[0] . '">' . $country_rows[1] . '</option>';
@@ -72,7 +75,7 @@ else {
 	else {
     $compname = "Mike Test";
     $codeid = "BnzfFtZQs4Jw6VLX";
-    //$package = "zinc";
+    $package = "";
     $noemail = 'Y';
 
     $state_options = '<option value="co">CO</option>';

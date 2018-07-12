@@ -19,12 +19,6 @@ $namechg = "";
 $maiden = '';
 
 if(isSet($PersonID)) {
-	$ipaddress = getenv("REMOTE_ADDR");
-
-	echo '<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
-				<input type="hidden" name="CD" id="CD" value="' . $CD . '">
-				<input type="hidden" name="ipaddr" id="ipaddr" value="' . $ipaddress . '">';
-
 	if(!$testLayout) {
 		if($PersonID > '') {
 			$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Emergency_Contact, Emergency_Number, No_Email from App_Person where PersonID = :PersonID;";
@@ -93,6 +87,10 @@ if(isSet($PersonID)) {
 }
 
 echo '<form method="POST" action="index.php?pg=address&PersonID=' . $PersonID . '&CD=' . $CD . '" name="ALCATEL">
+				<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
+				<input type="hidden" name="CD" id="CD" value="' . $CD . '">
+				<input type="hidden" name="ipaddr" id="ipaddr" value="' . $ipaddress . '">
+
 				<div class="general-page">
 					<div class="sub-menu">&nbsp;</div>
 
@@ -125,14 +123,14 @@ echo '					<strong>Please make sure that the first and last name is as it appear
 
 							<div class="cell small-12 medium-5">
 								<label>
-									First Name <span class="required">*</span>
-									<input name="fname" id="fname" value="' . htmlspecialchars($fname) . '" maxlength="40">
+									First Name <span class="required">*</span><br />
+									<input type="text" name="fname" id="fname" value="' . htmlspecialchars($fname) . '" maxlength="40">
 								</label>
 							</div>
 							<div class="cell small-6 medium-1">
 								<label>
 									M.I. <span class="required">*</span>
-									<input name="mi" id="mi" value="' . htmlspecialchars($mi) . '" maxlength="1">
+									<input type="text" name="mi" id="mi" value="' . htmlspecialchars($mi) . '" maxlength="1">
 								</label>
 							</div>
 							<div class="cell small-6 medium-1">
@@ -144,50 +142,43 @@ echo '					<strong>Please make sure that the first and last name is as it appear
 							<div class="cell small-12 medium-5">
 								<label>
 									Last Name <span class="required">*</span>
-									<input name="lname" id="lname" value="' . htmlspecialchars($lname) . '" maxlength="40">
+									<input type="text" name="lname" id="lname" value="' . htmlspecialchars($lname) . '" maxlength="40">
 								</label>
 							</div>
 
 							<div class="cell small-12 medium-5">
 								<label>
 									Maiden Name
-									<input name="maiden" id="maiden" value="' . htmlspecialchars($maiden) . '" maxlength="40" id="maiden">
+									<input type="text" name="maiden" id="maiden" value="' . htmlspecialchars($maiden) . '" maxlength="40" id="maiden">
 								</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								<label>
 									Date Maiden Name Changed
-									<input name="namechg" id="namechg" size="13" maxlength="10" id="namechg" value="' . htmlspecialchars($namechg) . '" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+									<input type="text" name="namechg" id="namechg" size="13" maxlength="10" id="namechg" value="' . htmlspecialchars($namechg) . '" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell medium-4"></div>
 
 							<div class="cell small-12">
-								<strong>AKAs</strong>&nbsp;(Any names used in the past, nicknames, etc.)<br>
+								<strong>AKAs</strong>&nbsp;<small>(Any names used in the past, nicknames, etc.)</small><br />
 								<strong>**NOTE: <u>MUST</u> have date last used entered.</strong>
 							</div>
 
-							<div class="cell small-3">
-								<label>
-									First Name
-								</label>
-							</div>
-							<div class="cell small-3">
-								<label>
-									Last Name
-								</label>
-							</div>
-							<div class="cell small-4">
-								<label>
-									Date Last Used
-								</label>
-							</div>
-							<div class="cell small-2">
-								&nbsp;
-							</div>';
+							<div class="cell small-12">
+								<table>
+									<thead>
+										<tr>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Last Used</th>
+											<th class="center"><span class="add-alias"><img class="icon" src="images/plus.png" alt="Add Alias" title="Add Alias" /></span></th>
+										</tr>
+									</thead>
+									<tbody id="aliasTable">';
 
 if(!$testLayout) {
-	$maxAliasID = $dbo->query("select max(AliasID) from App_Alias where PersonID = ".$PersonID.";")->fetchColumn();
+	$maxAliasID = $dbo->query("select max(AliasID) from App_Alias where PersonID = " . $PersonID . ";")->fetchColumn();
 }
 else {
 	$maxAliasID = 1;
@@ -204,68 +195,45 @@ if($maxAliasID > 0) {
 		while($Alias = $alias_result->fetch(PDO::FETCH_BOTH)) {
 			$dateUsed = date("m/d/Y", strtotime($Alias[3]));
 
-			echo '	<div class="cell small-3 field-label">
-								' . htmlspecialchars($Alias[1]) . '
-							</div>
-							<div class="cell small-3 field-label">
-								' . htmlspecialchars($Alias[2]) . '
-							</div>
-							<div class="cell small-3 field-label">
-								' . htmlspecialchars($dateUsed) . '
-							</div>
-							<div class="cell small-3 field-label">
-								<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit AKA" title="Edit AKA"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<a http="#" onclick="dltaka(' . $Alias[0] . ')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete AKA" title="Delete AKA"/></a>
-							</div>';
+			echo '				<tr id="alias' . $Alias[0] . '">
+											<td>' . htmlspecialchars($Alias[1]) . '</td>
+											<td>' . htmlspecialchars($Alias[2]) . '</td>
+											<td>' . htmlspecialchars($dateUsed) . '</td>
+											<td class="center">
+												<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;
+												<a http="#" onclick="deleteaka(' . $Alias[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a>
+											</td>
+										</tr>';
 		}
 	}
 	else {
-		$Alias[0] = "1";
-		$Alias[1] = "Mikey";
-		$Alias[2] = "Pelirojo";
-		$dateUsed = "01/01/2018";
-
-		echo '		<div class="cell small-3 field-label">
-								' . htmlspecialchars($Alias[1]) . '
-							</div>
-							<div class="cell small-3 field-label">
-								' . htmlspecialchars($Alias[2]) . '
-							</div>
-							<div class="cell small-3 field-label">
-								' . htmlspecialchars($dateUsed) . '
-							</div>
-							<div class="cell small-3 field-label">
-								<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit AKA" title="Edit AKA"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<a http="#" onclick="dltaka(' . $Alias[0] . ')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete AKA" title="Delete AKA"/></a>
-							</div>';
+		echo '					<tr id="alias1">
+											<td>Mikey</td>
+											<td>Pelirojo</td>
+											<td>01/01/2018</td>
+											<td class="center">
+												<a http="#" onclick="updateaka(1)"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;
+												<a http="#" onclick="deleteaka(1)"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a>
+											</td>
+										</tr>';
 	}
 }
 
-echo '				<div class="cell small-3">
-								<input maxlength="40" name="newaka" id="newaka">
+echo '						</tbody>
+								</table>
 							</div>
-							<div class="cell small-3">
-								<input maxlength="40" name="newakalast" id="newakalast">
-							</div>
-							<div class="cell small-3">
-								<input name="newakachange" id="newakachange" maxlength="10" placeholder="mm/dd/yyyy" value="" onKeyUp="return frmtdate(this,\'up\')">
-							</div>
-							<div class="cell small-3">
-								<input type="button" class="float-center" name="btnnewaka" id="btnnewaka" value="Save">
-							</div>
-
 							<div class="cell small-12"><hr></div>
 
 							<div class="cell small-6 medium-3">
 								<label>
 									Date of Birth <span class="required">*</span>
-									<input name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . htmlspecialchars($Xbdate) . '" onKeyUp="return frmtdate(this,\'up\')">
+									<input type="date" name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . htmlspecialchars($Xbdate) . '" onKeyUp="return frmtdate(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell small-6 medium-3">
 								<label>
 									SSN <span class="required">*</span>
-									<input id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this,\'up\')" onKeyDown="return frmtssn(this,\'down\')" value="' . htmlspecialchars($ssn) . '" />
+									<input type="tel" id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this,\'up\')" onKeyDown="return frmtssn(this,\'down\')" value="' . htmlspecialchars($ssn) . '" />
 								</label>
 							</div>
 							<div class="cell medium-3"></div>
@@ -277,13 +245,13 @@ if($package == 'zinc') {
 							<div class="cell small-12 medium-4">
 								<label>
 									Mother\'s Maiden Name <span class="required">*</span>
-									<input id="mothermaiden" name="mothermaiden" placeholder="Mother\'s Maiden Name" maxlength="30" value="' . htmlspecialchars($MotherMaiden) . '" />
+									<input type="text" id="mothermaiden" name="mothermaiden" placeholder="Mother\'s Maiden Name" maxlength="30" value="' . htmlspecialchars($MotherMaiden) . '" />
 								</label>
 							</div>
 							<div class="cell small-12 medium-4">
 								<label>
 									Father\'s Full Name <span class="required">*</span>
-									<input id="fathername" name="fathername" placeholder="Father\'s Name" maxlength="50" value="' . htmlspecialchars($FatherName) . '" />
+									<input type="text" id="fathername" name="fathername" placeholder="Father\'s Name" maxlength="50" value="' . htmlspecialchars($FatherName) . '" />
 								</label>
 							</div>
 							<div class="cell medium-4"></div>';
@@ -296,22 +264,23 @@ echo '				<div class="cell small-12"><hr></div>
 									Enter one or more contact phone number: <span class="required">*</span>
 								</label>
 							</div>
-							<div class="cell small-4 medium-3">
+
+							<div class="cell small-12 medium-3">
 								<label>
-									Business Phone
-									<input name="busphone" id="busphone" value="' . htmlspecialchars($busphone) . '" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtbphone(this,\'up\')">
+									Business Phone<br />
+									<input type="tel" name="busphone" id="busphone" value="' . htmlspecialchars($busphone) . '" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtbphone(this,\'up\')">
 								</label>
 							</div>
-							<div class="cell small-4 medium-3">
+							<div class="cell small-12 medium-3">
 								<label>
-									Home Phone
-									<input name="homephone" id="homephone" value="' . htmlspecialchars($homephone) . '" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+									Home Phone<br />
+									<input type="tel" name="homephone" id="homephone" value="' . htmlspecialchars($homephone) . '" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
 								</label>
 							</div>
-							<div class="cell small-4 medium-3">
+							<div class="cell small-12 medium-3">
 								<label>
-									Cell Phone
-									<input name="cellphone" id="cellphone" value="' . htmlspecialchars($cellphone) . '" size="20" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+									Cell Phone<br />
+									<input type="tel" name="cellphone" id="cellphone" value="' . htmlspecialchars($cellphone) . '" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell medium-3"></div>
@@ -321,7 +290,7 @@ echo '				<div class="cell small-12"><hr></div>
 							<div class="cell small-12">
 								<label>
 									Enter an E-mail address: ' . ($No_Email == 'N' ? '<span class="required">*</span>' : '') . '
-									<input name="email" id="email" value="' . htmlspecialchars($email) . '">
+									<input type="email" name="email" id="email" value="' . htmlspecialchars($email) . '">
 							</div>
 
 							<div class="cell small-12"><hr></div>
@@ -343,186 +312,106 @@ echo '				<div class="cell small-12"><hr></div>
 						<input type="hidden" name="package" id="package" value=" ' . $package . '">
 						<input type="hidden" name="noemail" id="noemail" value="' . $No_Email . '">
 						<input type="hidden" name="compname" id="compname" value="' . $compname . '">
-					</div>';
-	?>
+					</div>
 				</div>
 			</form>
 
-			<div name="Alias_dialog" id="Alias_dialog" title="Dialog Title">
-				<div>
-					<input type="hidden" name="dlgaliasid" id="dlgaliasid">
-					<table width="100%" align="left" border="3" bgcolor="#eeeeee">
-						<tr>
-							<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">First Name</font></td>
-							<td width="351">
-								<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-									<input type="text" name="dlgfistname" id="dlgfirstname" size="20" maxlength="100">
-								</font>
-							</td>
-						</tr>
-						<tr>
-							<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Last Name</font></td>
-							<td width="351">
-								<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-									<input type="text" name="dlglastname" id="dlglastname" size="20" maxlength="100">
-								</font>
-							</td>
-						</tr>
-						<tr>
-							<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Date Last Used</font></td>
-							<td nowrap>
-								<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-									<input type="text" name="dlgchanged" id="dlgchanged" size="10" maxlength="10" placeholder="mm/dd/yyyy"
-									onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,'up')">
-								</font>
-							</td>
-						</tr>
-					</table>
-					<table width="100%" bgcolor="#eeeeee">
-						<tr><td>&nbsp;</td></tr>
-						<tr>
-							<td align="center">
-								<INPUT TYPE="button" id="save_alias" VALUE="Save AKA">
-								<INPUT TYPE="button" id="close_alias" VALUE="Close">
-							</td>
-						</tr>
-					</table>
+			<div class="grid-x margins person-form" name="Alias_dialog" id="Alias_dialog" title="Dialog Title">
+				<input type="hidden" name="aliasid" id="aliasid">
+
+				<div class="cell small-12">
+					First Name
+				</div>
+				<div class="cell small-12">
+					<input type="text" name="akafirstname" id="akafirstname" size="20" maxlength="100">
+				</div>
+
+				<div class="cell small-12">
+					Last Name
+				</div>
+				<div class="cell small-12">
+					<input type="text" name="akalastname" id="akalastname" size="20" maxlength="100">
+				</div>
+
+				<div class="cell small-12">
+					Date Last Used
+				</div>
+				<div class="cell small-12">
+					<input type="date" name="akachanged" id="akachanged" maxlength="10" placeholder="mm/dd/yyyy"><!--onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')"-->
+				</div>
+
+				<div class="cell small-12">
+					<input type="button" id="save_alias" value="Save AKA">
 				</div>
 			</div>
 
-			<div id="nomidialog" name="nomidialog">
-				<div>Confirm Middle Initial Optout
-					<img onclick="nomidialogclose()" style="cursor:pointer; float:right; position:relative; top:0px; left:0px;" class="close" height="15" width="15" src="images/dialog_close.png" alt="Close" title="Close"/>
-					<br />
-					<hr>
-					<br />
-					<table name="resultInfo" id="resultInfo" cellpadding="0" cellspacing="0" class="db-table" width="100%">
-						<tbody>
-							<tr>
-								<td>
-									Middle Name is required to ensure maximum possible accuracy.<br /> Are you sure you do not have a middle name?
-								</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td>
-									<input name="nomiyes" id="nomiyes" type="button" value="I do not have a middle initial" style="font-size:medium; font-family=Tahoma; color:red; background-color: #fff; border:1px solid #000000; border-radius:6px; padding: 5px 24px;">&nbsp;&nbsp;
-									<input name="nomino" id="nomino" type="button" value="I do have a middle initial" style="font-size:medium; font-family=Tahoma; color:blue; background-color: #fff; border:1px solid #000000; border-radius:5px; padding: 5px 24px;">
-								</td>
-							</tr>
-						</tbody>
-					</table>
+			<div class="grid-x margins person-form" id="NOMI_dialog" name="NOMI_dialog" title="Confirm Middle Initial Optout">
+				<div class="cell small-12">
+					Middle Name is required to ensure maximum possible accuracy.<br /> Are you sure you do not have a middle name?
 				</div>
-			</div>
+
+				<div class="cell small-12 center">
+					<input name="nomiyes" id="nomiyes" type="button" value="I do not have a middle initial"><br /><br />
+					<input name="nomino" id="nomino" type="button" value="I do have a middle initial">
+				</div>
+			</div>';
+?>
 
 <script language="JavaScript" type="text/javascript">
- 	$("#Alias_dialog").dialog({ autoOpen: false });
 
-	// function setindexes(gender) {
-	// 	alert('In setindexes - '+gender);
-	// 	var gendr = $("#gender");
-	//
-	// 	for(var x = 0; x < gendr.length; x++) {
-	// 		if(gender == gendr.options[x].value)
-	// 			gendr.selectedIndex = x;
-	// 	}
-	// }
+<?php
+	echo 'var maxAliasID = ' . $maxAliasID . ';';
+?>
+
+ 	$("#Alias_dialog").dialog({ autoOpen: false });
+	$("#NOMI_dialog").dialog({ autoOpen: false });
+
+	$(".add-alias").click(function() {
+		addAlias();
+	});
+
+	function addAlias() {
+		$('#aliasid').val('');
+		$("#akafirstname").val('');
+		$("#akalastname").val('');
+		$("#akachanged").val('');
+
+		$("#Alias_dialog").dialog("option", "title", "Edit AKA");
+		$("#Alias_dialog").dialog("option", "modal", true);
+		$("#Alias_dialog").dialog("option", "width", "100%");
+		$("#Alias_dialog").dialog("open");
+	}
+
+	$("#close_alias").click(function() {
+		$("#Alias_dialog").dialog("close");
+	});
 
 	function NoMI() {
-		if(document.getElementById("nomi").checked) {
-			$("#nomidialog").css("visibility","visible");
+		if($("#nomi").attr('checked')) {
+			$("#NOMI_dialog").dialog("option", "title", "No Middle Initial");
+			$("#NOMI_dialog").dialog("option", "modal", true);
+			$("#NOMI_dialog").dialog("option", "width", "100%");
+			$("#NOMI_dialog").dialog("open");
 		}
 	}
 
 	function nomidialogclose() {
-		el = document.getElementById("nomidialog");
+		el = $("#nomidialog");
 		el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 	}
 
 	$("#nomiyes").click(function() {
-		$("#nomidialog").css("visibility", "hidden");
+		$("#NOMI_dialog").dialog("close");
 	});
 
 	$("#nomino").click(function() {
-		document.getElementById("nomi").checked = false;
+		$("#nomi").attr('checked', false);
 		document.ALCATEL.mi.focus();
-		$("#nomidialog").css("visibility", "hidden");
-	});
-
-	$("#btnnewaka").click(function() {
-		//alert('In btnnewaka');
-		var personid = $("#PersonID").val();
-
-		if($("#newaka").val() == '' && $("#newakalast").val() == '' ) {
-			document.ALCATEL.newaka.focus();
-			alert("AKA's First Name and/or AKA's Last Name must be emtered to add an AKA");
-			return false;
-		}
-		else {
-			var aka = $("#newaka").val();
-			var akalast = $("#newakalast").val();
-		}
-
-		if($("#newakachange").val() > '') {
-			if(!isValidDate('newakachange')) {
-				$('#newakachange').focus();
-				alert("Invalid Date Last Used");
-				return false;
-			}
-			else {
-				var akachange = $("#newakachange").val();
-			}
-		}
-		else {
-			document.ALCATEL.newakachange.focus();
-			alert("Date Last Used is required");
-			return false;
-		}
-
-		$.ajax({
-			type: "POST",
-			url: "../App_Ajax/ajax_add_alias.php",
-			data: {personid: personid, aka: aka, akalast: akalast, akachange: akachange},
-			datatype: "JSON",
-			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
-
-				if(obj2 > '') {
-					alert(obj2);
-
-					return false;
-				}
-				else {
-					var rows = $("#Aliastbl tr").length;
-
-					if(rows == 0) {
-						rows++;
-					}
-
-					aliastblrow = '<tr><td width="25%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'+aka+'</font></td><td width="30%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'+akalast+'</font></td><td width="20%"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'+akachange+'</font></td><td width="25%"><a http="#" onclick="updateaka('+rows+')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a http="#" onclick="dltaka('+rows+')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>';
-
-					$("#Aliastbl").append(aliastblrow);
-
-					$("#newaka").val('');
-					$("#newakalast").val('');
-					$("#newakachange").val('');
-
-					return;
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: ' + textStatus);
-				alert('Error: ' + errorThrown);
-			}
-		});
+		$("#NOMI_dialog").dialog("close");
 	});
 
 	function updateaka(aliasid) {
 		var personid = $('#PersonID').val();
-
-		//alert(personid);
 
 		$.ajax({
 			type: "POST",
@@ -530,22 +419,13 @@ echo '				<div class="cell small-12"><hr></div>
 			data: { personid: personid, aliasid: aliasid },
 			datatype: "JSON",
 			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
+				var obj2 = $.parseJSON(valor)[0];
 
-				if(valor.length > 0) {
-					for(var i = 0; i < obj2.length; i++) {
-						var AliasID = obj2[i].AliasID;
-						var LastName = obj2[i].LastName;
-						var FirstName = obj2[i].FirstName;
-						var MidlleName = obj2[i].MiddleName;
-						var cd = obj2[i].Changed;
-						var Changed = cd.substr(5, 2) + "/" + cd.substr(8) + "/" + cd.substr(0, 4);
-			    }
-
-					$("#dlgaliasid").val(AliasID);
-					$("#dlglastname").val(LastName);
-					$("#dlgfirstname").val(FirstName);
-					$("#dlgchanged").val(Changed);
+				if(obj2) {
+					$("#aliasid").val(obj2.AliasID);
+					$("#akafirstname").val(obj2.FirstName);
+					$("#akalastname").val(obj2.LastName);
+					$("#akachanged").val(obj2.Changed);
 
 					$("#Alias_dialog").dialog("option", "title", "Edit AKA");
 					$("#Alias_dialog").dialog("option", "modal", true);
@@ -566,43 +446,47 @@ echo '				<div class="cell small-12"><hr></div>
 
  	$("#save_alias").click(function() {
 		var personid = $("#PersonID").val();
-		var aliasid = $("#dlgaliasid").val();
+		var aliasid = $("#aliasid").val();
+		var saveLocation = "../App_Ajax/ajax_add_alias.php";
 
-		if($("#dlgfirstname").val() == '' && $("#dlglastname").val() == '' ) {
-			document.ALCATEL.dlgfirstname.focus();
+		if(aliasid > 0) {
+			saveLocation = "../App_Ajax/ajax_save_alias.php";
+		}
+		console.log(saveLocation);
+		if($("#akafirstname").val() == '' && $("#akalastname").val() == '' ) {
+			$("#akafirstname").focus();
 			alert("First or Last Name is required");
-
 			return;
 		}
 		else {
-			var firstname = $("#dlgfirstname").val();
-			var lastname = $("#dlglastname").val();
+			var firstname = $("#akafirstname").val();
+			var lastname = $("#akalastname").val();
 		}
 
-		if($("#dlgchanged").val() > '') {
-			if(!isValidDate('dlgchanged')) {
-				$('#dlgchanged').focus();
-				alert("Invalid Date Last Used");
-
-				return false;
-			}
-			else {
-				var changed = $("#dlgchanged").val();
-			}
+		if($("#akachanged").val() > '') {
+			var myDate = $("#akachanged").val();
+			var altDate = myDate.split("-");
+			var changed = altDate[1] + "/" + altDate[2] + "/" + altDate[0];
 		}
 		else {
-			document.ALCATEL.dlgchanged.focus();
+			$('#akachanged').focus();
 			alert("Date Last Used is required");
-
 			return;
 		}
 
-		var middlename = '';
-
+		var data = {
+			personid: personid,
+			aliasid: aliasid,
+			firstname: firstname,
+			lastname: lastname,
+			middlename: '',
+			changed: changed
+		};
+		console.log(data);
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_save_alias.php",
-			data: { personid: personid, aliasid: aliasid, firstname: firstname, lastname: lastname, middlename: middlename, changed: changed },
+			url: saveLocation,
+			data: data,
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
@@ -612,7 +496,23 @@ echo '				<div class="cell small-12"><hr></div>
 				}
 				else {
 					$("#Alias_dialog").dialog("close");
-					location.reload();
+
+					if(aliasid > 0) { // updating
+						var rowToUpdate = $('#alias' + aliasid);
+
+						rowToUpdate.html('<td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + aliasid + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + aliasid + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td>');
+					}
+					else {
+						var maxAliasRow = $('#alias' + maxAliasID);
+
+						if(maxAliasRow) {
+							maxAliasRow.after('<tr id="alias' + aliasid + '"><td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + aliasid + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + aliasid + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>');
+						}
+						else {
+							var aliasTable = $('#aliasTable');
+							aliasTable.apped('<tr id="alias' + aliasid + '"><td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + aliasid + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + aliasid + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>');
+						}
+					}
 				}
 
 				return;
@@ -624,15 +524,14 @@ echo '				<div class="cell small-12"><hr></div>
 		});
 	});
 
-	function dltaka(AliasID) {
-		//alert("In dltaka");
+	function deleteaka(aliasid) {
 		if(confirm('Are you sure you want to delete this AKA record?')) {
 			var personid = $("#PersonID").val();
 
 			$.ajax({
 				type: "POST",
 				url: "../App_Ajax/ajax_delete_aka.php",
-				data: { personid: personid, AliasID: AliasID },
+				data: { personid: personid, AliasID: aliasid },
 				datatype: "JSON",
 				success: function(valor) {
 					var obj2 = $.parseJSON(valor);
@@ -642,7 +541,10 @@ echo '				<div class="cell small-12"><hr></div>
 						return false;
 					}
 					else {
-						location.reload();
+						var rowToDelete = $('#alias' + aliasid);
+
+						rowToDelete.remove();
+
 						return;
 					}
 				},
@@ -654,12 +556,7 @@ echo '				<div class="cell small-12"><hr></div>
 		}
 	}
 
-	$("#close_alias").click(function() {
-		$("#Alias_dialog").dialog("close");
-	});
-
 	$("#add_person_info").click(function() {
-		//alert("In add_person_info");
 		var packagename = $("#package").val();
 
 		if($("#newaka").val() > '' || $("#newakalast").val() > '' ) {
@@ -732,7 +629,7 @@ echo '				<div class="cell small-12"><hr></div>
 		}
 
 		if($("#birthdate").val() > '') {
-			var birthdate = document.getElementById("birthdate").value;
+			var birthdate = $("#birthdate").value;
 
 			if(birthdate.indexOf('XXXX') > 0) {
 				birthdate = $("#fbdate").val();
