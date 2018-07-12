@@ -474,14 +474,25 @@ echo '				<div class="cell small-12"><hr></div>
 			return;
 		}
 
-		var data = {
-			personid: personid,
-			aliasid: aliasid,
-			firstname: firstname,
-			lastname: lastname,
-			middlename: '',
-			changed: changed
-		};
+		if(aliasid > 0) { //updating
+			var data = {
+			   personid: personid,
+			   aliasid: aliasid,
+			   firstname: firstname,
+			   lastname: lastname,
+			   middlename: '',
+			   changed: changed
+			};
+	  }
+		else {
+			var data = { //inserting
+			   personid: personid,
+			   aka: firstname,
+			   akalast: lastname,
+			   akachange: changed
+			};
+	  }
+
 		console.log(data);
 		$.ajax({
 			type: "POST",
@@ -504,13 +515,14 @@ echo '				<div class="cell small-12"><hr></div>
 					}
 					else {
 						var maxAliasRow = $('#alias' + maxAliasID);
+						var newAliasID = maxAliasID + 1;
 
 						if(maxAliasRow) {
-							maxAliasRow.after('<tr id="alias' + aliasid + '"><td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + aliasid + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + aliasid + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>');
+							maxAliasRow.after('<tr id="alias' + newAliasID + '"><td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + newAliasID + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + newAliasID + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>');
 						}
 						else {
 							var aliasTable = $('#aliasTable');
-							aliasTable.apped('<tr id="alias' + aliasid + '"><td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + aliasid + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + aliasid + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>');
+							aliasTable.apped('<tr id="alias' + newAliasID + '"><td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + newAliasID + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + newAliasID + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>');
 						}
 					}
 				}
