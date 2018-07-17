@@ -148,7 +148,7 @@ echo '					<br /><br />
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_save_signature.php",
+			url: "../App_Ajax_New/ajax_save_signature.php",
 			data: {personid: personid, type: type, signature: signature, signdate: signdate, whichsign: whichsign, NYchk: NYchk},
 			datatype: "JSON",
 			success: function(valor) {
