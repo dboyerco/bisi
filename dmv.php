@@ -1,5 +1,5 @@
 <?php
-$FormAction = "index.php?pg=address&PersonID=" . $PersonID . "&CD=" . $CD;
+$FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
@@ -27,7 +27,7 @@ $currentDMV = 'N';
 $maxRecID = 0;
 
 if(!$testLayout) {
-	$maxRecID = $dbo->query("Select max(RecID) from App_DMV where PersonID = ".$PersonID.";")->fetchColumn();
+	$maxRecID = $dbo->query("Select max(RecID) from App_DMV where PersonID = " . $PersonID . ";")->fetchColumn();
 
 	if($maxRecID > 0) {
 		$selectstmt = "select RecID, Driver_License, Date_Expires, Issue_State, Issue_StateOther, Current_DMV from App_DMV where PersonID = :PersonID;";
@@ -65,6 +65,9 @@ if(!$testLayout) {
 							</div>';
 		}
 	}
+	else {
+		$maxRecID = 0;
+	}
 }
 else {
 	echo '			<div class="cell small-4">
@@ -91,6 +94,8 @@ echo '				<div class="cell small-12">
 						</div>
 
 						<div class="grid-x margins person-form" name="DMV_dialog" id="DMV_dialog" title="Dialog Title">
+						  	<input type="hidden" name="recid" id="recid">
+							
 							<div class="cell small-12">
 								<h3>Add Driver License</h3>
 							</div>
@@ -107,7 +112,7 @@ echo '				<div class="cell small-12">
 								Expires <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="dle" id="dle" maxlength="10" placeholder="mm/dd/yyyy" value="" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="date" name="dle" id="dle" maxlength="10" placeholder="mm/dd/yyyy" value="" onKeyUp="return frmtdate(this,\'up\')">
 							</div>
 							<div class="cell medium-6 small-12">
 								State/Country Issued <span class="required">*</span>
@@ -166,11 +171,11 @@ if($maxRecID == 0) {
 
 	$("#save_dmv").click(function() {
 		var personid = $("#PersonID").val();
-		var recid = $("#RecID").val();
-		var saveLocation = "../App_Ajax/ajax_add_dmv.php";
+		var recid = $("#recid").val();
+		var saveLocation = "../App_Ajax_New/ajax_add_dmv.php";
 
 		if(recid > 0) {
-			saveLocation = "../App_Ajax/ajax_save_dmv.php";
+			saveLocation = "../App_Ajax_New/ajax_save_dmv.php";
 		}
 
 		if($("#dl").val() > '') {
@@ -183,14 +188,7 @@ if($maxRecID == 0) {
 		}
 
 		if($("#dle").val() > '') {
-			if(!isValidEDate('dle')) {
-				$('#dle').focus();
-				alert("Invalid Expiration Date");
-				return false;
-			}
-			else {
-				var dle = $("#dle").val();
-			}
+			var dle = $("#dle").val();
 		}
 		else {
 			document.ALCATEL.newdle.focus();
@@ -253,7 +251,7 @@ if($maxRecID == 0) {
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_find_dmv.php",
+			url: "../App_Ajax_New/ajax_find_dmv.php",
 			data: { personid: personid, recid: recid },
 			datatype: "JSON",
 			success: function(valor) {
@@ -261,7 +259,7 @@ if($maxRecID == 0) {
 
 				if(obj2) {
 					var de = obj2.Date_Expires;
-					var Date_Expires = de.substr(5, 2) + "/" + de.substr(8) + "/" + de.substr(0, 4);
+					//var Date_Expires = de.substr(5, 2) + "/" + de.substr(8) + "/" + de.substr(0, 4);
 
 					$("#RecID").val(obj2.RecID);
 					$("#dl").val(obj2.Driver_License);
@@ -295,7 +293,7 @@ if($maxRecID == 0) {
 
 			$.ajax({
 				type: "POST",
-				url: "../App_Ajax/ajax_delete_dmv.php",
+				url: "../App_Ajax_New/ajax_delete_dmv.php",
 				data: { personid: personid, RecID: RecID },
 				datatype: "JSON",
 				success: function(valor) {
