@@ -1,9 +1,10 @@
 <?
 if($noemail == 'Y') {
+	// TODO
 	$FormAction = "index.php?pg=certification&PersonID=" . $PersonID . "&CD=" . $CD;
 }
 else {
-	$FormAction = "index.php?pg=disclosure1&PersonID=" . $PersonID . "&CD=" . $CD;
+	$FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 }
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
@@ -292,7 +293,7 @@ echo '				<div class="cell small-12 medium-6">
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_find_education.php",
+			url: "../App_Ajax_New/ajax_find_education.php",
 			data: { personid: personid, eduid: eduid },
 			datatype: "JSON",
 			success: function(valor) {
@@ -339,10 +340,10 @@ echo '				<div class="cell small-12 medium-6">
 		var personid = $("#PersonID").val();
 		var eduid = $("#EduID").val();
 
-		var saveLocation = "../App_Ajax/ajax_add_education.php";
+		var saveLocation = "../App_Ajax_New/ajax_add_education.php";
 
 		if(eduid > 0) {
-			saveLocation = "../App_Ajax/ajax_save_education.php";
+			saveLocation = "../App_Ajax_New/ajax_save_education.php";
 		}
 
 		if($("#eduname").val() > '') {
@@ -477,7 +478,7 @@ echo '				<div class="cell small-12 medium-6">
 
 			$.ajax({
 				type: "POST",
-				url: "../App_Ajax/ajax_delete_education.php",
+				url: "../App_Ajax_New/ajax_delete_education.php",
 				data: {personid: personid, EduID: eduid},
 				datatype: "JSON",
 				success: function(valor) {
