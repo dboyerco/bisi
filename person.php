@@ -235,7 +235,7 @@ echo '						</tbody>
 							<div class="cell small-6 medium-3">
 								<label>
 									Date of Birth <span class="required">*</span>
-									<input type="date" name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . htmlspecialchars($Xbdate) . '" onKeyUp="return frmtdate(this,\'up\')">
+									<input type="text" name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . htmlspecialchars($Xbdate) . '" onKeyUp="return frmtdate(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell small-6 medium-3">
