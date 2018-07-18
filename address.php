@@ -4,12 +4,14 @@ $YR = 0;
 $MO = 0;
 $DY = 0;
 
-if($noemail == 'Y') {
-	$FormAction = "index.php?pg=certification&PersonID=" . $PersonID . "&CD=" . $CD; // certification is not on this pass
-}
-else {
-	$FormAction = "index.php?pg=disclosure1&PersonID=" . $PersonID . "&CD=" . $CD;
-}
+// if($noemail == 'Y') {
+// 	$FormAction = "index.php?pg=certification&PersonID=" . $PersonID . "&CD=" . $CD; // certification is not on this pass
+// }
+// else {
+// 	$FormAction = "index.php?pg=disclosure1&PersonID=" . $PersonID . "&CD=" . $CD;
+// }
+
+$FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
@@ -47,14 +49,16 @@ if(!$testLayout) {
 				$fromdate = '';
 			}
 			else {
-				$fromdate = date("m/d/Y", strtotime($row[8]));
+				//$fromdate = date("m/d/Y", strtotime($row[8]));
+				$fromdate = $row[8];
 			}
 
 			if($row[9] == '1900-01-01') {
 				$todate = '';
 			}
 			else {
-				$todate = date("m/d/Y", strtotime($row[9]));
+				//$todate = date("m/d/Y", strtotime($row[9]));
+				$todate = $row[9];
 			}
 
 			if($fromdate != '' && $todate != '') {
@@ -125,6 +129,9 @@ if(!$testLayout) {
 			$MO = 0;
 			$DY = 0;
 		}
+	}
+	else {
+		$maxAddrID = 0;
 	}
 }
 else {
@@ -274,14 +281,14 @@ echo '				<div class="cell medium-6 small-12">
 								From Date <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="fromdate" id="fromdate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')" >
+								<input type="date" name="fromdate" id="fromdate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')" >
 							</div>
 
 							<div class="cell medium-6 small-12">
 								To Date <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="todate" id="todate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="date" name="todate" id="todate" size="10" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
 							</div>
 
 							<div class="cell small-12 padding-bottom">
@@ -356,7 +363,8 @@ echo '				<div class="cell medium-6 small-12">
 		if(mm < 10)
 			mm = '0' + mm;
 
-		today = mm + '/' + dd + '/' + yyyy;
+		//today = mm + '/' + dd + '/' + yyyy;
+		today = yyyy + '-' + mm + '-' + dd;
 
 		return today;
 	}
@@ -463,14 +471,7 @@ echo '				<div class="cell medium-6 small-12">
 		}
 
 		if($("#fromdate").val() > '') {
-			if(!isValidDate('fromdate')) {
-				$('#fromdate').focus();
-				alert("Invalid From Date");
-				return false;
-			}
-			else {
-				var fromdate = $("#fromdate").val();
-			}
+			var fromdate = $("#fromdate").val();
 		}
 		else {
 			document.ALCATEL.fromdate.focus();
@@ -479,14 +480,7 @@ echo '				<div class="cell medium-6 small-12">
 		}
 
 		if($("#todate").val() > '') {
-			if(!isValidDate('todate')) {
-				$('#todate').focus();
-				alert("Invalid To Date");
-				return false;
-			}
-			else {
-				var todate = $("#todate").val();
-			}
+			var todate = $("#todate").val();
 		}
 		else {
 			document.ALCATEL.todate.focus();
@@ -593,10 +587,10 @@ echo '				<div class="cell medium-6 small-12">
 
 				if(obj2) {
 					console.log(obj2);
-					var fd = obj2.FromDate;
-					var DateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
-					var td = obj2.ToDate;
-					var DateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
+					//var fd = obj2.FromDate;
+					//var DateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
+					//var td = obj2.ToDate;
+					//var DateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
 
 					$("#current").val(obj2.Current_Address);
 					$("#addrid").val(obj2.AddrID);
@@ -612,8 +606,8 @@ echo '				<div class="cell medium-6 small-12">
 
 					$("#country").val(obj2.StateOther);
 					$("#zip").val(obj2.ZipCode);
-					$("#fromdate").val(DateFrom);
-					$("#todate").val(DateTo);
+					$("#fromdate").val(obj2.DateFrom);
+					$("#todate").val(obj2.DateTo);
 
 					$("#Address_dialog").dialog("option", "title", "Edit Address");
 					$("#Address_dialog").dialog("option", "modal", true);
@@ -676,7 +670,7 @@ echo '				<div class="cell medium-6 small-12">
 		var nodays = $("#days").val();
 		var pname = $("#package").val();
 
-		alert('Number of Days: ' + nodays);
+		//alert('Number of Days: ' + nodays);
 
 		if(nodays < 2557) {
 			alert('You have not entered at least 7 years of address information');

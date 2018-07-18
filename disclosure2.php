@@ -7,7 +7,7 @@ if(!$testLayout) {
 	$DOB = date("m/d/Y", strtotime($DOB));
 	$Date = date("m/d/Y");
 	$datediff = strtotime($Date) - strtotime($DOB);
-	$days = floor($datediff / (60 * 60 * 24));	
+	$days = floor($datediff / (60 * 60 * 24));
 }
 else {
 	$etype = "B";
@@ -118,63 +118,77 @@ echo '					<br /><br />
 							<input type="hidden" name="cd" id="cd" value="' . $CD . '">
 							<input type="hidden" name="days" id="days" value="' . $days .'">
 
-							<div name="overlay" id="overlay" style="visibility: hidden; width:300px;margin: auto auto;background-color:White;border:5px solid #696969; border-radius:20px; position:absolute;top:75%;left:25%;padding:5px;text-align:center;">Processing data. Please Wait....<br />It should take less than a minute. <br /></div>
-						</form>';
+							<div name="overlay" id="overlay" style="visibility: hidden; width:300px;margin: auto auto;background-color:White;border:5px solid #696969; border-radius:20px; position:absolute;top:75%;left:25%;padding:5px;text-align:center;">Processing data. Please Wait....<br />It should take less than a minute.<br />
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<script>
+				var nextPage = "' . $nextPage . '";
+				var pageUnder18 = "' . $pageUnder18 . '";
+				var pageThanks = "' . $pageThanks . '";
+				var nodays = ' . $days . ';
+			</script>';
 ?>
 
-<script language="JavaScript" type="text/javascript">
-	$("#savesign").click(function() {
-		var personid = $("#PersonID").val();
-		var signdate = $("#signdate2").val();
-		var type = 'Authorization';
+			<script language="JavaScript" type="text/javascript">
+				$("#savesign").click(function() {
+					var personid = $("#PersonID").val();
+					var signdate = $("#signdate2").val();
+					var type = 'Authorization';
 
-		if($("#NYchk").checked == true) {
-			var NYchk = 'Y';
-		}
-		else {
-			var NYchk = 'N';
-		}
+					if($("#NYchk").checked == true) {
+						var NYchk = 'Y';
+					}
+					else {
+						var NYchk = 'N';
+					}
 
-		if($("#signature2").val() > '') {
-			var signature = $("#signature2").val();
-		}
-		else {
-			document.ALCATEL.signature.focus();
-			alert("Signature is required");
-			return;
-		}
+					if($("#signature2").val() > '') {
+						var signature = $("#signature2").val();
+					}
+					else {
+						document.ALCATEL.signature.focus();
+						alert("Signature is required");
+						return;
+					}
 
-		var whichsign = "Signature2";
+					var whichsign = "Signature2";
 
-		$.ajax({
-			type: "POST",
-			url: "../App_Ajax/ajax_save_signature.php",
-			data: {personid: personid, type: type, signature: signature, signdate: signdate, whichsign: whichsign, NYchk: NYchk},
-			datatype: "JSON",
-			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
+					$.ajax({
+						type: "POST",
+						url: "../App_Ajax/ajax_save_signature.php",
+						data: { personid: personid, type: type, signature: signature, signdate: signdate, whichsign: whichsign, NYchk: NYchk },
+						datatype: "JSON",
+						success: function(valor) {
+							var obj2 = $.parseJSON(valor);
 
-				if(obj2 > '' ) {
-					alert(obj2);
-				}
-				else {
-					el = $("#savesign");
-					eldiv = $("#overlay");
-					el.style.visibility = "hidden";
-					eldiv.style.visibility = "visible";
-					if (nodays < 6570) {	
-						window.location = 'index.php?pg=under18release&PersonID=' + personid + '&CD=' + cd;
-					} else {
-						window.location = 'index.php?pg=Thanks&PersonID=' + personid + '&CD=' + cd;
-					}	
-				}
+							if(obj2 > '' ) {
+								alert(obj2);
+							}
+							else {
+								el = $("#savesign");
+								eldiv = $("#overlay");
 
-				return;
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: ' + textStatus);
-				alert('Error: ' + errorThrown);
-			}
-		});
-	});
-</script>
+								el.style.visibility = "hidden";
+								eldiv.style.visibility = "visible";
+
+								if(nodays < 6570) {
+									window.location = 'index.php?pg=' + pageUnder18 + '&PersonID=' + personid + '&CD=' + cd;
+								}
+								else {
+									window.location = 'index.php?pg=' + pageThanks + '&PersonID=' + personid + '&CD=' + cd;
+								}
+							}
+
+							return;
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							alert('Status: ' + textStatus);
+							alert('Error: ' + errorThrown);
+						}
+					});
+				});
+			</script>

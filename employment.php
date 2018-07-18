@@ -5,7 +5,7 @@ $MO = 0;
 $DY = 0;
 $empCount = 0;
 
-$FormAction = "index.php?pg=education&PersonID=" . $PersonID . "&CD=" . $CD;
+$FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
@@ -170,6 +170,9 @@ if(!$testLayout) {
 			$DY = 0;
 		}
 	} // end if()$maxEmpID > 0)
+	else {
+		$maxEmpID = 0;
+	}
 } // end if(!$testLayout))
 else {
 	echo '<div class="cell small-8">
@@ -360,14 +363,14 @@ echo '  <div class="cell small-12 medium-6">
 					From Date <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="text" name="empfromdate" id="empfromdate" maxlength="10" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
+					<input type="date" name="empfromdate" id="empfromdate" maxlength="10" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
 				</div>
 
 				<div class="cell small-12 medium-6">
 					To Date <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="text" name="emptodate" id="emptodate" maxlength="10" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
+					<input type="date" name="emptodate" id="emptodate" maxlength="10" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
 				</div>
 
 				<div class="cell small-12 medium-6">
@@ -459,7 +462,7 @@ echo '<div class="cell small-12 padding-bottom">
 
 		$("#Employment_dialog").dialog("option", "title", "Add Address");
 		$("#Employment_dialog").dialog("option", "modal", true);
-		$("#Employment_dialog").dialog("option", "width", "100%");
+		$("#Employment_dialog").dialog("option", "width", 700);
 		$("#Employment_dialog").dialog("open");
 	}
 
@@ -476,10 +479,10 @@ echo '<div class="cell small-12 padding-bottom">
 
 				console.log(obj2);
 				if(obj2) {
-					var fd = obj2.EmpDateFrom;
-					var EmpDateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
-					var td = obj2.EmpDateTo;
-					var EmpDateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
+					// var fd = obj2.EmpDateFrom;
+					// var EmpDateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
+					// var td = obj2.EmpDateTo;
+					// var EmpDateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
 
 					$("#EmpID").val(obj2.EmpID);
 					$("#contact").val(obj2.EmpMayWeContact);
@@ -489,8 +492,8 @@ echo '<div class="cell small-12 padding-bottom">
 					$("#empcity").val(obj2.EmpCity);
 					$("#empstate").val(obj2.EmpState);
 					$("#empcountry").val(obj2.EmpStateOther);
-					$("#empfromdate").val(EmpDateFrom);
-					$("#emptodate").val(EmpDateTo);
+					$("#empfromdate").val(obj2.EmpDateFrom);
+					$("#emptodate").val(obj2.EmpDateTo);
 					$("#empsuper").val(obj2.EmpSupervisor);
 					$("#reason").val(obj2.EmpReasonForLeaving);
 					$("#emptitle").val(obj2.EmpTitle);
@@ -580,14 +583,7 @@ echo '<div class="cell small-12 padding-bottom">
 		}
 
 		if($("#empfromdate").val() > '') {
-			if(!isValidDate('empfromdate')) {
-				$('#empfromdate').focus();
-				alert("Invalid From Date");
-				return false;
-			}
-			else {
-				var empfromdate = $("#empfromdate").val();
-			}
+			var empfromdate = $("#empfromdate").val();
 		}
 		else {
 			document.ALCATEL.empfromdate.focus();
@@ -596,14 +592,7 @@ echo '<div class="cell small-12 padding-bottom">
 		}
 
 		if($("#emptodate").val() > '') {
-			if(!isValidDate('emptodate')) {
-				$('#emptodate').focus();
-				alert("Invalid To Date");
-				return false;
-			}
-			else {
-				var emptodate = $("#emptodate").val();
-			}
+			var emptodate = $("#emptodate").val();
 		}
 		else {
 			document.ALCATEL.emptodate.focus();
@@ -697,7 +686,7 @@ echo '<div class="cell small-12 padding-bottom">
 				var obj2 = $.parseJSON(valor);
 
 				if(obj2 > '' ) {
-					alert(obj2);
+					alert('Error Saving: ' + obj2);
 				}
 				else {
 					$("#Employment_dialog").dialog("close");

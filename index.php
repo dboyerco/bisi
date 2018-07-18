@@ -1,8 +1,42 @@
 <?php
 $testLayout = true;
 
-$page_order = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'cardinfo');
+$pageOrder = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'cardinfo', 'under18release', 'Thanks'); // under18 and thanks always need to tbe the last two pages
 $ipaddress = getenv("REMOTE_ADDR");
+$currentPage = 0;
+$currentPageString = "person";
+$nextPage = 1;
+$pageThanks = 0;
+$pageUnder18 = 0;
+
+function assignPage($p) {
+  global $pageOrder, $currentPage, $nextPage, $currentPageString, $pageThanks, $pageUnder18;
+
+  $currentPage = $p;
+  $lenPages = count($pageOrder);
+
+  if($currentPage + 1 > $lenPages) {
+    $nextPage = $lenPages;
+  }
+  else {
+    $nextPage = $currentPage + 1;
+  }
+
+  $currentPageString = $pageOrder[$currentPage];
+  $pageThanks = $lenPages - 1;
+  $pageUnder18 = $lenPages - 2;
+}
+
+if(isSet($pg)) {
+  assignPage($pg);
+}
+else if(isSet($_GET['pg'])) {
+  $pg = $_GET['pg'];
+  assignPage($pg);
+}
+else {
+  assignPage(0);
+}
 
 if(!$testLayout) {
   require_once('../pdotriton.php');
@@ -26,13 +60,6 @@ echo '<!DOCTYPE HTML>
       		<script language="JavaScript" type="text/javascript" src="js/autoTab.js"></script>
       		<script language="JavaScript" type="text/javascript" src="js/autoFormats.js"></script>
       		<script src="jquery-ui/jquery-ui.js"></script>
-          <!--
-		      <script language="JavaScript" type="text/javascript">
-      			$(document).ready(function() {
-      				$("#submitid").hide();
-			      });
-		      </script
-          -->
         </head>
 
         <body>';
@@ -132,15 +159,7 @@ else {
             </div>
           </div>';
 
-    if(isSet($pg)) {
-      include_once("{$pg}.php");
-    }
-    else if(isSet($_GET['pg'])) {
-      include_once("{$_GET['pg']}.php");
-    }
-    else {
-      include_once("person.php");
-    }
+    include_once("{$currentPageString}.php");
 	}
 }
 ?>

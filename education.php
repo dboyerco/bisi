@@ -1,9 +1,10 @@
 <?
 if($noemail == 'Y') {
+	// TODO
 	$FormAction = "index.php?pg=certification&PersonID=" . $PersonID . "&CD=" . $CD;
 }
 else {
-	$FormAction = "index.php?pg=disclosure1&PersonID=" . $PersonID . "&CD=" . $CD;
+	$FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 }
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">

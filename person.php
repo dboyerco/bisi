@@ -1,17 +1,16 @@
 <?php
 $num = "";
-$fname = "";
-$mi = "";
-$lname = "";
-$birthdate = "";
-$Xbdate = '';
-$ssn = "";
+$fname = "Mike";
+$mi = "D";
+$lname = "Perrotto";
+$birthdate = "1980-05-04";
+$ssn = "123-123-1234";
 $busphone = "";
-$homephone = "";
+$homephone = "3031231234";
 $cellphone = "";
-$email = "";
+$email = "test@test.com";
 $package = "";
-$gender = "";
+$gender = "M";
 $emergcontact = "";
 $emergnumber = "";
 $No_Email = "";
@@ -36,12 +35,9 @@ if(isSet($PersonID)) {
 
 				if($row[3] == '1900-01-01') {
 					$birthdate = "";
-					$Xbdate = '';
 				}
 				else {
 					$birthdate = $row[3];
-					$birthdate = date("m/d/Y", strtotime($birthdate));
-					$Xbdate = substr($birthdate, 0, 6).'XXXX';
 				}
 
 				if($row[4] == '') {
@@ -86,7 +82,7 @@ if(isSet($PersonID)) {
 	}
 }
 
-echo '<form method="POST" action="index.php?pg=address&PersonID=' . $PersonID . '&CD=' . $CD . '" name="ALCATEL">
+echo '<form method="POST" action="index.php?pg=' . $nextPage . '&PersonID=' . $PersonID . '&CD=' . $CD . '" name="ALCATEL">
 				<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
 				<input type="hidden" name="CD" id="CD" value="' . $CD . '">
 				<input type="hidden" name="ipaddr" id="ipaddr" value="' . $ipaddress . '">
@@ -218,6 +214,9 @@ if($maxAliasID > 0) {
 										</tr>';
 	}
 }
+else {
+	$maxAliasID = 0;
+}
 
 echo '						</tbody>
 								</table>
@@ -227,7 +226,7 @@ echo '						</tbody>
 							<div class="cell small-6 medium-3">
 								<label>
 									Date of Birth <span class="required">*</span>
-									<input type="date" name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . htmlspecialchars($Xbdate) . '" onKeyUp="return frmtdate(this,\'up\')">
+									<input type="date" name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . $birthdate . '" onKeyUp="return frmtdate(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell small-6 medium-3">
@@ -360,7 +359,8 @@ echo '				<div class="cell small-12"><hr></div>
 <script language="JavaScript" type="text/javascript">
 
 <?php
-	echo 'var maxAliasID = ' . $maxAliasID . ';';
+	echo 'var maxAliasID = ' . $maxAliasID . ';
+				var nextPage = ' . $nextPage . ';';
 ?>
 
  	$("#Alias_dialog").dialog({ autoOpen: false });
@@ -378,7 +378,7 @@ echo '				<div class="cell small-12"><hr></div>
 
 		$("#Alias_dialog").dialog("option", "title", "Edit AKA");
 		$("#Alias_dialog").dialog("option", "modal", true);
-		$("#Alias_dialog").dialog("option", "width", "100%");
+		$("#Alias_dialog").dialog("option", "width", 700);
 		$("#Alias_dialog").dialog("open");
 	}
 
@@ -390,7 +390,7 @@ echo '				<div class="cell small-12"><hr></div>
 		if($("#nomi").attr('checked')) {
 			$("#NOMI_dialog").dialog("option", "title", "No Middle Initial");
 			$("#NOMI_dialog").dialog("option", "modal", true);
-			$("#NOMI_dialog").dialog("option", "width", "100%");
+			$("#NOMI_dialog").dialog("option", "width", 700);
 			$("#NOMI_dialog").dialog("open");
 		}
 	}
@@ -643,10 +643,10 @@ echo '				<div class="cell small-12"><hr></div>
 		if($("#birthdate").val() > '') {
 			var birthdate = $("#birthdate").value;
 
-			if(birthdate.indexOf('XXXX') > 0) {
-				birthdate = $("#fbdate").val();
-				$("#birthdate").val($("#fbdate").val());
-			}
+			// if(birthdate.indexOf('XXXX') > 0) {
+			// 	birthdate = $("#fbdate").val();
+			// 	$("#birthdate").val($("#fbdate").val());
+			// }
 		}
 		else {
 			document.ALCATEL.birthdate.focus();
@@ -655,11 +655,11 @@ echo '				<div class="cell small-12"><hr></div>
 		}
 
 		//alert(birthdate);
-		if(!isValidDOB('birthdate')) {
-			$('#birthdate').focus();
-			alert("Invalid Date of Birth");
-			return false;
-		}
+		// if(!isValidDOB('birthdate')) {
+		// 	$('#birthdate').focus();
+		// 	alert("Invalid Date of Birth");
+		// 	return false;
+		// }
 
 		if(packagename == 'zinc') {
 			var ssn = '';
@@ -808,7 +808,7 @@ echo '				<div class="cell small-12"><hr></div>
 					return false;
 				}
 				else {
-		 			window.location = 'index.php?pg=address&PersonID=' + personid + '&CD=' + cd;
+		 			window.location = 'index.php?pg=' + nextPage + '&PersonID=' + personid + '&CD=' + cd;
 				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {

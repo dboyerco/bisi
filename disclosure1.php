@@ -91,49 +91,55 @@ echo '					<br /><br />
 							<input type="hidden" name="signdate" id="signdate" value="' . $date . '">
 							<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
 							<input type="hidden" name="cd" id="cd" value="' . $CD . '">
+						</div>
+					</div>
+				</div>
+			</form>
 
-						</form>';
+			<script>
+				var nextPage = "' . $nextPage . '";
+			</script>';
 ?>
 
- <script language="JavaScript" type="text/javascript">
-	$("#savesign").click(function() {
-		var personid = document.getElementById("PersonID").value;
-		var signdate = document.getElementById("signdate").value;
-		var NYchk = 'N';
-		var type = 'Disclosure';
+			<script language="JavaScript" type="text/javascript">
+				$("#savesign").click(function() {
+					var personid = $("#PersonID").val();
+					var signdate = $("#signdate").val();
+					var NYchk = 'N';
+					var type = 'Disclosure';
 
-		if(document.getElementById("signature").value > '') {
-			var signature = document.getElementById("signature").value;
-		}
-		else {
-			document.ALCATEL.signature.focus();
-			alert("Signature is required");
-			return;
-		}
+					if($("#signature").val() > '') {
+						var signature = $("#signature").val();
+					}
+					else {
+						document.ALCATEL.signature.focus();
+						alert("Signature is required");
+						return;
+					}
 
-		var whichsign = "Signature1";
+					var whichsign = "Signature1";
 
-		$.ajax({
-			type: "POST",
-			url: "../App_Ajax/ajax_save_signature.php",
-			data: {personid: personid, type: type, signature: signature, signdate: signdate, whichsign: whichsign, NYchk: NYchk},
-			datatype: "JSON",
-			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
+					$.ajax({
+						type: "POST",
+						url: "../App_Ajax/ajax_save_signature.php",
+						data: { personid: personid, type: type, signature: signature, signdate: signdate, whichsign: whichsign, NYchk: NYchk },
+						datatype: "JSON",
+						success: function(valor) {
+							var obj2 = $.parseJSON(valor);
 
-				if(obj2 > '' ) {
-					alert(obj2);
-				}
-				else {
-					window.location = 'index.php?pg=disclosure2&PersonID=' + personid + '&CD=' + cd;
-				}
+							if(obj2 > '' ) {
+								alert(obj2);
+							}
+							else {
+								window.location = 'index.php?pg=' + nextPage + '&PersonID=' + personid + '&CD=' + cd;
+							}
 
-				return;
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: ' + textStatus);
-				alert('Error: ' + errorThrown);
-			}
-		});
-	});
-</script>
+							return;
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							alert('Status: ' + textStatus);
+							alert('Error: ' + errorThrown);
+						}
+					});
+				});
+			</script>
