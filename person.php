@@ -336,7 +336,7 @@ echo '				<div class="cell small-12"><hr></div>
 					Date Last Used
 				</div>
 				<div class="cell small-12">
-					<input type="date" name="akachanged" id="akachanged" maxlength="10" placeholder="mm/dd/yyyy"><!--onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')"-->
+					<input type="date" name="akachanged" id="akachanged" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
 				</div>
 
 				<div class="cell small-12">
@@ -415,7 +415,7 @@ echo '				<div class="cell small-12"><hr></div>
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_find_alias.php",
+			url: "../App_Ajax_New/ajax_find_alias.php",
 			data: { personid: personid, aliasid: aliasid },
 			datatype: "JSON",
 			success: function(valor) {
@@ -425,7 +425,11 @@ echo '				<div class="cell small-12"><hr></div>
 					$("#aliasid").val(obj2.AliasID);
 					$("#akafirstname").val(obj2.FirstName);
 					$("#akalastname").val(obj2.LastName);
-					$("#akachanged").val(obj2.Changed);
+					var myDate = obj2.Changed;
+					var altDate = myDate.split("-");
+					altDate = altDate[1] + "/" + altDate[2] + "/" + altDate[0];
+
+					$("#akachanged").val(altDate);
 
 					$("#Alias_dialog").dialog("option", "title", "Edit AKA");
 					$("#Alias_dialog").dialog("option", "modal", true);
@@ -447,10 +451,10 @@ echo '				<div class="cell small-12"><hr></div>
  	$("#save_alias").click(function() {
 		var personid = $("#PersonID").val();
 		var aliasid = $("#aliasid").val();
-		var saveLocation = "../App_Ajax/ajax_add_alias.php";
+		var saveLocation = "../App_Ajax_New/ajax_add_alias.php";
 
 		if(aliasid > 0) {
-			saveLocation = "../App_Ajax/ajax_save_alias.php";
+			saveLocation = "../App_Ajax_New/ajax_save_alias.php";
 		}
 		console.log(saveLocation);
 		if($("#akafirstname").val() == '' && $("#akalastname").val() == '' ) {
@@ -466,7 +470,8 @@ echo '				<div class="cell small-12"><hr></div>
 		if($("#akachanged").val() > '') {
 			var myDate = $("#akachanged").val();
 			var altDate = myDate.split("-");
-			var changed = altDate[1] + "/" + altDate[2] + "/" + altDate[0];
+//			var changed = altDate[1] + "/" + altDate[2] + "/" + altDate[0];
+			var changed = myDate;
 		}
 		else {
 			$('#akachanged').focus();
@@ -474,7 +479,6 @@ echo '				<div class="cell small-12"><hr></div>
 			return;
 		}
 
-		if(aliasid > 0) { //updating
 			var data = {
 			   personid: personid,
 			   aliasid: aliasid,
@@ -483,15 +487,6 @@ echo '				<div class="cell small-12"><hr></div>
 			   middlename: '',
 			   changed: changed
 			};
-	  }
-		else {
-			var data = { //inserting
-			   personid: personid,
-			   aka: firstname,
-			   akalast: lastname,
-			   akachange: changed
-			};
-	  }
 
 		console.log(data);
 		$.ajax({
@@ -542,7 +537,7 @@ echo '				<div class="cell small-12"><hr></div>
 
 			$.ajax({
 				type: "POST",
-				url: "../App_Ajax/ajax_delete_aka.php",
+				url: "../App_Ajax_New/ajax_delete_aka.php",
 				data: { personid: personid, AliasID: aliasid },
 				datatype: "JSON",
 				success: function(valor) {
@@ -641,7 +636,7 @@ echo '				<div class="cell small-12"><hr></div>
 		}
 
 		if($("#birthdate").val() > '') {
-			var birthdate = $("#birthdate").value;
+			var birthdate = $("#birthdate").val();
 
 			// if(birthdate.indexOf('XXXX') > 0) {
 			// 	birthdate = $("#fbdate").val();
@@ -649,7 +644,7 @@ echo '				<div class="cell small-12"><hr></div>
 			// }
 		}
 		else {
-			document.ALCATEL.birthdate.focus();
+			$("#birthdate").focus();
 			alert("Date of Birth is required");
 			return false;
 		}
@@ -796,7 +791,7 @@ echo '				<div class="cell small-12"><hr></div>
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_add_person.php",
+			url: "../App_Ajax_New/ajax_add_person.php",
 			data: { personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber,ipaddress: ipaddress },
 			datatype: "JSON",
 			success: function(valor) {
@@ -895,7 +890,7 @@ echo '				<div class="cell small-12"><hr></div>
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_add_person.php",
+			url: "../App_Ajax_New/ajax_add_person.php",
 			data: { personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber, ipaddress: ipaddress },
 			datatype: "JSON",
 			success: function(valor) {

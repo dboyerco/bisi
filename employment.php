@@ -304,6 +304,7 @@ if($currentEmployer == 'N') {
 }
 else {
 	echo '			<input type="hidden" name="current" id="current" value="Y">';
+
 }
 
 echo '  <div class="cell small-12 medium-6">
@@ -433,7 +434,7 @@ if($Package == "mountain") {
 echo '<div class="cell small-12 padding-bottom">
 				<input id="save_employment" class="float-center" type="button" value="Save Employment">
 			</div>
-
+		<input type="hidden" name="empid" id="empid">
 			<input type="hidden" name="PersonID" id="PersonID" VALUE="' . $PersonID . '">
 	  	<input type="hidden" name="EmpID" id="EmpID" VALUE=" ' . $maxEmpID . '">
 	  	<input type="hidden" name="Package" id="Package" VALUE="' . $Package . '">
@@ -471,7 +472,7 @@ echo '<div class="cell small-12 padding-bottom">
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_find_employment.php",
+			url: "../App_Ajax_New/ajax_find_employment.php",
 			data: { personid: personid, empid: empid },
 			datatype: "JSON",
 			success: function(valor) {
@@ -484,7 +485,7 @@ echo '<div class="cell small-12 padding-bottom">
 					// var td = obj2.EmpDateTo;
 					// var EmpDateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
 
-					$("#EmpID").val(obj2.EmpID);
+					$("#empid").val(obj2.EmpID);
 					$("#contact").val(obj2.EmpMayWeContact);
 					$("#current").val(obj2.EmpCurrent);
 					$("#empname").val(obj2.EmpName);
@@ -525,20 +526,18 @@ echo '<div class="cell small-12 padding-bottom">
 
  	$("#save_employment").click(function() {
 		var personid = $("#PersonID").val();
-		var empid = $("#EmpID").val();
+		var empid = $("#empid").val();
 		var current = $("#current").val();
-
-		var saveLocation = "../App_Ajax/ajax_add_employment.php";
+		var saveLocation = "../App_Ajax_New/ajax_add_employment.php";
 
 		if(empid > 0) {
-			saveLocation = "../App_Ajax/ajax_save_employment.php";
+			saveLocation = "../App_Ajax_New/ajax_save_employment.php";
 		}
-
 		if($("#empname").val() > '') {
 			var empname = $("#empname").val();
 		}
 		else {
-			document.ALCATEL.dlgempname.focus();
+			$("#empname").focus();
 			alert("Company Name is required");
 			return;
 		}
@@ -549,8 +548,8 @@ echo '<div class="cell small-12 padding-bottom">
 			var empstreet = $("#empstreet").val();
 		}
 		else {
-			document.ALCATEL.empstreet.focus();
-			alert("Street is required");
+			$("#empstreet").focus();
+			alert("Address is required");
 			return;
 		}
 
@@ -558,13 +557,13 @@ echo '<div class="cell small-12 padding-bottom">
 			var empcity = $("#empcity").val();
 		}
 		else {
-			document.ALCATEL.empcity.focus();
+			$("#empcity").focus();
 			alert("City is required");
 			return;
 		}
 
 		if($("#empstate").val() == '' && $("#empcountry").val() == '' ) {
-			document.ALCATEL.empstate.focus();
+			$("#empstate").focus();
 			alert("State or Country is required");
 			return;
 		}
@@ -577,7 +576,7 @@ echo '<div class="cell small-12 padding-bottom">
 			var empphone = $("#empphone").val();
 		}
 		else {
-			document.ALCATEL.empphone.focus();
+			$("#empphone").focus();
 			alert("Phone is required");
 			return;
 		}
@@ -586,7 +585,7 @@ echo '<div class="cell small-12 padding-bottom">
 			var empfromdate = $("#empfromdate").val();
 		}
 		else {
-			document.ALCATEL.empfromdate.focus();
+			$("#empfromdate").focus();
 			alert("From Date is required");
 			return;
 		}
@@ -595,7 +594,7 @@ echo '<div class="cell small-12 padding-bottom">
 			var emptodate = $("#emptodate").val();
 		}
 		else {
-			document.ALCATEL.emptodate.focus();
+			$("#emptodate").focus();
 			alert("To Date is required");
 			return;
 		}
@@ -610,7 +609,7 @@ echo '<div class="cell small-12 padding-bottom">
 			var emptitle = $("#emptitle").val();
 		}
 		else {
-			document.ALCATEL.emptitle.focus();
+			$("#emptitle").focus();
 			alert("Position is required");
 			return;
 		}
@@ -619,7 +618,7 @@ echo '<div class="cell small-12 padding-bottom">
 			var empsuper = $("#empsuper").val();
 		}
 		else {
-			document.ALCATEL.empsuper.focus();
+			$("#empsuper").focus();
 			alert("Supervisor is required");
 			return;
 		}
@@ -628,21 +627,27 @@ echo '<div class="cell small-12 padding-bottom">
 			var sphone = $("#sphone").val();
 		}
 		else {
-			var sphone = '';
+			$("#sphone").focus();
+			alert("Supervisor Phone # is required");
+			return;
 		}
 
 		if($("#semail").val() > '') {
 			var semail = $("#semail").val();
 		}
 		else {
-			var semail = '';
+			$("#semail").focus();
+			alert("Supervisor Email Address is required");
+			return;
 		}
 
 		if($("#reason").val() > '') {
 			var reason = $("#reason").val();
 		}
 		else {
-			var reason = '';
+			$("#reason").focus();
+			alert("Reason is required");
+			return;
 		}
 
 		if($("#Package").val() == "mountain") {
@@ -675,7 +680,6 @@ echo '<div class="cell small-12 padding-bottom">
 			empdotreg: empdotreg,
 			empdottst: empdottst
 		};
-
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
@@ -684,9 +688,8 @@ echo '<div class="cell small-12 padding-bottom">
 			success: function(valor) {
 				console.log(valor);
 				var obj2 = $.parseJSON(valor);
-
-				if(obj2 > '' ) {
-					alert('Error Saving: ' + obj2);
+				if (obj2.length > 30) {
+					alert(obj2);
 				}
 				else {
 					$("#Employment_dialog").dialog("close");
@@ -708,7 +711,7 @@ echo '<div class="cell small-12 padding-bottom">
 
 			$.ajax({
 				type: "POST",
-				url: "../App_Ajax/ajax_delete_employment.php",
+				url: "../App_Ajax_New/ajax_delete_employment.php",
 				data: {
 					personid: personid,
 					EmpID: EmpID

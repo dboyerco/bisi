@@ -56,9 +56,9 @@ echo '<!DOCTYPE HTML>
           <link rel="stylesheet" href="css/main.css">
           <link rel="stylesheet" href="Upload/Upload.css">
           <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-      		<script language="JavaScript" type="text/javascript" src="js/validate.js"></script>
-      		<script language="JavaScript" type="text/javascript" src="js/autoTab.js"></script>
-      		<script language="JavaScript" type="text/javascript" src="js/autoFormats.js"></script>
+      		<script language="JavaScript" type="text/javascript" src="../App_JS/validate.js"></script>
+      		<script language="JavaScript" type="text/javascript" src="../App_JS/autoTab.js"></script>
+      		<script language="JavaScript" type="text/javascript" src="../App_JS/autoFormats.js"></script>
       		<script src="jquery-ui/jquery-ui.js"></script>
         </head>
 

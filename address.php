@@ -65,7 +65,6 @@ if(!$testLayout) {
 				$datediff = strtotime($todate) - strtotime($fromdate);
 				$days = $days + floor($datediff / (60 * 60 * 24));
 			}
-
 			if($row[10] == 'Y') {
 				$currentaddress = $row[10];
 
@@ -387,10 +386,10 @@ echo '				<div class="cell medium-6 small-12">
 		var pname = $("#package").val();
 		var addrid = $("#addrid").val();
 
-		var saveLocation = "../App_Ajax/ajax_add_address.php";
+		var saveLocation = "../App_Ajax_New/ajax_add_address.php";
 
 		if(addrid > 0) {
-			saveLocation = "../App_Ajax/ajax_save_address.php";
+			saveLocation = "../App_Ajax_New/ajax_save_address.php";
 		}
 
 		if($("#current").val() == 'N') {
@@ -404,7 +403,7 @@ echo '				<div class="cell medium-6 small-12">
 			var addr1 = $("#addr1").val();
 		}
 		else {
-			document.ALCATEL.addr1.focus();
+			$("#addr1").focus();
 			alert("Street is required");
 			return;
 		}
@@ -420,7 +419,7 @@ echo '				<div class="cell medium-6 small-12">
 			var city = $("#city").val();
 		}
 		else {
-			document.ALCATEL.city.focus();
+			$("#city").focus();
 			alert("City is required");
 			return;
 		}
@@ -440,7 +439,7 @@ echo '				<div class="cell medium-6 small-12">
 		}
 		else {
 			if($("#state").val() == '' && $("#country").val() == '' ) {
-				document.ALCATEL.state.focus();
+				$("#state").focus();
 				alert("State or Country is required");
 				return;
 			}
@@ -454,7 +453,7 @@ echo '				<div class="cell medium-6 small-12">
 					var county = $("#county").val();
 				}
 				else {
-					document.ALCATEL.county.focus();
+					$("#county").focus();
 					alert("County is required");
 					return;
 				}
@@ -465,7 +464,7 @@ echo '				<div class="cell medium-6 small-12">
 			var zipcode = $("#zip").val();
 		}
 		else {
-			document.ALCATEL.zip.focus();
+			$("#zip").focus();
 			alert("Postal Code is required");
 			return;
 		}
@@ -474,7 +473,7 @@ echo '				<div class="cell medium-6 small-12">
 			var fromdate = $("#fromdate").val();
 		}
 		else {
-			document.ALCATEL.fromdate.focus();
+			$("#fromdate").focus();
 			alert("From Date is required");
 			return;
 		}
@@ -483,7 +482,7 @@ echo '				<div class="cell medium-6 small-12">
 			var todate = $("#todate").val();
 		}
 		else {
-			document.ALCATEL.todate.focus();
+			$("#todate").focus();
 			alert("To Date is required");
 			return;
 		}
@@ -542,7 +541,7 @@ echo '				<div class="cell medium-6 small-12">
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_load_counties.php",
+			url: "../App_Ajax_New/ajax_load_counties.php",
 			data: {st: st},
 			datatype: "JSON",
 			success: function(valor) {
@@ -579,7 +578,7 @@ echo '				<div class="cell medium-6 small-12">
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_find_address.php",
+			url: "../App_Ajax_New/ajax_find_address.php",
 			data: { personid: personid, addrid: addrid },
 			datatype: "JSON",
 			success: function(valor) {

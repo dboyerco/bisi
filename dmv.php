@@ -94,6 +94,8 @@ echo '				<div class="cell small-12">
 						</div>
 
 						<div class="grid-x margins person-form" name="DMV_dialog" id="DMV_dialog" title="Dialog Title">
+						  	<input type="hidden" name="recid" id="recid">
+							
 							<div class="cell small-12">
 								<h3>Add Driver License</h3>
 							</div>
@@ -169,11 +171,11 @@ if($maxRecID == 0) {
 
 	$("#save_dmv").click(function() {
 		var personid = $("#PersonID").val();
-		var recid = $("#RecID").val();
-		var saveLocation = "../App_Ajax/ajax_add_dmv.php";
+		var recid = $("#recid").val();
+		var saveLocation = "../App_Ajax_New/ajax_add_dmv.php";
 
 		if(recid > 0) {
-			saveLocation = "../App_Ajax/ajax_save_dmv.php";
+			saveLocation = "../App_Ajax_New/ajax_save_dmv.php";
 		}
 
 		if($("#dl").val() > '') {
@@ -249,7 +251,7 @@ if($maxRecID == 0) {
 
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_find_dmv.php",
+			url: "../App_Ajax_New/ajax_find_dmv.php",
 			data: { personid: personid, recid: recid },
 			datatype: "JSON",
 			success: function(valor) {
@@ -291,7 +293,7 @@ if($maxRecID == 0) {
 
 			$.ajax({
 				type: "POST",
-				url: "../App_Ajax/ajax_delete_dmv.php",
+				url: "../App_Ajax_New/ajax_delete_dmv.php",
 				data: { personid: personid, RecID: RecID },
 				datatype: "JSON",
 				success: function(valor) {
