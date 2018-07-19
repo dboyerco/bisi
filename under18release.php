@@ -1,12 +1,12 @@
 <?php
 if(!$testLayout) {
-	$releasefnd = $dbo->query("Select count(*) from App_Uploads where PersonID = " . $PersonID . " and UploadType = 'Disclosure Authorization Parent';")->fetchColumn();
+	$releasefnd = $dbo->query("Select count(*) from App_Uploads where PersonID = {$PersonID} and UploadType = 'Disclosure Authorization Parent';")->fetchColumn();
 }
 else {
 	$releasefnd = "";
 }
 
-$FormAction = "Thanks.php?PersonID=" . $PersonID;
+$FormAction = "index.php?pg={$pageThanks}&PersonID={$PersonID}&CD={$CD}";
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
@@ -60,10 +60,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 include('Upload/UploadDialog.php');
 
-echo '				<input type="hidden" name="PersonID" id="PersonID" value=" ' . $PersonID . '">
-	  					<input type="hidden" name="UploadType" id="UploadType" value="Disclosure Authorization Parent">
-	  					<input type="hidden" name="releasefnd" id="releasefnd" value="' . $releasefnd . '">
-  	  			</FORM>';
+echo '		<input type="hidden" name="PersonID" id="PersonID" value=" ' . $PersonID . '">
+					<input type="hidden" name="UploadType" id="UploadType" value="Disclosure Authorization Parent">
+					<input type="hidden" name="releasefnd" id="releasefnd" value="' . $releasefnd . '">
+  			</form>';
 ?>
 
 <script src="Upload/Upload.js"></script>
@@ -76,8 +76,7 @@ echo '				<input type="hidden" name="PersonID" id="PersonID" value=" ' . $Person
 
 	$().ready(function() {
 		if($("#releasefnd").val() > 0) {
-			el = $("#submitid");
-			el.style.visibility = "visible";
+			el = $("#submitid").css("visibility", "visible");
 		}
 	});
 </script>

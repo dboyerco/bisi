@@ -1,5 +1,6 @@
 <?php
 $date = date("m/d/Y");
+
 if(!$testLayout) {
 	$etype = $dbo->query("Select Email_Type from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
 	$state = $dbo->query("Select State_Addr from App_Address where PersonID = " . $PersonID . " and Current_Address = 'Y';")->fetchColumn();
@@ -74,7 +75,7 @@ echo '					<br /><br />
 								<input type="text" name="signature" id="signature" maxlength="45">
 							</div>
 							<div class="cell small-4 medium-6">
-								' . date("m/d/Y") . '
+								' . $date . '
 							</div>
 
 							<div class="cell small-12">
@@ -107,6 +108,7 @@ echo '					<br /><br />
 					var signdate = $("#signdate").val();
 					var NYchk = 'N';
 					var type = 'Disclosure';
+					var cd = $("#cd").val();
 
 					if($("#signature").val() > '') {
 						var signature = $("#signature").val();
@@ -121,8 +123,8 @@ echo '					<br /><br />
 
 					$.ajax({
 						type: "POST",
-			url: "../App_Ajax_New/ajax_save_signature.php",
-			data: {personid: personid, type: type, signature: signature, signdate: signdate, whichsign: whichsign, NYchk: NYchk},
+						url: "../App_Ajax_New/ajax_save_signature.php",
+						data: { personid: personid, type: type, signature: signature, signdate: signdate, whichsign: whichsign, NYchk: NYchk },
 						datatype: "JSON",
 						success: function(valor) {
 							var obj2 = $.parseJSON(valor);

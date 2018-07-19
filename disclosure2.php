@@ -5,8 +5,8 @@ if(!$testLayout) {
 	$rights = $dbo->query("Select SummaryOfRightsURL from State where Abbrev = '" . $state . "';")->fetchColumn();
 	$DOB = $dbo->query("Select Date_of_Birth from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
 	$DOB = date("m/d/Y", strtotime($DOB));
-	$Date = date("m/d/Y");
-	$datediff = strtotime($Date) - strtotime($DOB);
+	$date = date("m/d/Y");
+	$datediff = strtotime($date) - strtotime($DOB);
 	$days = floor($datediff / (60 * 60 * 24));
 }
 else {
@@ -78,7 +78,7 @@ echo '					<br /><br />
 							<div class="cell small-12">
 								<strong>State of Washington applicants and employees only:</strong> You have the right to receive a complete and accurate disclosure of the nature and scope of any investigative consumer report as well as a written summary of your rights and remedies under Washington law.<br /><br />
 								Please indicate if you are a resident of the following states and want to receive a copy of your consumer report.<br />
-								<input type="checkbox" name="NYchk" id="NYchk">&nbsp;MN, OK, CA APPLICANTS: Check box to receive a copy of any investigative consumer report.<br /><br/>
+								<input type="checkbox" name="NYchk" id="NYchk"> MN, OK, CA APPLICANTS: Check box to receive a copy of any investigative consumer report.<br /><br/>
 							</div>
 
 							<div class="cell small-12">
@@ -99,7 +99,7 @@ echo '					<br /><br />
 								<input type="text" name="signature2" id="signature2" maxlength="45">
 							</div>
 							<div class="cell small-4 medium-6">
-								' . date("m/d/Y") . '
+								' . $date . '
 							</div>
 
 							<div class="cell small-12">
@@ -113,12 +113,14 @@ echo '					<br /><br />
 								<input class="float-center" id="savesign" type="button" value="Next">
 							</div>
 
-							<input type="hidden" name="signdate2" id="signdate2" value="' . $Date . '">
+							<input type="hidden" name="signdate2" id="signdate2" value="' . $date . '">
 							<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
 							<input type="hidden" name="cd" id="cd" value="' . $CD . '">
 							<input type="hidden" name="days" id="days" value="' . $days .'">
 
-							<div name="overlay" id="overlay" style="visibility: hidden; width:300px;margin: auto auto;background-color:White;border:5px solid #696969; border-radius:20px; position:absolute;top:75%;left:25%;padding:5px;text-align:center;">Processing data. Please Wait....<br />It should take less than a minute.<br />
+							<div name="overlay" id="overlay" style="visibility: hidden; width:300px; margin: auto auto; background-color: White; border: 5px solid #696969; border-radius:20px; position: absolute; top: 75%; left:25%; padding: 5px; text-align: center;">
+								Processing data. Please Wait....<br />
+								It should take less than a minute.<br />
 							</div>
 						</div>
 					</div>
@@ -138,6 +140,7 @@ echo '					<br /><br />
 					var personid = $("#PersonID").val();
 					var signdate = $("#signdate2").val();
 					var type = 'Authorization';
+					var cd = $("#cd").val();
 
 					if($("#NYchk").checked == true) {
 						var NYchk = 'Y';
@@ -159,8 +162,8 @@ echo '					<br /><br />
 
 					$.ajax({
 						type: "POST",
-			url: "../App_Ajax_New/ajax_save_signature.php",
-			data: {personid: personid, type: type, signature: signature, signdate: signdate, whichsign: whichsign, NYchk: NYchk},
+						url: "../App_Ajax_New/ajax_save_signature.php",
+						data: { personid: personid, type: type, signature: signature, signdate: signdate, whichsign: whichsign, NYchk: NYchk },
 						datatype: "JSON",
 						success: function(valor) {
 							var obj2 = $.parseJSON(valor);
@@ -169,12 +172,10 @@ echo '					<br /><br />
 								alert(obj2);
 							}
 							else {
-								el = $("#savesign");
-								eldiv = $("#overlay");
+								el = $("#savesign").css("visibilty", "hidden");
+								eldiv = $("#overlay").css("visibility", "visible");
 
-								el.style.visibility = "hidden";
-								eldiv.style.visibility = "visible";
-
+								console.log(nodays + " < 6570");
 								if(nodays < 6570) {
 									window.location = 'index.php?pg=' + pageUnder18 + '&PersonID=' + personid + '&CD=' + cd;
 								}

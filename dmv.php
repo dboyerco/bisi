@@ -95,7 +95,7 @@ echo '				<div class="cell small-12">
 
 						<div class="grid-x margins person-form" name="DMV_dialog" id="DMV_dialog" title="Dialog Title">
 						  	<input type="hidden" name="recid" id="recid">
-							
+
 							<div class="cell small-12">
 								<h3>Add Driver License</h3>
 							</div>
@@ -214,7 +214,7 @@ if($maxRecID == 0) {
 			DLstate: dlstate,
 			DLstateother: dlcountry
 		};
-
+		
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
@@ -258,12 +258,9 @@ if($maxRecID == 0) {
 				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
-					var de = obj2.Date_Expires;
-					//var Date_Expires = de.substr(5, 2) + "/" + de.substr(8) + "/" + de.substr(0, 4);
-
-					$("#RecID").val(obj2.RecID);
+					$("#recid").val(obj2.RecID);
 					$("#dl").val(obj2.Driver_License);
-					$("#dle").val(Date_Expires);
+					$("#dle").val(obj2.Date_Expires);
 					$("#dlstate").val(obj2.Issue_State);
 					$("#dlcountry").val(obj2.Issue_StateOther);
 
@@ -286,8 +283,6 @@ if($maxRecID == 0) {
 	}
 
 	function dltdmv(RecID) {
-		alert("In dltdmv");
-
 		if(confirm('Are you sure you want to delete this DMV record?')) {
 			var personid = $("#PersonID").val();
 

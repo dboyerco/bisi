@@ -86,7 +86,7 @@ if(!$testLayout) {
 										' . htmlspecialchars($row[7]) . '
 									</div>
 									<div class="cell small-6 medium-1">
-										' . ($row[8] == 'Y' ? "Graduated" : "Did Not Graduated") . '
+										' . ($row[8] == 'Y' ? "Graduated" : "Did Not Graduate") . '
 									</div>
 								</div>
 							</div>
@@ -211,14 +211,14 @@ echo '				<div class="cell small-12 medium-6">
 								Attended From <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<input type="text" name="edufromdate" id="edufromdate" maxlength="10" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="date" name="edufromdate" id="edufromdate" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
 							</div>
 
 							<div class="cell small-12 medium-6">
 								Attended To <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<input type="text" name="edutodate" id="edutodate" maxlength="10" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="date" name="edutodate" id="edutodate" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
 							</div>
 
 							<div class="cell small-12 medium-6">
@@ -250,7 +250,7 @@ echo '				<div class="cell small-12 medium-6">
 								Did You Graduate? <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<select name="edugraduate" id="edugraduate">
+								<select name="edugraduated" id="edugraduated">
 									<option value="N">No</option>
 									<option value="Y">Yes</option>
 								</select>
@@ -301,18 +301,13 @@ echo '				<div class="cell small-12 medium-6">
 
 				console.log(obj2);
 				if(obj2) {
-					var fd = obj2.EduDatesAttendedFrom;
-					var EduDateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
-					var td = obj2.EduDatesAttendedTo;
-					var EduDateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
-
 					$("#EduID").val(obj2.EduID);
 					$("#eduname").val(obj2.EduCollegeName);
 					$("#educity").val(obj2.EduCity);
 					$("#edustate").val(obj2.EduState);
 					$("#educountry").val(obj2.EduStateOther);
-					$("#edufromdate").val(EduDateFrom);
-					$("#edutodate").val(EduDateTo);
+					$("#edufromdate").val(obj2.EduDatesAttendedFrom);
+					$("#edutodate").val(obj2.EduDatesAttendedTo);
 					$("#edumajor").val(obj2.EduCollegeMajor);
 					$("#edudegree").val(obj2.EduCollegeDegree);
 					$("#edugraduated").val(obj2.EduGraduated);
@@ -375,14 +370,7 @@ echo '				<div class="cell small-12 medium-6">
 		}
 
 		if($("#edufromdate").val() > '') {
-			if(!isValidDate('edufromdate')) {
-				$('#edufromdate').focus();
-				alert("Invalid From Date");
-				return false;
-			}
-			else {
-				var edufromdate = $("#edufromdate").val();
-			}
+			var edufromdate = $("#edufromdate").val();
 		}
 		else {
 			document.ALCATEL.edufromdate.focus();
@@ -391,14 +379,7 @@ echo '				<div class="cell small-12 medium-6">
 		}
 
 		if($("#edutodate").val() > '') {
-			if(!isValidDate('edutodate')) {
-				$('#edutodate').focus();
-				alert("Invalid To Date");
-				return false;
-			}
-			else {
-				var edutodate = $("#edutodate").val();
-			}
+			var edutodate = $("#edutodate").val();
 		}
 		else {
 			document.ALCATEL.edutodate.focus();
@@ -447,7 +428,7 @@ echo '				<div class="cell small-12 medium-6">
 			edugraduated: edugraduated,
 			eduhighest: eduhighest
 		};
-
+		console.log(data);
 		$.ajax({
 			type: "POST",
 			url: saveLocation,

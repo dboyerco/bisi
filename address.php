@@ -49,16 +49,14 @@ if(!$testLayout) {
 				$fromdate = '';
 			}
 			else {
-				//$fromdate = date("m/d/Y", strtotime($row[8]));
-				$fromdate = $row[8];
+				$fromdate = date("m/d/Y", strtotime($row[8]));
 			}
 
 			if($row[9] == '1900-01-01') {
 				$todate = '';
 			}
 			else {
-				//$todate = date("m/d/Y", strtotime($row[9]));
-				$todate = $row[9];
+				$todate = date("m/d/Y", strtotime($row[9]));
 			}
 
 			if($fromdate != '' && $todate != '') {
@@ -250,7 +248,7 @@ else {
 							</div>
 
 							<div class="cell medium-6 small-12">
-								Country <span class="required">*</span>
+								Country
 							</div>
 							<div class="cell medium-6 small-12">
 								<select name="country" id="country">
@@ -377,7 +375,7 @@ echo '				<div class="cell medium-6 small-12">
 		}
 		else {
 			$("#todate").placeholder = 'mm/dd/yyyy';
-			$("#todate").val() = '';
+			$("#todate").val('');
 		}
 	}
 
@@ -585,12 +583,6 @@ echo '				<div class="cell medium-6 small-12">
 				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
-					console.log(obj2);
-					//var fd = obj2.FromDate;
-					//var DateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
-					//var td = obj2.ToDate;
-					//var DateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
-
 					$("#current").val(obj2.Current_Address);
 					$("#addrid").val(obj2.AddrID);
 					$("#addr1").val(obj2.Addr1);
@@ -605,8 +597,8 @@ echo '				<div class="cell medium-6 small-12">
 
 					$("#country").val(obj2.StateOther);
 					$("#zip").val(obj2.ZipCode);
-					$("#fromdate").val(obj2.DateFrom);
-					$("#todate").val(obj2.DateTo);
+					$("#fromdate").val(obj2.FromDate);
+					$("#todate").val(obj2.ToDate);
 
 					$("#Address_dialog").dialog("option", "title", "Edit Address");
 					$("#Address_dialog").dialog("option", "modal", true);
