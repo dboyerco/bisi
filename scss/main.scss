@@ -198,6 +198,10 @@ input[type='button'], input[type='submit'], button, .button {
   }
 }
 
+.current-emp {
+  display: none;
+}
+
 // dialogs
 #Alias_dialog {
   position: relative;

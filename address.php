@@ -43,6 +43,7 @@ if(!$testLayout) {
 		$addr_result = $dbo->prepare($selectaddr);
 		$addr_result->bindValue(':PersonID', $PersonID);
 		$addr_result->execute();
+		$i = 0;
 
 		while($row = $addr_result->fetch(PDO::FETCH_BOTH)) {
 			if($row[8] == '1900-01-01') {
@@ -63,6 +64,7 @@ if(!$testLayout) {
 				$datediff = strtotime($todate) - strtotime($fromdate);
 				$days = $days + floor($datediff / (60 * 60 * 24));
 			}
+
 			if($row[10] == 'Y') {
 				$currentaddress = $row[10];
 
@@ -73,7 +75,7 @@ if(!$testLayout) {
 								<span class="add-address"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
 							</div>';
 			}
-			else {
+			else if($i == 0) {
 				echo '<div class="cell small-12 right">
 								<span class="add-address"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
 							</div>';
@@ -114,6 +116,8 @@ if(!$testLayout) {
 							<div class="cell small-12">
 								<hr>
 							</div>';
+
+			$i++;
 		}
 
 		if($days > 0){

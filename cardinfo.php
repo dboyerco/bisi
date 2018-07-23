@@ -275,6 +275,11 @@ echo '<div class="cell small-6 required">
 		$("#processdata").css("visibility","hidden");
 	});
 
+<?php
+echo 'var pageThanks = "' . $pageThanks . '";
+			var cd = "' . $CD . '";';
+?>
+
 	function overlayclose() {
 		el = document.getElementById("overlay");
 		el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
@@ -332,33 +337,36 @@ echo '<div class="cell small-6 required">
 		var AcctID = document.getElementById("acctid").value;
 		var CompName = document.getElementById("compname").value;
 		var desc = AcctID+' - '+CompName+' background check';
-//				alert('Ready to validate');
+		// alert('Ready to validate');
 
 		$.ajax({
 			type: "POST",
 			url: "ValidateCard.php",
-			data: {cardnum: cardnum, expdate: expdate, amount: amount, fname: fname, lname: lname, company: company, address: address, city: city, state: state, zip: zip, email: email, ccv: ccv, PersonID: PersonID, desc: desc},
-
+			data: { cardnum: cardnum, expdate: expdate, amount: amount, fname: fname, lname: lname, company: company, address: address, city: city, state: state, zip: zip, email: email, ccv: ccv, PersonID: PersonID, desc: desc },
 			datatype: "JSON",
 			success: function(valor) {
 				$("#valcarddiv").css("visibility","hidden");
+
 				var obj2 = $.parseJSON(valor);
-				if (valor.length > 13) {
-//							alert(obj2);
+
+				if(valor.length > 13) {
+					// alert(obj2);
 					$("#resultInfo").find("tr").remove();
-					var tablerow = "<tr><td><font color='#000000' size='3' face='Verdana, Arial, Helvetica, sans-serif'>"+obj2+"</font></td></tr>"
+					var tablerow = "<tr><td><font color='#000000' size='3' face='Verdana, Arial, Helvetica, sans-serif'>" + obj2 + "</font></td></tr>"
 					$("#resultInfo > tbody:last").append(tablerow);
 					$("#valcarddiv").css("visibility","hidden");
 					$("#overlay").css("visibility","visible");
 					return false;
-				} else {
+				}
+				else {
 					var tranid = obj2;
-//							alert(tranid);
-					window.location ='Thanks.php?PersonID='+PersonID;
+					// alert(tranid);
+					window.location ='index.php?pg=' + pageThanks + '&PersonID=' + PersonID + '&CD=' + cd;
 				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: '+textStatus); alert('Error: '+errorThrown);
+				alert('Status: ' + textStatus);
+				alert('Error: ' + errorThrown);
 				return;
 			}
 		});

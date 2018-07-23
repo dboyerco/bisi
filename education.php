@@ -36,6 +36,7 @@ if(!$testLayout) {
 		$result2 = $dbo->prepare($selectstmt);
 		$result2->bindValue(':PersonID', $PersonID);
 		$result2->execute();
+		$i = 0;
 
 		while($row = $result2->fetch(PDO::FETCH_BOTH)) {
 			if($row[9] == 'Y') {
@@ -48,7 +49,7 @@ if(!$testLayout) {
 								<span class="add-education"><img class="icon" src="images/plus.png" alt="Add Education" title="Add Education"/></span>
 							</div>';
 			}
-			else {
+			else if($i == 0) {
 				echo '<div class="cell small-12 right">
 								<span class="add-education"><img class="icon" src="images/plus.png" alt="Add Education" title="Add Education"/></span>
 							</div>';
@@ -99,6 +100,8 @@ if(!$testLayout) {
 							<div class="cell small-12">
 								<hr>
 							</div>';
+
+			$i++;
 		}
 	}
 }

@@ -37,6 +37,7 @@ if(!$testLayout) {
 		$emp_result = $dbo->prepare($selectemp);
 		$emp_result->bindValue(':PersonID', $PersonID);
 		$emp_result->execute();
+		$i = 0;
 
 		while($row = $emp_result->fetch(PDO::FETCH_BOTH)) {
 			$empCount++;
@@ -59,7 +60,7 @@ if(!$testLayout) {
 							</div>
 							<div class="cell small-12 medium-6"></div>';
 			}
-			else {
+			else if($i == 0) {
 				echo '<div class="cell small-12 right">
 								<span class="add-employment"><img class="icon" src="images/plus.png" alt="Add Employment" title="Add Employment"/></span>
 							</div>';
@@ -157,6 +158,8 @@ if(!$testLayout) {
 							<div class="cell small-12">
 								<hr>
 							</div>';
+
+			$i++;
 		} // end while
 
 		if($days > 0){
@@ -279,35 +282,29 @@ echo '	<div class="cell small-12 padding-bottom">
 				</div>
 				<div class="cell medium-6 small-12">
 					You have entered ' . $YR . ' years ' . $MO . ' months ' . $DY . ' days
-				</div>';
+				</div>
 
-if($currentEmployer == 'N') {
-	echo '<div class="cell small-12 medium-6">
+				<div class="cell small-12 medium-6 current-emp">
 					Current employer? <span class="required">*</span>
 				</div>
-				<div class="cell small-12 medium-6">
+				<div class="cell small-12 medium-6 current-emp">
 					<select name="current" id="current">
 						<option value="Y">Yes</option>
 						<option value="N">No</option>
 					</select>
 				</div>
 
-				<div class="cell small-12 medium-6">
+				<div class="cell small-12 medium-6 current-emp">
 					May we contact your current employer? <span class="required">*</span>
 				</div>
-				<div class="cell small-12 medium-6">
+				<div class="cell small-12 medium-6 current-emp">
 					<select name="empcontact" id="empcontact">
 						<option value="N">No</option>
 						<option value="Y">Yes</option>
 					</select>
-				</div>';
-}
-else {
-	echo '			<input type="hidden" name="current" id="current" value="Y">';
+				</div>
 
-}
-
-echo '  <div class="cell small-12 medium-6">
+				<div class="cell small-12 medium-6">
 					Company Name <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
@@ -446,7 +443,13 @@ echo '<div class="cell small-12 padding-bottom">
 <script language="JavaScript" type="text/javascript">
  	$("#Employment_dialog").dialog({ autoOpen: false });
 
+	var currentEmployer = true;
+
 <?php
+	if($currentEmployer == 'N') {
+		echo 'currentEmployer = false;';
+	}
+
 	if($days < 2557 && $empCount < 3) {
 		echo 'addEmployment();';
 	}
@@ -457,14 +460,31 @@ echo '<div class="cell small-12 padding-bottom">
 	});
 
 	function addEmployment() {
-		$("#current").val('');
+		$("#current").val('N');
 		$("#empid").val('');
 
+		if(currentEmployer) {
+			hideCurrentEmployer();
+		}
+		else {
+			showCurrentEmployer();
+		}
 
 		$("#Employment_dialog").dialog("option", "title", "Add Address");
 		$("#Employment_dialog").dialog("option", "modal", true);
 		$("#Employment_dialog").dialog("option", "width", 700);
 		$("#Employment_dialog").dialog("open");
+	}
+
+	function showCurrentEmployer() {
+		console.log("showCurrentEmployer");
+		$(".current-emp").css("display", "block");
+	}
+
+	function hideCurrentEmployer() {
+		console.log("hideCurrentEmployer");
+		$(".current-emp").css("display", "none");
+		$("#current").val('N');
 	}
 
  	function updateemp(empid) {
@@ -480,14 +500,9 @@ echo '<div class="cell small-12 padding-bottom">
 
 				console.log(obj2);
 				if(obj2) {
-					// var fd = obj2.EmpDateFrom;
-					// var EmpDateFrom = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
-					// var td = obj2.EmpDateTo;
-					// var EmpDateTo = td.substr(5, 2) + "/" + td.substr(8) + "/" + td.substr(0, 4);
-
 					$("#empid").val(obj2.EmpID);
 					$("#contact").val(obj2.EmpMayWeContact);
-					$("#current").val(obj2.EmpCurrent);
+					$("#current").val(obj2.EmpCurrent == "Y" ? "Y" : "N");
 					$("#empname").val(obj2.EmpName);
 					$("#empstreet").val(obj2.EmpStreet);
 					$("#empcity").val(obj2.EmpCity);
@@ -507,6 +522,20 @@ echo '<div class="cell small-12 padding-bottom">
 						$("#empdottst").val(obj2.EmpDotTst);
 					}
 
+					if(currentEmployer) {
+						console.log("we have a current employer");
+						if($("#current").val() == "Y") {
+							showCurrentEmployer();
+						}
+						else {
+							hideCurrentEmployer();
+						}
+					}
+					else {
+						console.log("we do not have a current employer");
+						showCurrentEmployer();
+					}
+
 					$("#Employment_dialog").dialog("option", "title", "Edit Employment");
 					$("#Employment_dialog").dialog("option", "modal", true);
 					$("#Employment_dialog").dialog("option", "width", 700);
@@ -515,6 +544,7 @@ echo '<div class="cell small-12 padding-bottom">
 				else {
 					alert('No Employment Data Found');
 				}
+
 				return;
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {

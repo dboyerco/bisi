@@ -5257,6 +5257,9 @@ input[type='button'], input[type='submit'], button, .button {
   height: 2.4375rem;
   background-color: #FFFFFF; }
 
+.current-emp {
+  display: none; }
+
 #Alias_dialog {
   position: relative;
   z-index: 1000; }

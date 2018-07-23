@@ -1,5 +1,5 @@
 <?php
-$testLayout = true;
+$testLayout = false;
 
 //                    0         1       2           3             4             5             6               7               8           9
 $pageOrder = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
@@ -57,6 +57,7 @@ echo '<!DOCTYPE HTML>
           <link rel="stylesheet" href="Upload/Upload.css">
           <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
       		<script language="JavaScript" type="text/javascript" src="../App_JS/validate.js"></script>
+          <script language="JavaScript" type="text/javascript" src="../App_JS/validation.js"></script>
       		<script language="JavaScript" type="text/javascript" src="../App_JS/autoTab.js"></script>
       		<script language="JavaScript" type="text/javascript" src="../App_JS/autoFormats.js"></script>
       		<script src="jquery-ui/jquery-ui.js"></script>
