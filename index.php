@@ -12,7 +12,7 @@ $pageCardInfo = 8;
 $pageThanks = 9;
 
 function assignPage($p) {
-  global $pageOrder, $currentPage, $nextPage, $currentPageString, $pageThanks, $pageUnder18;
+  global $pageOrder, $currentPage, $nextPage, $currentPageString;
 
   $currentPage = $p;
   $lenPages = count($pageOrder);

@@ -62,7 +62,7 @@ if(!$testLayout) {
 			}
 			else if($i == 0) {
 				echo '<div class="cell small-12 right">
-								<span class="add-employment"><img class="icon" src="images/plus.png" alt="Add Employment" title="Add Employment"/></span>
+								<span class="add-employment"><img class="icon" src="images/plus.png" alt="Add Employment" title="Add Employment" /></span>
 							</div>';
 			}
 
