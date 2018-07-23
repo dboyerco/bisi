@@ -130,7 +130,7 @@ echo '					<br /><br />
 			<script>
 				var nextPage = "' . $nextPage . '";
 				var pageUnder18 = "' . $pageUnder18 . '";
-				var pageThanks = "' . $pageThanks . '";
+				var pageCardInfo = "' . $pageCardInfo . '";
 				var nodays = ' . $days . ';
 			</script>';
 ?>
@@ -180,7 +180,7 @@ echo '					<br /><br />
 									window.location = 'index.php?pg=' + pageUnder18 + '&PersonID=' + personid + '&CD=' + cd;
 								}
 								else {
-									window.location = 'index.php?pg=' + pageThanks + '&PersonID=' + personid + '&CD=' + cd;
+									window.location = 'index.php?pg=' + pageCardInfo + '&PersonID=' + personid + '&CD=' + cd;
 								}
 							}
 

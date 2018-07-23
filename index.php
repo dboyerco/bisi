@@ -1,13 +1,15 @@
 <?php
 $testLayout = true;
 
-$pageOrder = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'cardinfo', 'under18release', 'Thanks'); // under18 and thanks always need to tbe the last two pages
+//                    0         1       2           3             4             5             6               7               8           9
+$pageOrder = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
 $ipaddress = getenv("REMOTE_ADDR");
 $currentPage = 0;
 $currentPageString = "person";
 $nextPage = 1;
-$pageThanks = 0;
-$pageUnder18 = 0;
+$pageUnder18 = 7;
+$pageCardInfo = 8;
+$pageThanks = 9;
 
 function assignPage($p) {
   global $pageOrder, $currentPage, $nextPage, $currentPageString, $pageThanks, $pageUnder18;
@@ -23,8 +25,6 @@ function assignPage($p) {
   }
 
   $currentPageString = $pageOrder[$currentPage];
-  $pageThanks = $lenPages - 1;
-  $pageUnder18 = $lenPages - 2;
 }
 
 if(isSet($pg)) {

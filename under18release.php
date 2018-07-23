@@ -6,7 +6,7 @@ else {
 	$releasefnd = "";
 }
 
-$FormAction = "index.php?pg={$pageThanks}&PersonID={$PersonID}&CD={$CD}";
+$FormAction = "index.php?pg={$pageCardInfo}&PersonID={$PersonID}&CD={$CD}";
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
