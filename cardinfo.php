@@ -25,7 +25,9 @@ else {
 	$packagecharge = 0;
 }
 
-echo '<form method="post" action="Thanks.php?PersonID=' . $PersonID . '" name="payform" id="payform" onsubmit="return validateform()">
+$FormAction = "index.php?pg=" . $pageThanks . "&PersonID=" . $PersonID . "&CD=" . $CD;
+
+echo '<form method="post" action="' . $FormAction . '" name="payform" id="payform" onsubmit="return validateform()">
 				<div class="general-page">
 					<div class="sub-menu">&nbsp;</div>
 

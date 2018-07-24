@@ -39,7 +39,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							</div>
 
 							<div class="cell small-12">
-								<input type="button" name="dlform" id="dlform" value="Download Form" onclick="return downloadForm()"><br /><br />
+								<input type="button" name="dlform" id="dlform" value="Download Form" onclick="downloadForm()"><br /><br />
 							</div>
 
 							<div class="cell small-12">
@@ -75,8 +75,10 @@ echo '		<input type="hidden" name="PersonID" id="PersonID" value=" ' . $PersonID
 	}
 
 	$().ready(function() {
+		$("#submitid").hide();
+
 		if($("#releasefnd").val() > 0) {
-			el = $("#submitid").css("visibility", "visible");
+			$("#submitid").show();
 		}
 	});
 </script>
