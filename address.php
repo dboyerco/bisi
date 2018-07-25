@@ -183,9 +183,6 @@ if($days >= 2557) {
 echo '			</div>
 
 						<div class="grid-x margins person-form" name="Address_dialog" id="Address_dialog" title="Dialog Title">
-							<div class="cell small-12">
-								<h3>Add Address</h3>
-							</div>
 							<div class="cell medium-6 small-12 required">
 								* Required Fields To Continue
 							</div>
@@ -308,6 +305,8 @@ echo '				<div class="cell medium-6 small-12">
 
 <script>
 	$("#Address_dialog").dialog({ autoOpen: false });
+	if($('#fromdate')[0].type != 'date' ) $('#fromdate').datepicker();
+	if($('#todate')[0].type != 'date' ) $('#todate').datepicker();
 
 <?php
 	if($days < 2557) {
@@ -587,6 +586,20 @@ echo '				<div class="cell medium-6 small-12">
 				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
+					var fromDate = '';
+					var toDate = '';
+
+					if($('#fromdate')[0].type != 'date') {
+						fd = obj2.FromDate.split("-");
+						fromDate = fd[1] + "/" + fd[2] + "/" + fd[0];
+						td = obj2.ToDate.split("-");
+						toDate = td[1] + "/" + td[2] + "/" + td[0];
+					}
+					else {
+						fromDate = obj2.FromDate;
+						toDate = obj2.ToDate;
+					}
+
 					$("#current").val(obj2.Current_Address);
 					$("#addrid").val(obj2.AddrID);
 					$("#addr1").val(obj2.Addr1);
@@ -601,12 +614,12 @@ echo '				<div class="cell medium-6 small-12">
 
 					$("#country").val(obj2.StateOther);
 					$("#zip").val(obj2.ZipCode);
-					$("#fromdate").val(obj2.FromDate);
-					$("#todate").val(obj2.ToDate);
+					$("#fromdate").val(fromDate);
+					$("#todate").val(toDate);
 
 					$("#Address_dialog").dialog("option", "title", "Edit Address");
 					$("#Address_dialog").dialog("option", "modal", true);
-					$("#Address_dialog").dialog("option", "width", 700);
+					$("#Address_dialog").dialog("option", "width", "100%");
 					$("#Address_dialog").dialog("open");
 				}
 				else {

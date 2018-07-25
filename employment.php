@@ -274,9 +274,6 @@ echo '	<div class="cell small-12 padding-bottom">
 			</div>
 
 			<div class="grid-x margins person-form" name="Employment_dialog" id="Employment_dialog" title="Dialog Title">
-				<div class="cell small-12">
-					<h3>Add Employment</h3>
-				</div>
 				<div class="cell medium-6 small-12 required">
 					* Required Fields To Continue
 				</div>
@@ -442,6 +439,8 @@ echo '<div class="cell small-12 padding-bottom">
 
 <script language="JavaScript" type="text/javascript">
  	$("#Employment_dialog").dialog({ autoOpen: false });
+	if($('#empfromdate')[0].type != 'date' ) $('#empfromdate').datepicker();
+	if($('#emptodate')[0].type != 'date' ) $('#emptodate').datepicker();
 
 	var currentEmployer = true;
 
@@ -462,6 +461,25 @@ echo '<div class="cell small-12 padding-bottom">
 	function addEmployment() {
 		$("#current").val('N');
 		$("#empid").val('');
+		$("#contact").val('');
+		$("#empname").val('');
+		$("#empstreet").val('');
+		$("#empcity").val('');
+		$("#empstate").val('');
+		$("#empcountry").val('');
+		$("#empfromdate").val('');
+		$("#emptodate").val('');
+		$("#empsuper").val('');
+		$("#reason").val('');
+		$("#emptitle").val('');
+		$("#empphone").val('');
+		$("#sphone").val('');
+		$("#semail").val('');
+
+		if($("#Package").val() == 'mountain') {
+			$("#empdotreg").val('');
+			$("#empdottst").val('');
+		}
 
 		if(currentEmployer) {
 			hideCurrentEmployer();
@@ -472,7 +490,7 @@ echo '<div class="cell small-12 padding-bottom">
 
 		$("#Employment_dialog").dialog("option", "title", "Add Address");
 		$("#Employment_dialog").dialog("option", "modal", true);
-		$("#Employment_dialog").dialog("option", "width", 700);
+		$("#Employment_dialog").dialog("option", "width", "100%");
 		$("#Employment_dialog").dialog("open");
 	}
 
@@ -500,6 +518,20 @@ echo '<div class="cell small-12 padding-bottom">
 
 				console.log(obj2);
 				if(obj2) {
+					var fromDate = '';
+					var toDate = '';
+
+					if($('#empfromdate')[0].type != 'date') {
+						fd = obj2.EmpDateFrom.split("-");
+						fromDate = fd[1] + "/" + fd[2] + "/" + fd[0];
+						td = obj2.EmpDateTo.split("-");
+						toDate = td[1] + "/" + td[2] + "/" + td[0];
+					}
+					else {
+						fromDate = obj2.EmpDateFrom;
+						toDate = obj2.EmpDateTo;
+					}
+
 					$("#empid").val(obj2.EmpID);
 					$("#contact").val(obj2.EmpMayWeContact);
 					$("#current").val(obj2.EmpCurrent == "Y" ? "Y" : "N");
@@ -508,8 +540,8 @@ echo '<div class="cell small-12 padding-bottom">
 					$("#empcity").val(obj2.EmpCity);
 					$("#empstate").val(obj2.EmpState);
 					$("#empcountry").val(obj2.EmpStateOther);
-					$("#empfromdate").val(obj2.EmpDateFrom);
-					$("#emptodate").val(obj2.EmpDateTo);
+					$("#empfromdate").val(fromDate);
+					$("#emptodate").val(toDate);
 					$("#empsuper").val(obj2.EmpSupervisor);
 					$("#reason").val(obj2.EmpReasonForLeaving);
 					$("#emptitle").val(obj2.EmpTitle);
@@ -538,7 +570,7 @@ echo '<div class="cell small-12 padding-bottom">
 
 					$("#Employment_dialog").dialog("option", "title", "Edit Employment");
 					$("#Employment_dialog").dialog("option", "modal", true);
-					$("#Employment_dialog").dialog("option", "width", 700);
+					$("#Employment_dialog").dialog("option", "width", "100%");
 					$("#Employment_dialog").dialog("open");
 				}
 				else {

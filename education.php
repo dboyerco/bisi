@@ -154,9 +154,6 @@ echo '				<div class="cell small-12 padding-bottom">
 						</div>
 
 						<div class="grid-x margins person-form" name="Education_dialog" id="Education_dialog" title="Dialog Title">
-							<div class="cell small-12">
-								<h3>Add Education</h3>
-							</div>
 							<div class="cell small-12 required">
 								* Required Fields To Continue
 							</div>';
@@ -273,6 +270,8 @@ echo '				<div class="cell small-12 medium-6">
 
 <script language="JavaScript" type="text/javascript">
  	$("#Education_dialog").dialog({ autoOpen: false });
+	if($('#edufromdate')[0].type != 'date' ) $('#edufromdate').datepicker();
+	if($('#edutodate')[0].type != 'date' ) $('#edutodate').datepicker();
 
 <?php
 	if($maxEduID <= 0) {
@@ -285,6 +284,18 @@ echo '				<div class="cell small-12 medium-6">
 	});
 
 	function addEducation() {
+		$("#EduID").val('');
+		$("#eduname").val('');
+		$("#educity").val('');
+		$("#edustate").val('');
+		$("#educountry").val('');
+		$("#edufromdate").val('');
+		$("#edutodate").val('');
+		$("#edumajor").val('');
+		$("#edudegree").val('');
+		$("#edugraduated").val('');
+		$("#eduhighest").val('');
+
 		$("#Education_dialog").dialog("option", "title", "Add Education");
 		$("#Education_dialog").dialog("option", "modal", true);
 		$("#Education_dialog").dialog("option", "width", "100%");
@@ -302,15 +313,28 @@ echo '				<div class="cell small-12 medium-6">
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor)[0];
 
-				console.log(obj2);
 				if(obj2) {
+					var fromDate = '';
+					var toDate = '';
+
+					if($('#edufromdate')[0].type != 'date') {
+						fd = obj2.EduDatesAttendedFrom.split("-");
+						fromDate = fd[1] + "/" + fd[2] + "/" + fd[0];
+						td = obj2.EduDatesAttendedTo.split("-");
+						toDate = td[1] + "/" + td[2] + "/" + td[0];
+					}
+					else {
+						fromDate = obj2.EduDatesAttendedFrom;
+						toDate = obj2.EduDatesAttendedTo;
+					}
+
 					$("#EduID").val(obj2.EduID);
 					$("#eduname").val(obj2.EduCollegeName);
 					$("#educity").val(obj2.EduCity);
 					$("#edustate").val(obj2.EduState);
 					$("#educountry").val(obj2.EduStateOther);
-					$("#edufromdate").val(obj2.EduDatesAttendedFrom);
-					$("#edutodate").val(obj2.EduDatesAttendedTo);
+					$("#edufromdate").val(fromDate);
+					$("#edutodate").val(toDate);
 					$("#edumajor").val(obj2.EduCollegeMajor);
 					$("#edudegree").val(obj2.EduCollegeDegree);
 					$("#edugraduated").val(obj2.EduGraduated);
@@ -318,7 +342,7 @@ echo '				<div class="cell small-12 medium-6">
 
 					$("#Education_dialog").dialog("option", "title", "Edit Education");
 					$("#Education_dialog").dialog("option", "modal", true);
-					$("#Education_dialog").dialog("option", "width", 700);
+					$("#Education_dialog").dialog("option", "width", "100%");
 					$("#Education_dialog").dialog("open");
 				}
 				else {

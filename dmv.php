@@ -94,11 +94,8 @@ echo '				<div class="cell small-12">
 						</div>
 
 						<div class="grid-x margins person-form" name="DMV_dialog" id="DMV_dialog" title="Dialog Title">
-						  	<input type="hidden" name="recid" id="recid">
+						  <input type="hidden" name="recid" id="recid">
 
-							<div class="cell small-12">
-								<h3>Add Driver License</h3>
-							</div>
 							<div class="cell small-12 required">
 								* Required Fields To Continue
 							</div>
@@ -151,6 +148,7 @@ echo '				<div class="cell small-12">
 
 <script>
 	$("#DMV_dialog").dialog({ autoOpen: false });
+	if($('#dle')[0].type != 'date' ) $('#dle').datepicker();
 
 <?php
 if($maxRecID == 0) {
@@ -159,6 +157,12 @@ if($maxRecID == 0) {
 ?>
 
 	function addDMV() {
+		$("#recid").val('');
+		$("#dl").val('');
+		$("#dle").val('');
+		$("#dlstate").val('');
+		$("#dlcountry").val('');
+
 		$("#DMV_dialog").dialog("option", "title", "Add License");
 		$("#DMV_dialog").dialog("option", "modal", true);
 		$("#DMV_dialog").dialog("option", "width", "100%");
@@ -214,7 +218,7 @@ if($maxRecID == 0) {
 			DLstate: dlstate,
 			DLstateother: dlcountry
 		};
-		
+
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
@@ -258,15 +262,25 @@ if($maxRecID == 0) {
 				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
+					var dateExpires = '';
+
+					if($('#dle')[0].type != 'date') {
+						de = obj2.Date_Expires.split("-");
+						dateExpires = de[1] + "/" + de[2] + "/" + de[0];
+					}
+					else {
+						dateExpires = obj2.Date_Expires;
+					}
+
 					$("#recid").val(obj2.RecID);
 					$("#dl").val(obj2.Driver_License);
-					$("#dle").val(obj2.Date_Expires);
+					$("#dle").val(dateExpires);
 					$("#dlstate").val(obj2.Issue_State);
 					$("#dlcountry").val(obj2.Issue_StateOther);
 
 					$("#DMV_dialog").dialog("option", "title", "Edit DMV");
 					$("#DMV_dialog").dialog("option", "modal", true);
-					$("#DMV_dialog").dialog("option", "width", 700);
+					$("#DMV_dialog").dialog("option", "width", "100%");
 					$("#DMV_dialog").dialog("open");
 				}
 				else {
