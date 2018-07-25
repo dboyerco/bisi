@@ -37,7 +37,7 @@ if(isSet($PersonID)) {
 					$birthdate = "";
 				}
 				else {
-					$birthdate = $row[3];
+					$birthdate = date("m/d/Y", strtotime($row[3]));
 				}
 
 				if($row[4] == '') {
@@ -365,6 +365,8 @@ echo '				<div class="cell small-12"><hr></div>
 
  	$("#Alias_dialog").dialog({ autoOpen: false });
 	$("#NOMI_dialog").dialog({ autoOpen: false });
+	if($('#akachanged')[0].type != 'date' ) $('#akachanged').datepicker();
+	if($('#birthdate')[0].type != 'date' ) $('#birthdate').datepicker();
 
 	$(".add-alias").click(function() {
 		addAlias();
@@ -422,14 +424,20 @@ echo '				<div class="cell small-12"><hr></div>
 				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
+					var akaDate = '';
+
+					if($('#akachanged')[0].type != 'date') {
+						ad = obj2.Changed.split("-");
+						akaDate = ad[1] + "/" + ad[2] + "/" + ad[0];
+					}
+					else {
+						akaDate = obj2.Changed;
+					}
+
 					$("#aliasid").val(obj2.AliasID);
 					$("#akafirstname").val(obj2.FirstName);
 					$("#akalastname").val(obj2.LastName);
-					var myDate = obj2.Changed;
-					var altDate = myDate.split("-");
-					altDate = altDate[1] + "/" + altDate[2] + "/" + altDate[0];
-
-					$("#akachanged").val(altDate);
+					$("#akachanged").val(akaDate);
 
 					$("#Alias_dialog").dialog("option", "title", "Edit AKA");
 					$("#Alias_dialog").dialog("option", "modal", true);
@@ -470,7 +478,6 @@ echo '				<div class="cell small-12"><hr></div>
 		if($("#akachanged").val() > '') {
 			var myDate = $("#akachanged").val();
 			var altDate = myDate.split("-");
-//			var changed = altDate[1] + "/" + altDate[2] + "/" + altDate[0];
 			var changed = myDate;
 		}
 		else {
@@ -637,24 +644,12 @@ echo '				<div class="cell small-12"><hr></div>
 
 		if($("#birthdate").val() > '') {
 			var birthdate = $("#birthdate").val();
-
-			// if(birthdate.indexOf('XXXX') > 0) {
-			// 	birthdate = $("#fbdate").val();
-			// 	$("#birthdate").val($("#fbdate").val());
-			// }
 		}
 		else {
 			$("#birthdate").focus();
 			alert("Date of Birth is required");
 			return false;
 		}
-
-		//alert(birthdate);
-		// if(!isValidDOB('birthdate')) {
-		// 	$('#birthdate').focus();
-		// 	alert("Invalid Date of Birth");
-		// 	return false;
-		// }
 
 		if(packagename == 'zinc') {
 			var ssn = '';
@@ -732,15 +727,6 @@ echo '				<div class="cell small-12"><hr></div>
 			}
 		}
 
-		// if($("#gender").val() > '') {
-		// 	var gender = $("#gender").val();
-		// }
-		// else {
-		// 	document.ALCATEL.gender.focus();
-		// 	alert("Gender is required");
-		// 	return false;
-		// }
-
 		var gender = '';
 
 		if($("#busphone").val() == '' && $("#homephone").val() == '' && $("#cellphone").val() == '') {
@@ -753,24 +739,6 @@ echo '				<div class="cell small-12"><hr></div>
 			var homephone = $("#homephone").val();
 			var cellphone = $("#cellphone").val();
 		}
-
-		// if($("#emergcontact").val() > '') {
-		// 	var emergcontact = $("#emergcontact").val();
-		// }
-		// else {
-		// 	document.ALCATEL.emergcontact.focus();
-		// 	alert("Emergency Contact is required");
-		// 	return false;
-		// }
-		//
-		// if($("#emergnumber").val() > '') {
-		// 	var emergnumber = $("#emergnumber").val();
-		// }
-		// else {
-		// 	document.ALCATEL.emergnumber.focus();
-		// 	alert("Emergency Phone Number is required");
-		// 	return false;
-		// }
 
 		var emergcontact = '';
 		var emergnumber =  '';
@@ -795,7 +763,6 @@ echo '				<div class="cell small-12"><hr></div>
 			data: { personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber,ipaddress: ipaddress },
 			datatype: "JSON",
 			success: function(valor) {
-				//alert('Valor: '+valor);
 				var obj2 = $.parseJSON(valor);
 
 				if(obj2 > '') {
@@ -877,11 +844,6 @@ echo '				<div class="cell small-12"><hr></div>
 		var busphone = $("#busphone").val();
 		var homephone = $("#homephone").val();
 		var cellphone = $("#cellphone").val();
-
-		// var gender = $("#gender").val();
-		// var emergcontact = $("#emergcontact").val();
-		// var emergnumber = $("#emergnumber").val();
-
 		var gender = '';
 		var emergcontact = '';
 		var emergnumber = '';
@@ -894,7 +856,6 @@ echo '				<div class="cell small-12"><hr></div>
 			data: { personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber, ipaddress: ipaddress },
 			datatype: "JSON",
 			success: function(valor) {
-				//alert('Valor: '+valor);
 				var obj2 = $.parseJSON(valor);
 
 				if(obj2 > '') {
