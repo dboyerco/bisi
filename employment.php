@@ -403,7 +403,7 @@ echo '	<div class="cell small-12 padding-bottom">
 					<input type="text" name="reason" id="reason" maxlength="40">
 				</div>';
 
-if($Package == "mountain") {
+if($package == "mountain") {
 	echo '<div class="cell small-12 medium-6">
 					Were you subject to FMCSA or PHMSA Safety Regulations while employed? <span class="required">*</span>
 				</div>
@@ -431,7 +431,7 @@ echo '<div class="cell small-12 padding-bottom">
 		<input type="hidden" name="empid" id="empid">
 			<input type="hidden" name="PersonID" id="PersonID" VALUE="' . $PersonID . '">
 	  	<input type="hidden" name="EmpID" id="EmpID" VALUE=" ' . $maxEmpID . '">
-	  	<input type="hidden" name="Package" id="Package" VALUE="' . $Package . '">
+	  	<input type="hidden" name="Package" id="Package" VALUE="' . $package . '">
 	  	<input type="hidden" name="nodays" ID="nodays" VALUE=" ' . $days . '">
 		</div>
 	</form>';
