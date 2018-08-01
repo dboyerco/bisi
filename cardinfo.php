@@ -130,8 +130,8 @@ echo '<div class="cell small-6 required">
 ?>
 
 	<style type="text/css">
-		#overlay {visibility: hidden; position: absolute; left: 0px; top:25%; width:100%; height:100%; text-align:center; z-index: 1000;}
-		#overlay #header {width:400px; height:5px; OVERFLOW: auto; background-color: #eee; position: absolute; right: 248px; top: 5px; border:0px; }
+		#overlay { display: none; position: absolute; left: 0px; top: 25%; width: 100%; height:100%; text-align: center; z-index: 1000; }
+		#overlay #header { width: 400px; height: 5px; OVERFLOW: auto; background-color: #eee; position: absolute; right: 248px; top: 5px; border:0px; }
 		#overlay div {width:400px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
 		#valcarddiv {visibility: hidden; position: absolute; left: 0px; top:25%; width:100%; height:100%; text-align:center; z-index: 1000;}
 		#valcarddiv div {width:300px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
@@ -283,8 +283,7 @@ echo 'var pageThanks = "' . $pageThanks . '";
 ?>
 
 	function overlayclose() {
-		el = document.getElementById("overlay");
-		el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+		$("#overlay").css("display", "none");
 	}
 
 	function contact() {
@@ -357,7 +356,7 @@ echo 'var pageThanks = "' . $pageThanks . '";
 					var tablerow = "<tr><td><font color='#000000' size='3' face='Verdana, Arial, Helvetica, sans-serif'>" + obj2 + "</font></td></tr>"
 					$("#resultInfo > tbody:last").append(tablerow);
 					$("#valcarddiv").css("visibility","hidden");
-					$("#overlay").css("visibility","visible");
+					$("#overlay").css("display", "block");
 					return false;
 				}
 				else {

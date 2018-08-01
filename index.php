@@ -1,42 +1,10 @@
 <?php
-$testLayout = true;
+$testLayout = false;
 
-//                    0         1       2           3             4             5             6               7               8           9
-$pageOrder = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
 $ipaddress = getenv("REMOTE_ADDR");
 $currentPage = 0;
 $currentPageString = "person";
 $nextPage = 1;
-$pageUnder18 = 7;
-$pageCardInfo = 8;
-$pageThanks = 9;
-
-function assignPage($p) {
-  global $pageOrder, $currentPage, $nextPage, $currentPageString;
-
-  $currentPage = $p;
-  $lenPages = count($pageOrder);
-
-  if($currentPage + 1 > $lenPages) {
-    $nextPage = $lenPages;
-  }
-  else {
-    $nextPage = $currentPage + 1;
-  }
-
-  $currentPageString = $pageOrder[$currentPage];
-}
-
-if(isSet($pg)) {
-  assignPage($pg);
-}
-else if(isSet($_GET['pg'])) {
-  $pg = $_GET['pg'];
-  assignPage($pg);
-}
-else {
-  assignPage(0);
-}
 
 if(!$testLayout) {
   require_once('../pdotriton.php');
@@ -56,11 +24,11 @@ echo '<!DOCTYPE HTML>
           <link rel="stylesheet" href="css/main.css">
           <link rel="stylesheet" href="Upload/Upload.css">
           <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+          <script src="jquery-ui/jquery-ui.js"></script>
       		<script language="JavaScript" type="text/javascript" src="../App_JS/validate.js"></script>
           <script language="JavaScript" type="text/javascript" src="../App_JS/validation.js"></script>
       		<script language="JavaScript" type="text/javascript" src="../App_JS/autoTab.js"></script>
       		<script language="JavaScript" type="text/javascript" src="../App_JS/autoFormats.js"></script>
-      		<script src="jquery-ui/jquery-ui.js"></script>
         </head>
 
         <body>';
@@ -99,6 +67,14 @@ else {
   	while($country_rows = $country_result->fetch(PDO::FETCH_BOTH)) {
   		$country_options .= '<option value="' . $country_rows[0] . '">' . $country_rows[1] . '</option>';
   	}
+
+    //if($package == "XXX") {
+      //                    0         1       2           3             4             5             6               7               8           9
+      $pageOrder = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+      $pageUnder18 = 7;
+      $pageCardInfo = 8;
+      $pageThanks = 9;
+    //}
   }
 	else {
     $compname = "Mike Test";
@@ -106,8 +82,40 @@ else {
     $package = "";
     $noemail = 'Y';
 
+    $pageOrder = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+    $pageUnder18 = 7;
+    $pageCardInfo = 8;
+    $pageThanks = 9;
+
     $state_options = '<option value="co">CO</option>';
     $country_options = '<option value="usa">USA</option>';
+  }
+
+  function assignPage($p) {
+    global $pageOrder, $currentPage, $nextPage, $currentPageString;
+
+    $currentPage = $p;
+    $lenPages = count($pageOrder);
+
+    if($currentPage + 1 > $lenPages) {
+      $nextPage = $lenPages;
+    }
+    else {
+      $nextPage = $currentPage + 1;
+    }
+
+    $currentPageString = $pageOrder[$currentPage];
+  }
+
+  if(isSet($pg)) {
+    assignPage($pg);
+  }
+  else if(isSet($_GET['pg'])) {
+    $pg = $_GET['pg'];
+    assignPage($pg);
+  }
+  else {
+    assignPage(0);
   }
 
 	if(!isset($CD)) {

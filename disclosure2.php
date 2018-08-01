@@ -118,7 +118,7 @@ echo '					<br /><br />
 							<input type="hidden" name="cd" id="cd" value="' . $CD . '">
 							<input type="hidden" name="days" id="days" value="' . $days .'">
 
-							<div name="overlay" id="overlay" style="visibility: hidden; width:300px; margin: auto auto; background-color: White; border: 5px solid #696969; border-radius:20px; position: absolute; top: 75%; left:25%; padding: 5px; text-align: center;">
+							<div name="overlay" id="overlay" style="display: none; width: 300px; margin: auto auto; background-color: White; border: 5px solid #696969; border-radius: 20px; position: absolute; padding: 5px; text-align: center;">
 								Processing data. Please Wait....<br />
 								It should take less than a minute.<br />
 							</div>
@@ -173,7 +173,7 @@ echo '					<br /><br />
 							}
 							else {
 								el = $("#savesign").css("visibilty", "hidden");
-								eldiv = $("#overlay").css("visibility", "visible");
+								eldiv = $("#overlay").css("display", "block");
 
 								console.log(nodays + " < 6570");
 								if(nodays < 6570) {

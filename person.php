@@ -380,7 +380,7 @@ echo '				<div class="cell small-12"><hr></div>
 
 		$("#Alias_dialog").dialog("option", "title", "Edit AKA");
 		$("#Alias_dialog").dialog("option", "modal", true);
-		$("#Alias_dialog").dialog("option", "width", 700);
+		$("#Alias_dialog").dialog("option", "width", "100%");
 		$("#Alias_dialog").dialog("open");
 	}
 
@@ -392,7 +392,7 @@ echo '				<div class="cell small-12"><hr></div>
 		if($("#nomi").attr('checked')) {
 			$("#NOMI_dialog").dialog("option", "title", "No Middle Initial");
 			$("#NOMI_dialog").dialog("option", "modal", true);
-			$("#NOMI_dialog").dialog("option", "width", 700);
+			$("#NOMI_dialog").dialog("option", "width", "100%");
 			$("#NOMI_dialog").dialog("open");
 		}
 	}
