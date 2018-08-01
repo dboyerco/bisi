@@ -488,7 +488,7 @@ echo '<div class="cell small-12 padding-bottom">
 			showCurrentEmployer();
 		}
 
-		$("#Employment_dialog").dialog("option", "title", "Add Address");
+		$("#Employment_dialog").dialog("option", "title", "Add Employment");
 		$("#Employment_dialog").dialog("option", "modal", true);
 		$("#Employment_dialog").dialog("option", "width", "100%");
 		$("#Employment_dialog").dialog("open");
