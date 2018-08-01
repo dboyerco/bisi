@@ -23,7 +23,7 @@ if (isset($PersonID)) {
 	echo "<input type=\"hidden\" name=\"ipaddr\" id=\"ipaddr\" value=\"$ipaddress\">";
 
 	if ($PersonID > '') {
-		$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Guarantor_Name, Guarantor_Email, Guarantor_Phone, No_Email, Pet_Info, Guarantor_Relationship from App_Person where PersonID = :PersonID;";
+		$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Emergency_Contact, Emergency_Number, No_Email, Pet_Info, Evicted, Brokelease, Nonpayment, Felony, Referred, OtherTenants from App_Person where PersonID = :PersonID;";
 		$result2 = $dbo->prepare($selectstmt);
 		$result2->bindValue(':PersonID', $PersonID);
 		if (!$result2->execute()) {
@@ -54,12 +54,16 @@ if (isset($PersonID)) {
 			$package=$row[9];
 			$compname=$row[10];
 			$gender=$row[11];
-			$guarantorname=$row[12];
-			$guarantoremail=$row[13];
-			$guarantornumber=$row[14];
-			$No_Email=$row[15];
-			$Pet_Info=$row[16];
-			$guarantorrelationship=$row[17];
+			$emergcontact=$row[12];
+			$emergnumber=$row[13];
+			$No_Email=$row[14];
+			$Pet_Info=$row[15];
+			$Evicted=$row[16];
+			$Brokelease=$row[17];
+			$Nonpayment=$row[18];
+			$Felony=$row[19];
+			$Referred=$row[20];
+			$OtherTenants=$row[21];
 			$selectstmt="Select LastName, Changed from App_Alias where PersonID = :PersonID and AliasType ='M';";
 			$result2 = $dbo->prepare($selectstmt);
 			$result2->bindValue(':PersonID', $PersonID);
@@ -80,7 +84,7 @@ if (isset($PersonID)) {
 	}
 }	
 $FormAction = "address.php?PersonID=".$PersonID;
-echo "<body bgcolor=\"#E4E8E8\" onload=\"setindexes('".$gender."')\">";
+echo "<body bgcolor=\"#E4E8E8\" onload=\"setindexes('".$gender."','".$Evicted."','".$Brokelease."','".$Nonpayment."','".$Felony."')\">";
 echo "<FORM METHOD=\"POST\" action=\"$FormAction\" NAME=\"ALCATEL\">";
 ?>
 <p><img src="files/hdspacer.gif"></p>
@@ -125,7 +129,12 @@ echo "<FORM METHOD=\"POST\" action=\"$FormAction\" NAME=\"ALCATEL\">";
 						</td>
 					</tr>';
 			}		
-		?>			
+		?>	
+		<tr>
+			<td>
+				<p><strong>Please make sure that the first and last name is as it appears on your government issued ID / SSN card etc.</strong></p>
+			</td>
+		</tr>					
 	</table>		
 <?php		
 echo '
@@ -142,7 +151,7 @@ echo '
 	<tr> 
 		<td width="15%">
 			<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-				<input name="fname" id="fname" readonly value="'.htmlspecialchars($fname).'" size="40" maxlength="40">
+				<input name="fname" id="fname" value="'.htmlspecialchars($fname).'" size="40" maxlength="40">
 			</font>
 		</td>	
 		<td width="5%">
@@ -154,7 +163,7 @@ echo '
 		</td>
 		<td width="75%">
 			<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-				<input name="lname" id="lname" readonly value="'.htmlspecialchars($lname).'" size="40" maxlength="40">
+				<input name="lname" id="lname" value="'.htmlspecialchars($lname).'" size="40" maxlength="40">
 			</font>
 		</td>
 	</tr>
@@ -309,54 +318,29 @@ echo '<table border="0" width="763" bgcolor="#E4E8E8">
 	<tr>
 		<td colspan="2"><hr></td>
 	</tr></table>';
-if ($package == 'package1') {	
+	
 echo '<table border="0" width="763" bgcolor="#E4E8E8">
 	<tr>
-		<td colspan="2"><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Guarantor Information:</font><font color="#FF0000">*</font></b></td>
+		<td colspan="2"><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Emergency Contact Information:</font></b></td>
 	</tr>
 	<tr>
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Name </font></td>
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Phone # </font></td>
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Email </font></td>
+		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Emergency Contact </font></td>
+		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Emergency Phone # </font></td>
 	</tr>
 	<tr>		
 		<td>
 			<font size="1">
-				<input name="guarantorname" type="text" id="guarantorname" value="'.htmlspecialchars($guarantorname).'" size="20" maxlength="40">
+				<input name="emergcontact" type="text" id="emergcontact" value="'.htmlspecialchars($emergcontact).'" size="20" maxlength="40">
 			</font>
 		</td>
 		<td>
 			<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-				<input name="guarantornumber" type="text" id="guarantornumber" value="'.htmlspecialchars($guarantornumber).'" size="20" maxlength="40"placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
-			</font>
-		</td>
-		<td>
-			<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-				<input name="guarantoremail" type="text" id="guarantoremail" value="'.htmlspecialchars($guarantoremail).'" size="20" maxlength="100">
+				<input name="emergnumber" type="text" id="emergnumber" value="'.htmlspecialchars($emergnumber).'" size="20" maxlength="40"placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
 			</font>
 		</td>
 	</tr>
-	<tr>
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Relationship </font></td>
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;</font></td>
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;</font></td>
-	</tr>
-	<tr>		
-		<td>
-			<font size="1">
-				<input name="guarantorrelation" type="text" id="guarantorrelation" value="'.htmlspecialchars($guarantorrelationship).'" size="20" maxlength="40">
-			</font>
-		</td>
-		<td>
-			<font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;</font>
-		</td>
-		<td>
-			<font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;</font>
-		</td>
-	</tr>
-	
 </table>';
-}
+
 echo '<table border="0" width="763" bgcolor="#E4E8E8">
 	<tr>
 		<td colspan="2"><hr></td>
@@ -364,43 +348,100 @@ echo '<table border="0" width="763" bgcolor="#E4E8E8">
 	
 echo '<table border="0" width="763" bgcolor="#E4E8E8">	
 	<tr>
-		<td width="30%">
+		<td width="20%">
 			<font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Enter an E-mail address:</b></font>';
 			if ($No_Email == 'N') {
 				echo '<font color="#FF0000">*</font>';
 			}	
 	echo '</td>
 		<td width="80%">
-			<font size="1">
+			<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
 				<input name="email" type="email" id="email" value="'.htmlspecialchars($email).'" size="30">
 			</font>
 		</td> 
-	</tr>';
-if ($package == 'package1') {	
+	</tr>
+</table>';
+echo '<table border="0" width="763" bgcolor="#E4E8E8">		
+	<tr>
+        <td colspan="2"><hr></td>
+    </tr>
+</table>';
 echo '<table border="0" width="763" bgcolor="#E4E8E8">
 	<tr>
-		<td colspan="2"><hr></td>
-	</tr></table>';
-echo '<table border="0" width="763" bgcolor="#E4E8E8"><tr>
-    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Pet Information</b></font><font color="#FF0000">*</font></td>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Have you ever been evicted?</b></font></td>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">  
+        <select name="evicted" id="evicted">
+        <option value="">-</option>
+        <option value="Y">Yes</option>
+		<option value="N">No</option>
+		</select>
+      </font></td>
+  </tr>
+<tr>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Have you ever broken a lease?</b></font></td>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">  
+        <select name="brokelease" id="brokelease">
+        <option value="">-</option>
+        <option value="Y">Yes</option>
+		<option value="N">No</option>
+		</select>
+      </font></td>
+</tr>
+<tr>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Have you ever been sued for non-payment or damages to property?</b></font></td>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">  
+        <select name="nonpayment" id="nonpayment">
+        <option value="">-</option>
+        <option value="Y">Yes</option>
+		<option value="N">No</option>
+		</select>
+      </font></td>
+  </tr>
+<tr>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Have you ever been convicted of a felony?</b></font></td>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">  
+        <select name="felony" id="felony">
+        <option value="">-</option>
+        <option value="Y">Yes</option>
+		<option value="N">No</option>
+		</select>
+      </font></td>
+  </tr>
+  <tr>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>How were you referred (newspaper ad/rental sign)?</b></font></td>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">
+      <input name="referred" id="referred" value="'.htmlspecialchars($Referred).'" size="20" maxlength="40">
+      </font></td>
   </tr>  
+</table>';
+echo '<table border="0" width="763" bgcolor="#E4E8E8">		
 	<tr>
-    	<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-    		<b>No pets without prior approval-each pet subject to a refundable pet deposit.</b></font>
-		</td>
-  	</tr></table>';
+        <td colspan="2"><hr></td>
+    </tr>
+</table>';
+echo '<table border="0" width="763" bgcolor="#E4E8E8">		
+  <tr>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b>Other persons residing with you:<font color="#FF0000">*</font></b></font></td>
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">
+      <textarea name="othertenants" id="othertenants" cols="50" rows="10" maxlength="256">'.htmlspecialchars($OtherTenants).'</textarea>
+      </font></td>
+  </tr>  
+</table>';
+echo '<table border="0" width="763" bgcolor="#E4E8E8">		
+	<tr>
+        <td colspan="2"><hr></td>
+    </tr>
+</table>';
+
 echo '<table border="0" width="763" bgcolor="#E4E8E8">
   	<tr>
-    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Most of the rental units managed by Boulder Property Management do not permit pets. If you have a pet please communicate with the representative about the availability of any housing permitting pets. 
-    	Please list all pets to include their type, weight, age, description, if house-broken and how long you have owned them. 
-    	Service Dogs: Service dogs are permitted if disclosed prior to move-in and if a tenant demonstrates that his or her dog is in fact a service animal.
-    	"Certifications", "registrations", and paraphernalia obtained from online websites are typically fraudulent and will not be accepted as evidence that a dog is a service dog.</font></td>'; 
+    <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><b> 
+    	Please list all pets to include their type, weight, age, description, if house-broken and how long you have owned them.<font color="#FF0000">*</font></b>'; 
     echo '<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">
       	<textarea name="petinfo" id="petinfo" cols="50" rows="10" maxlength="256">'.htmlspecialchars($Pet_Info).'</textarea>
       	</font></td></tr>';	
-	
 	echo'</table>';
-}	
+
 echo '<table border="0" width="763" bgcolor="#E4E8E8">		
 	<tr>
         <td colspan="2"><hr></td>
@@ -484,22 +525,43 @@ echo "<input type=\"hidden\" name=\"compname\" id=\"compname\" value=\"$compname
 				</tbody>
 			</table>
 		</div>
-	</div>
-		
+	</div>		
 </FORM>
 
 <script language="JavaScript" type="text/javascript"> 
  	$( "#Alias_dialog" ).dialog({ autoOpen: false });
 
-	function setindexes(gender) {
-//		alert('In setindexes - '+gender);
-		var gendr = document.getElementById("gender");
+	function setindexes(gender,Evicted,Brokelease,Nonpayment,Felony) {
+//		alert('In setindexes - '+Evicted+' - '+Brokelease+' - '+Nonpayment+' - '+Felony);
+//		var gendr = document.getElementById("gender");
+	
+		var evicted = document.getElementById("evicted");
+		var brokelease = document.getElementById("brokelease");
+		var nonpayment = document.getElementById("nonpayment");
+		var felony = document.getElementById("felony");
 		
-		for(var x=0;x < gendr.length; x++) {
-			if (gender == gendr.options[x].value)
-				gendr.selectedIndex = x;
+//		for(var x=0;x < gendr.length; x++) {
+//			if (gender == gendr.options[x].value)
+//				gendr.selectedIndex = x;
+//		}
+		for(var x=0;x < evicted.length; x++) {
+			if (Evicted == evicted.options[x].value)
+				evicted.selectedIndex = x;
+		}
+		for(var x=0;x < brokelease.length; x++) {
+			if (Brokelease == brokelease.options[x].value)
+				brokelease.selectedIndex = x;
+		}
+		for(var x=0;x < nonpayment.length; x++) {
+			if (Nonpayment == nonpayment.options[x].value)
+				nonpayment.selectedIndex = x;
+		}
+		for(var x=0;x < felony.length; x++) {
+			if (Felony == felony.options[x].value)
+				felony.selectedIndex = x;
 		}
 	}
+
 	function NoMI() {
 //		alert('In setindexes - '+gender);	
 		if (document.getElementById("nomi").checked) { 		
@@ -720,11 +782,10 @@ echo "<input type=\"hidden\" name=\"compname\" id=\"compname\" value=\"$compname
 		} else {	
 			if (document.getElementById("mi").value > '') {
 				var mi = document.getElementById("mi").value;	
-			} else {	
-				var mi = '';	
-//				document.ALCATEL.mi.focus();
-//				alert("Middle Initial is required");
-//				return false;
+			} else {		
+				document.ALCATEL.mi.focus();
+				alert("Middle Initial is required");
+				return false;
 			}						
 		}
 		if (document.getElementById("lname").value > '') {
@@ -763,17 +824,16 @@ echo "<input type=\"hidden\" name=\"compname\" id=\"compname\" value=\"$compname
 				document.getElementById("birthdate").value = document.getElementById("fbdate").value;				
 			}	
 		} else {		
-			var birthdate = '01/01/1960'; 
-//			document.ALCATEL.birthdate.focus();
-//			alert("Date of Birth is required");
-//			return false;
+			document.ALCATEL.birthdate.focus();
+			alert("Date of Birth is required");
+			return false;
 		}
 //		alert(birthdate);
-//		if (!isValidDOB('birthdate')) {
-//			$('#birthdate').focus();
-//			alert("Invalid Date of Birth");
-//			return false;
-//		}			
+		if (!isValidDOB('birthdate')) {
+			$('#birthdate').focus();
+			alert("Invalid Date of Birth");
+			return false;
+		}			
 		if (packagename == 'zinc') {		
 			var ssn = '';
 			if (document.getElementById("ins").value > '') {
@@ -828,14 +888,12 @@ echo "<input type=\"hidden\" name=\"compname\" id=\"compname\" value=\"$compname
 						ssn = document.getElementById("num").value;
 					}
 				}		
-			} else {	
-				var ssn = '111-11-1111';	
-//				document.ALCATEL.ssn.focus();
-//				alert("SSN is required");
-//				return false;
+			} else {		
+				document.ALCATEL.ssn.focus();
+				alert("SSN is required");
+				return false;
 			}
-		}	
-		
+		}		
 /*
 		if (document.getElementById("gender").value > '') {
 			var gender = document.getElementById("gender").value;
@@ -846,89 +904,92 @@ echo "<input type=\"hidden\" name=\"compname\" id=\"compname\" value=\"$compname
 		}	
 */		
 		var gender = '';
+		
 		if (document.getElementById("busphone").value == '' && document.getElementById("homephone").value == '' && 
 			document.getElementById("cellphone").value == '') {
-			var homephone = '123 456-7890'
-			var busphone = '';
-			var cellphone = '';
-			
-//			document.ALCATEL.busphone.focus();
-//			alert("Please enter at least one contact phone number");
-//			return false;
+			document.ALCATEL.busphone.focus();
+			alert("Please enter at least one contact phone number");
+			return false;
 		} else {		
 			var busphone = document.getElementById("busphone").value;
 			var homephone = document.getElementById("homephone").value;
 			var cellphone = document.getElementById("cellphone").value;
 		}	
-		if (packagename == 'package1') {
-			if (document.getElementById("guarantorname").value > '') {
-				var guarantorname = document.getElementById("guarantorname").value;
-			} else {		
-				var guarantorname = ''
-//				document.ALCATEL.guarantorname.focus();
-//				alert("Guarantor Name is required");
-//				return false;
-			}	
-			if (document.getElementById("guarantornumber").value > '') {
-				var guarantornumber = document.getElementById("guarantornumber").value;
-			} else {		
-				var guarantornumber = '';
-//				document.ALCATEL.guarantornumber.focus();
-//				alert("Guarantor Phone Number is required");
-//				return false;
-			}	
-			if (document.getElementById("guarantoremail").value > '') {
-				var guarantoremail = document.getElementById("guarantoremail").value;
-			} else {		
-				var guarantoremail = '';			
-//				document.ALCATEL.guarantoremail.focus();
-//				alert("Guarantor Email is required");
-//				return false;
-			}	
-			if (document.getElementById("guarantorrelation").value > '') {
-				var guarantorrelation = document.getElementById("guarantorrelation").value;
-			} else {		
-				var guarantorrelation = '';
-//				document.ALCATEL.guarantorrelation.focus();
-//				alert("Guarantor Relationship is required");
-//				return false;
-			}	
-			if (document.getElementById("petinfo").value > '') {
-				var petinfo = document.getElementById("petinfo").value;
-			} else {		
-				var petinfo = '';
-//				document.ALCATEL.guarantoremail.focus();
-//				alert("Pet Information is required. Put N/A if you don't have any pets");
-//				return false;
-			}	
-		} else {
-			var guarantorname = '';
-			var guarantornumber = '';
-			var guarantoremail = '';
-			var guarantorrelation = '';
-			var petinfo = '';
-		}
 		
-		var emergcontact = '';
-		var emergnumber =  '';
+		var emergcontact = document.getElementById("emergcontact").value;
+		var emergnumber = document.getElementById("emergnumber").value;
+		
+//		var emergcontact = '';
+//		var emergnumber =  '';
 		
 		if (document.getElementById("noemail").value == 'N') {
 			if (document.getElementById("email").value > '') {
 				var email = document.getElementById("email").value;
 			} else {		
-				var email = '';
-//				document.ALCATEL.email.focus();
-//				alert("Email Address is required");
-//				return false;
+				document.ALCATEL.email.focus();
+				alert("Email Address is required");
+				return false;
 			}	
 		} else {
 			var email = document.getElementById("email").value;
 		}	
+		if (document.getElementById("petinfo").value > '') {
+			var petinfo = document.getElementById("petinfo").value;
+		} else {		
+			document.ALCATEL.petinfo.focus();
+			alert("Pet Information is required. Put None if you don't have any pets");
+			return false;
+		}	
+		if (document.getElementById("evicted").value > '') {
+			var evicted = document.getElementById("evicted").value;
+		} else {		
+			var evicted = '';
+//			document.ALCATEL.evicted.focus();
+//			alert("Have you ever been Evicted is required.");
+//			return false;
+		}	
+		if (document.getElementById("brokelease").value > '') {
+			var brokelease = document.getElementById("brokelease").value;
+		} else {		
+			var brokelease = '';
+//			document.ALCATEL.brokelease.focus();
+//			alert("Have you ever been broken a lease is required.");
+//			return false;
+		}	
+		if (document.getElementById("nonpayment").value > '') {
+			var nonpaymt = document.getElementById("nonpayment").value;
+		} else {		
+			var nonpaymt = '';
+//			document.ALCATEL.nonpayment.focus();
+//			alert("Have you ever been sued for Non-payment/Damages of rent is required.");
+//			return false;
+		}	
+		if (document.getElementById("felony").value > '') {
+			var felony = document.getElementById("felony").value;
+		} else {		
+			var felony = '';
+//			document.ALCATEL.felony.focus();
+//			alert("Have you ever been convicted of a felony is required.");
+//			return false;
+		}	
+		if (document.getElementById("referred").value > '') {
+			var referred = document.getElementById("referred").value;
+		} else {		
+			var referred = '';
+		}	
+		if (document.getElementById("othertenants").value > '') {
+			var othertenants = document.getElementById("othertenants").value;
+		} else {		
+			$("#othertenants").focus();
+			alert("Other persons residing with you is required. Put None if there will not be others residing with you");
+			return false;
+		}	
+
 		
 		$.ajax({
 			type: "POST",
 			url: "../App_Ajax/ajax_add_person.php", 
-			data: {personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber,ipaddress: ipaddress, guarantorname: guarantorname, guarantornumber: guarantornumber, guarantoremail: guarantoremail, petinfo: petinfo, guarantorrelation: guarantorrelation},
+			data: {personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber,ipaddress: ipaddress, petinfo: petinfo, evicted: evicted, brokelease: brokelease, nonpaymt: nonpaymt, felony: felony, referred: referred, othertenants: othertenants},
 			datatype: "JSON",
 			success: function(valor) {
 //				alert('Valor: '+valor);
@@ -937,19 +998,7 @@ echo "<input type=\"hidden\" name=\"compname\" id=\"compname\" value=\"$compname
 					alert(obj2);
 					return false; 
 				} else {
-					switch(packagename) {
-						case 'package1':
-			 				window.location ='bank.php?PersonID='+personid;	
-							break;
-						case 'package2':
-		 					window.location ='dmv.php?PersonID='+personid;	
-		 					break;
-		 				case 'package3':	
-		 					window.location ='address.php?PersonID='+personid;	
-		 					break;
-					
-		 			}	
-
+		 			window.location ='dmv.php?PersonID='+personid;	
 				}	
 			},	
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1013,34 +1062,28 @@ echo "<input type=\"hidden\" name=\"compname\" id=\"compname\" value=\"$compname
 		var busphone = document.getElementById("busphone").value;
 		var homephone = document.getElementById("homephone").value;
 		var cellphone = document.getElementById("cellphone").value;	
-/*
-		var gender = document.getElementById("gender").value;
+
+//		var gender = document.getElementById("gender").value;
 		var emergcontact = document.getElementById("emergcontact").value;
 		var emergnumber = document.getElementById("emergnumber").value;
-*/
-		if (packagename == 'package1') {
-			var guarantorname = document.getElementById("guarantorname").value;
-			var guarantornumber = document.getElementById("guarantornumber").value;
-			var guarantoremail = document.getElementById("guarantoremail").value;
-			var guarantorrelation = document.getElementById("guarantorrelation").value;
-			var petinfo = document.getElementById("petinfo").value;
-		} else {
-			var guarantorname = '';
-			var guarantornumber = '';
-			var guarantoremail = '';
-			var guarantorrelation = '';
-			var petinfo = '';		
-		}	
+
 		var gender = '';
-		var emergcontact = '';
-		var emergnumber = '';
+//		var emergcontact = '';
+//		var emergnumber = '';
 
 		var email = document.getElementById("email").value;
+		var petinfo = document.getElementById("petinfo").value;
+		var evicted = document.getElementById("evicted").value;
+		var brokelease = document.getElementById("brokelease").value;
+		var nonpaymt =  document.getElementById("nonpayment").value;
+		var felony = document.getElementById("felony").value;
+		var referred = document.getElementById("referred").value;
+		var othertenants = document.getElementById("othertenants").value;
 		
 		$.ajax({
 			type: "POST",
 			url: "../App_Ajax/ajax_add_person.php", 
-			data: {personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber, ipaddress: ipaddress, guarantorname: guarantorname, guarantornumber: guarantornumber, guarantoremail: guarantoremail, petinfo: petinfo, guarantorrelation: guarantorrelation},
+			data: {personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber, ipaddress: ipaddress, petinfo: petinfo, evicted: evicted, brokelease: brokelease, nonpaymt: nonpaymt, felony: felony, referred: referred, othertenants: othertenants},
 			datatype: "JSON",
 			success: function(valor) {
 //				alert('Valor: '+valor);
