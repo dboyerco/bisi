@@ -1,5 +1,5 @@
 <?php
-$testLayout = false;
+$testLayout = true;
 
 $ipaddress = getenv("REMOTE_ADDR");
 $currentPage = 0;

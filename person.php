@@ -35,16 +35,20 @@ if(isSet($PersonID)) {
 
 				if($row[3] == '1900-01-01') {
 					$birthdate = "";
+					$masked_birthdate = "";
 				}
 				else {
 					$birthdate = date("m/d/Y", strtotime($row[3]));
+					//$masked_birthdate = date("m/d/", strtotime($row[3])) + "XXXX";
+					$dateVals = split("-", $row[3]);
+					$masked_birthdate = $dateVals[1] . "/" . $dateVals[2] . "/XXXX";
 				}
 
 				if($row[4] == '') {
 					$ssn = "";
 				}
 				else {
-					$ssn = "XXX-XX-" . substr($row[4], 7);
+					$ssn = "XXX-XX-" . substr($row[4], 8);
 				}
 
 				$num = $row[4];
@@ -226,7 +230,8 @@ echo '						</tbody>
 							<div class="cell small-6 medium-3">
 								<label>
 									Date of Birth <span class="required">*</span>
-									<input type="date" name="birthdate" maxlength="10" id="birthdate" placeholder="mm/dd/yyyy" value="' . $birthdate . '" onKeyUp="return frmtdate(this,\'up\')">
+									' . ($birthdate != "" ? '<input type="text" name="birthdate" id="birthdate" placeholder="mm/dd/yyyy" value="' . $masked_birthdate . '">' : '<input type="date" name="birthdate" id="birthdate" placeholder="mm/dd/yyyy" value="">') . '
+									<input type="hidden" name="fbdate" id="fbdate" value="' . $birthdate . '">
 								</label>
 							</div>
 							<div class="cell small-6 medium-3">
@@ -307,7 +312,6 @@ echo '				<div class="cell small-12"><hr></div>
 
 						<input type="hidden" name="AliasID" id="AliasID">
 						<input type="hidden" name="num" id="num" value="' . $num . '">
-						<input type="hidden" name="fbdate" id="fbdate" value="' . $birthdate . '">
 						<input type="hidden" name="package" id="package" value=" ' . $package . '">
 						<input type="hidden" name="noemail" id="noemail" value="' . $No_Email . '">
 						<input type="hidden" name="compname" id="compname" value="' . $compname . '">
