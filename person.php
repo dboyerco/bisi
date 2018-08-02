@@ -272,19 +272,19 @@ echo '				<div class="cell small-12"><hr></div>
 							<div class="cell small-12 medium-3">
 								<label>
 									Business Phone<br />
-									<input type="tel" name="busphone" id="busphone" value="' . htmlspecialchars($busphone) . '" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtbphone(this,\'up\')">
+									<input type="tel" name="busphone" id="busphone" value="' . htmlspecialchars($busphone) . '" maxlength="40" placeholder="### ### ####" onKeyUp="return frmtbphone(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								<label>
 									Home Phone<br />
-									<input type="tel" name="homephone" id="homephone" value="' . htmlspecialchars($homephone) . '" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+									<input type="tel" name="homephone" id="homephone" value="' . htmlspecialchars($homephone) . '" maxlength="40" placeholder="### ### ####" onKeyUp="return frmtphone(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								<label>
 									Cell Phone<br />
-									<input type="tel" name="cellphone" id="cellphone" value="' . htmlspecialchars($cellphone) . '" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+									<input type="tel" name="cellphone" id="cellphone" value="' . htmlspecialchars($cellphone) . '" maxlength="40" placeholder="### ### ####" onKeyUp="return frmtphone(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell medium-3"></div>
