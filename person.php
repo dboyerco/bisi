@@ -595,7 +595,7 @@ echo '				<div class="cell small-12"><hr></div>
 			return false;
 		}
 
-		if($("#nomi").checked) {
+		if($("#nomi").is(':checked')) {
 			var mi = '';
 		}
 		else {
