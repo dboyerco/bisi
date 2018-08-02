@@ -590,7 +590,7 @@ echo '				<div class="cell small-12"><hr></div>
 			var fname = $("#fname").val();
 		}
 		else {
-			document.ALCATEL.fname.focus();
+			$("#fname").focus();
 			alert("First Name is required");
 			return false;
 		}
@@ -603,7 +603,7 @@ echo '				<div class="cell small-12"><hr></div>
 				var mi = $("#mi").val();
 			}
 			else {
-				document.ALCATEL.mi.focus();
+				$("#mi").focus();
 				alert("Middle Initial is required");
 				return false;
 			}
@@ -613,7 +613,7 @@ echo '				<div class="cell small-12"><hr></div>
 			var lname = $("#lname").val();
 		}
 		else {
-			document.ALCATEL.lname.focus();
+			$("#lname").focus();
 			alert("Last Name is required");
 			return false;
 		}
@@ -627,7 +627,7 @@ echo '				<div class="cell small-12"><hr></div>
 
 		if($("#namechg").val() == '') {
 			if(maiden > '') {
-				document.ALCATEL.namechg.focus();
+				$("#namechg").focus();
 				alert("Date Maiden Name Changed is required");
 				return false;
 			}
@@ -714,7 +714,7 @@ echo '				<div class="cell small-12"><hr></div>
 				var ssn = $("#ssn").val();
 
 				if(ssn.length < 11) {
-					document.ALCATEL.ssn.focus();
+					$("#ssn").focus();
 					alert("Invalid SSN - Require format ###-##-####");
 					return false;
 				}
@@ -725,16 +725,15 @@ echo '				<div class="cell small-12"><hr></div>
 				}
 			}
 			else {
-				document.ALCATEL.ssn.focus();
+				$("#ssn").focus();
 				alert("SSN is required");
 				return false;
 			}
 		}
-
 		var gender = '';
 
 		if($("#busphone").val() == '' && $("#homephone").val() == '' && $("#cellphone").val() == '') {
-			document.ALCATEL.busphone.focus();
+			$("#busphone").focus();
 			alert("Please enter at least one contact phone number");
 			return false;
 		}
@@ -752,7 +751,7 @@ echo '				<div class="cell small-12"><hr></div>
 				var email = $("#email").val();
 			}
 			else {
-				document.ALCATEL.email.focus();
+				$("#email").focus();
 				alert("Email Address is required");
 				return false;
 			}
