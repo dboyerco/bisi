@@ -48,7 +48,7 @@ if(isSet($PersonID)) {
 					$ssn = "";
 				}
 				else {
-					$ssn = "XXX-XX-" . substr($row[4], 8);
+					$ssn = "XXX-XX-" . substr($row[4], 7);
 				}
 
 				$num = $row[4];
