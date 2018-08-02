@@ -438,7 +438,15 @@ echo '				<div class="cell small-12 medium-6">
 			return;
 		}
 
-		var edugraduated = $("#edugraduated").val();
+		if ($("#edugraduated").val() > '') {
+			var edugraduated = $("#edugraduated").val();
+		} 
+		else {
+			$("#edugraduated").focus();
+			alert("Did you graduate is required");
+			return;
+		}
+
 		var eduhighest = $("#eduhighest").val();
 
 		var data = {
