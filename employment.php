@@ -351,21 +351,21 @@ echo '	<div class="cell small-12 padding-bottom">
 					Phone <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="text" text="number" name="empphone" id="empphone" value="" placeholder="### ### #### #####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+					<input type="text" text="number" name="empphone" id="empphone" value="" placeholder="### ### #### #####" onKeyUp="return frmtphone(this,\'up\')">
 				</div>
 
 				<div class="cell small-12 medium-6">
 					From Date <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="date" name="empfromdate" id="empfromdate" maxlength="10" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
+					<input type="date" name="empfromdate" id="empfromdate" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
 				</div>
 
 				<div class="cell small-12 medium-6">
 					To Date <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="date" name="emptodate" id="emptodate" maxlength="10" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
+					<input type="date" name="emptodate" id="emptodate" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
 				</div>
 
 				<div class="cell small-12 medium-6">
@@ -386,7 +386,7 @@ echo '	<div class="cell small-12 padding-bottom">
 					Supervisor Phone <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="text" text="number" name="sphone" id="sphone" placeholder="### ### #### #####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+					<input type="text" text="number" name="sphone" id="sphone" placeholder="### ### #### #####" onKeyUp="return frmtphone(this,\'up\')">
 				</div>
 
 				<div class="cell small-12 medium-6">
