@@ -23,7 +23,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 							<div class="cell small-12">
 								<span class="sub-heading">Employment History</span><br>
-								Please provide your current and most recent 3 employments or 7 years of employments.<br />&nbsp;
+								Please provide your current and most recent 3 employments or 7 years of employment.<br />&nbsp;
 							</div>';
 
 $currentEmployer = 'N';
