@@ -105,9 +105,12 @@ echo '<form method="POST" action="index.php?pg=' . $nextPage . '&PersonID=' . $P
 							</div>
 
 							<div class="cell small-12">
-								<span class="sub-heading">Subject Information</span><br>
-								<strong>Disclaimer: </strong>All information requested in this application is pertinent and necessary. Not filling out all information can delay the hiring process.<br>';
-
+								<span class="sub-heading">Subject Information</span><br>';
+								if ($etype == 'T') {
+									echo '<strong>Disclaimer: </strong>All information requested in this application is pertinent and necessary. Not filling out all information can delay the tenant process.<br>';
+								} else {
+									echo '<strong>Disclaimer: </strong>All information requested in this application is pertinent and necessary. Not filling out all information can delay the hiring process.<br>';
+								}
 if($No_Email == 'N') {
 	echo '				<strong>Note: </strong>You can return to this Application Portal at any time by clicking on the link in the email that was sent to you. All the data you have saved will be displayed when you return.<br>';
 }
