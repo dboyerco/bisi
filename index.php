@@ -50,6 +50,7 @@ else {
     $package = $dbo->query("Select Package from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
     $codeid = $dbo->query("Select CodeID from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
     $noemail = $dbo->query("Select No_Email from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
+    $etype = $dbo->query("Select Email_Type from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
 
     // states & countries (almost all forms use this)
   	$state_result = $dbo->prepare("Select Name, Abbrev from State order by Name");
