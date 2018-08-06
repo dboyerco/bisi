@@ -22,6 +22,8 @@ if (isset($PersonID)) {
 	echo "<input type=\"hidden\" name=\"PersonID\" id=\"PersonID\" value=\"$PersonID\">";
 	echo "<input type=\"hidden\" name=\"ipaddr\" id=\"ipaddr\" value=\"$ipaddress\">";
 
+	$etype = $dbo->query("Select Email_Type from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
+
 	if ($PersonID > '') {
 		$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Emergency_Contact, Emergency_Number, No_Email, Pet_Info, Evicted, Brokelease, Nonpayment, Felony, Referred, OtherTenants from App_Person where PersonID = :PersonID;";
 		$result2 = $dbo->prepare($selectstmt);
@@ -117,8 +119,15 @@ echo "<FORM METHOD=\"POST\" action=\"$FormAction\" NAME=\"ALCATEL\">";
 		</tr>
 		<tr>
 			<td>	
-				<p><font face="Verdana, Arial, Helvetica, sans-serif"><strong>Disclaimer: </strong>All information requested in this application 
-  					is pertinent and necessary. Not filling out all information can delay the hiring process.</font></p>
+				<?php
+					if ($etype == 'T') {
+						echo '<p><font face="Verdana, Arial, Helvetica, sans-serif"><strong>Disclaimer: </strong>All information requested in this application 
+  						is pertinent and necessary. Not filling out all information can delay the tenant process.</font></p>';
+					} else {
+						echo '<p><font face="Verdana, Arial, Helvetica, sans-serif"><strong>Disclaimer: </strong>All information requested in this application 
+  						is pertinent and necessary. Not filling out all information can delay the hiring process.</font></p>';
+  					}
+  				?>	
 			</td>
 		</tr>
 		<?php

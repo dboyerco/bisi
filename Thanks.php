@@ -496,7 +496,7 @@ if($noemail == 'N' || $noemail == 'S') {
 #	$hellobody .= '<tr><td>&nbsp;</td></tr>';
 	$hellobody .= '<tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">If you have questions or need assistance, please contact us at <a href="mailto:service@bisi.com">Service@BISI.com</a> or 800-433-6010. We are in the office Monday - Friday, 8:00am - 5:00 pm MT.</span></td></tr>';
 	$hellobody .= '<tr><td>&nbsp;</td></tr>';
-	$hellobody .= '<tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">Thank you!</span></td></tr>';
+	$hellobody .= '<tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">Thank you!!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$PersonID.'</span></td></tr>';
 	$hellobody .= '</table></body></html>';
 	$header = "Bcc: Dennis Boyer <dennis.boyer@bisi.com>\r\n";
 	$header .= "From: ".$hellofrom. "\r\n";

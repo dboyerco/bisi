@@ -48,7 +48,7 @@ if(isSet($PersonID)) {
 					$ssn = "";
 				}
 				else {
-					$ssn = "XXX-XX-" . substr($row[4], 8);
+					$ssn = "XXX-XX-" . substr($row[4], 7);
 				}
 
 				$num = $row[4];
@@ -105,9 +105,12 @@ echo '<form method="POST" action="index.php?pg=' . $nextPage . '&PersonID=' . $P
 							</div>
 
 							<div class="cell small-12">
-								<span class="sub-heading">Subject Information</span><br>
+								<span class="sub-heading">Subject Information</span><br>';
+								if ($etype == 'T') {
 								<strong>Disclaimer: </strong>All information requested in this application is pertinent and necessary. Failure to fill out all information can delay the hiring process.<br>';
-
+								} else {
+									echo '<strong>Disclaimer: </strong>All information requested in this application is pertinent and necessary. Not filling out all information can delay the hiring process.<br>';
+								}
 if($No_Email == 'N') {
 	echo '				<strong>Note: </strong>You can return to this Application Portal at any time by clicking on the link in the email that was sent to you. All the data you have saved will be displayed when you return.<br>';
 }
@@ -272,19 +275,19 @@ echo '				<div class="cell small-12"><hr></div>
 							<div class="cell small-12 medium-3">
 								<label>
 									Business Phone<br />
-									<input type="tel" name="busphone" id="busphone" value="' . htmlspecialchars($busphone) . '" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtbphone(this,\'up\')">
+									<input type="tel" name="busphone" id="busphone" value="' . htmlspecialchars($busphone) . '" maxlength="40" placeholder="### ### ####" onKeyUp="return frmtbphone(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								<label>
 									Home Phone<br />
-									<input type="tel" name="homephone" id="homephone" value="' . htmlspecialchars($homephone) . '" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+									<input type="tel" name="homephone" id="homephone" value="' . htmlspecialchars($homephone) . '" maxlength="40" placeholder="### ### ####" onKeyUp="return frmtphone(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell small-12 medium-3">
 								<label>
 									Cell Phone<br />
-									<input type="tel" name="cellphone" id="cellphone" value="' . htmlspecialchars($cellphone) . '" maxlength="40" placeholder="### ### ####" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtphone(this,\'up\')">
+									<input type="tel" name="cellphone" id="cellphone" value="' . htmlspecialchars($cellphone) . '" maxlength="40" placeholder="### ### ####" onKeyUp="return frmtphone(this,\'up\')">
 								</label>
 							</div>
 							<div class="cell medium-3"></div>
@@ -590,12 +593,12 @@ echo '				<div class="cell small-12"><hr></div>
 			var fname = $("#fname").val();
 		}
 		else {
-			document.ALCATEL.fname.focus();
+			$("#fname").focus();
 			alert("First Name is required");
 			return false;
 		}
 
-		if($("#nomi").checked) {
+		if($("#nomi").is(':checked')) {
 			var mi = '';
 		}
 		else {
@@ -603,7 +606,7 @@ echo '				<div class="cell small-12"><hr></div>
 				var mi = $("#mi").val();
 			}
 			else {
-				document.ALCATEL.mi.focus();
+				$("#mi").focus();
 				alert("Middle Initial is required");
 				return false;
 			}
@@ -613,7 +616,7 @@ echo '				<div class="cell small-12"><hr></div>
 			var lname = $("#lname").val();
 		}
 		else {
-			document.ALCATEL.lname.focus();
+			$("#lname").focus();
 			alert("Last Name is required");
 			return false;
 		}
@@ -627,7 +630,7 @@ echo '				<div class="cell small-12"><hr></div>
 
 		if($("#namechg").val() == '') {
 			if(maiden > '') {
-				document.ALCATEL.namechg.focus();
+				$("#namechg").focus();
 				alert("Date Maiden Name Changed is required");
 				return false;
 			}
@@ -714,7 +717,7 @@ echo '				<div class="cell small-12"><hr></div>
 				var ssn = $("#ssn").val();
 
 				if(ssn.length < 11) {
-					document.ALCATEL.ssn.focus();
+					$("#ssn").focus();
 					alert("Invalid SSN - Require format ###-##-####");
 					return false;
 				}
@@ -725,16 +728,15 @@ echo '				<div class="cell small-12"><hr></div>
 				}
 			}
 			else {
-				document.ALCATEL.ssn.focus();
+				$("#ssn").focus();
 				alert("SSN is required");
 				return false;
 			}
 		}
-
 		var gender = '';
 
 		if($("#busphone").val() == '' && $("#homephone").val() == '' && $("#cellphone").val() == '') {
-			document.ALCATEL.busphone.focus();
+			$("#busphone").focus();
 			alert("Please enter at least one contact phone number");
 			return false;
 		}
@@ -752,7 +754,7 @@ echo '				<div class="cell small-12"><hr></div>
 				var email = $("#email").val();
 			}
 			else {
-				document.ALCATEL.email.focus();
+				$("#email").focus();
 				alert("Email Address is required");
 				return false;
 			}

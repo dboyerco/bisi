@@ -211,14 +211,14 @@ echo '				<div class="cell small-12 medium-6">
 								Attended From <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<input type="date" name="edufromdate" id="edufromdate" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="date" name="edufromdate" id="edufromdate" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
 							</div>
 
 							<div class="cell small-12 medium-6">
 								Attended To <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<input type="date" name="edutodate" id="edutodate" placeholder="mm/dd/yyyy" onkeypress="return numericOnly(event,this);" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="date" name="edutodate" id="edutodate" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
 							</div>
 
 							<div class="cell small-12 medium-6">
@@ -438,7 +438,15 @@ echo '				<div class="cell small-12 medium-6">
 			return;
 		}
 
-		var edugraduated = $("#edugraduated").val();
+		if ($("#edugraduated").val() > '') {
+			var edugraduated = $("#edugraduated").val();
+		} 
+		else {
+			$("#edugraduated").focus();
+			alert("Did you graduate is required");
+			return;
+		}
+
 		var eduhighest = $("#eduhighest").val();
 
 		var data = {
