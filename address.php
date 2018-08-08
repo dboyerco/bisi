@@ -393,7 +393,7 @@ echo '				<div class="cell medium-6 small-12">
 			saveLocation = "../App_Ajax_New/ajax_save_address.php";
 		}
 
-		if($("#current").val() == 'N') {
+		if($("#current").val() == 'Y') {
 			var current_address = $("#current").val();
 		}
 		else {
