@@ -42,16 +42,8 @@ if(!$testLayout) {
 			if($row[9] == 'Y') {
 				$highestdegree = 'Y';
 
-				echo '<div class="cell small-8">
+				echo '<div class="cell small-12">
 								<h3>Highest Degree</h3>
-							</div>
-							<div class="cell small-4 right">
-								<span class="add-education"><img class="icon" src="images/plus.png" alt="Add Education" title="Add Education"/></span>
-							</div>';
-			}
-			else if($i == 0) {
-				echo '<div class="cell small-12 right">
-								<span class="add-education"><img class="icon" src="images/plus.png" alt="Add Education" title="Add Education"/></span>
 							</div>';
 			}
 
@@ -108,11 +100,8 @@ if(!$testLayout) {
 else {
 	$maxEduID = 1;
 
-	echo '			<div class="cell small-8">
+	echo '			<div class="cell small-12">
 								<h3>Highest Degree</h3>
-							</div>
-							<div class="cell small-4 right">
-								<span class="add-education"><img class="icon" src="images/plus.png" alt="Add Education" title="Add Education"/></span>
 							</div>
 
 							<div class="cell small-12 medium-11">
@@ -148,7 +137,14 @@ else {
 							</div>';
 }
 
-echo '				<div class="cell small-12 padding-bottom">
+echo '				<div class="cell small-12">
+								<span class="add-education add-button"><img class="icon" src="images/plus.png" alt="Add Education" title="Add Education"/> Add Education</span>
+							</div>
+							<div class="cell small-12">
+								<hr>
+							</div>
+
+							<div class="cell small-12 padding-bottom">
 								<input class="float-center" type="submit" value="Next">
 							</div>
 						</div>
@@ -440,7 +436,7 @@ echo '				<div class="cell small-12 medium-6">
 
 		if ($("#edugraduated").val() > '') {
 			var edugraduated = $("#edugraduated").val();
-		} 
+		}
 		else {
 			$("#edugraduated").focus();
 			alert("Did you graduate is required");

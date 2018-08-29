@@ -15,12 +15,9 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 								</h3>
 							</div>
 
-							<div class="cell small-8">
+							<div class="cell small-12">
 								<span class="sub-heading">Driver License Information</span><br>
 								List all your driver licenses.<br />&nbsp;
-							</div>
-							<div class="cell small-4 right">
-								<span class="add-dmv"><img class="icon" src="images/plus.png" alt="Add License" title="Add License"/></span>
 							</div>';
 
 $currentDMV = 'N';
@@ -89,6 +86,13 @@ else {
 }
 
 echo '				<div class="cell small-12">
+								<span class="add-dmv add-button"><img class="icon" src="images/plus.png" alt="Add License" title="Add License"/> Add License</span>
+							</div>
+							<div class="cell small-12">
+								<hr>
+							</div>
+
+							<div class="cell small-12">
 								<input class="float-center" type="submit" value="Next">
 							</div>
 						</div>

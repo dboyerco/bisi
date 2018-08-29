@@ -45,11 +45,8 @@ if(!$testLayout) {
 			if($row[16] == 'Y') {
 				$currentEmployer = 'Y';
 
-				echo '<div class="cell small-8">
+				echo '<div class="cell small-12">
 								<h3>Current Employment</h3>
-							</div>
-							<div class="cell small-4 right">
-								<span class="add-employment"><img class="icon" src="images/plus.png" alt="Add Employment" title="Add Employment"/></span>
 							</div>
 
 							<div class="cell small-12 medium-3">
@@ -59,11 +56,6 @@ if(!$testLayout) {
 								' . ($row[15] == "Y" ? "Yes" : "No") . '
 							</div>
 							<div class="cell small-12 medium-6"></div>';
-			}
-			else if($i == 0) {
-				echo '<div class="cell small-12 right">
-								<span class="add-employment"><img class="icon" src="images/plus.png" alt="Add Employment" title="Add Employment" /></span>
-							</div>';
 			}
 
 			echo '<div class="cell small-12 medium-3">
@@ -178,11 +170,8 @@ if(!$testLayout) {
 	}
 } // end if(!$testLayout))
 else {
-	echo '<div class="cell small-8">
+	echo '<div class="cell small-12">
 					<h3>Current Employment</h3>
-				</div>
-				<div class="cell small-4 right">
-					<span class="add-employment"><img class="icon" src="images/plus.png" alt="Add Employment" title="Add Employment"/></span>
 				</div>
 
 				<div class="cell small-12 medium-3">
@@ -268,7 +257,14 @@ else {
 				</div>';
 }
 
-echo '	<div class="cell small-12 padding-bottom">
+echo '	<div class="cell small-12">
+					<span class="add-employment add-button"><img class="icon" src="images/plus.png" alt="Add Employment" title="Add Employment"/> Add Employment</span>
+				</div>
+				<div class="cell small-12">
+					<hr>
+				</div>
+
+			<div class="cell small-12 padding-bottom">
 					<input class="float-center" type="submit" value="Next">
 				</div>
 			</div>

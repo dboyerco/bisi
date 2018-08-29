@@ -5170,13 +5170,16 @@ body {
     .login-display {
       font-size: 12pt; } }
 
-h3 {
+h3, .add-button {
   color: #00248E;
   margin-top: 0px;
   margin-bottom: 0px;
   font-size: 1rem;
   font-weight: bold;
   font-family: arial,helvetica,sans-serif; }
+
+.add-button {
+  cursor: pointer; }
 
 .general-page {
   width: 100%;

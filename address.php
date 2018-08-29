@@ -66,22 +66,17 @@ if(!$testLayout) {
 			}
 
 			if($row[10] == 'Y') {
+				$addressType = "Current";
 				$currentaddress = $row[10];
+			}
+			else {
+				$addressType = "Additional";
+			}
 
-				echo '<div class="cell small-8">
-								<h3>Current Address</h3>
+			echo '	<div class="cell small-12">
+								<h3>' . $addressType . ' Address</h3>
 							</div>
-							<div class="cell small-4 right">
-								<span class="add-address"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
-							</div>';
-			}
-			else if($i == 0) {
-				echo '<div class="cell small-12 right">
-								<span class="add-address"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
-							</div>';
-			}
-
-			echo '	<div class="cell small-6 sub-heading">
+							<div class="cell small-6 sub-heading">
 								&nbsp;' . htmlspecialchars($fromdate) . '&nbsp;&nbsp;-&nbsp;&nbsp;' . htmlspecialchars($todate) . '
 							</div>
 							<div class="cell small-6 right">
@@ -139,11 +134,8 @@ else {
 	$maxAddrID = 0;
 	$days = 2557;
 
-	echo '			<div class="cell small-8">
+	echo '			<div class="cell small-12">
 								<h3>Current Address</h3>
-							</div>
-							<div class="cell small-4 right">
-								<span class="add-address"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address"/></span>
 							</div>
 
 							<div class="cell small-6 sub-heading">
@@ -173,6 +165,13 @@ else {
 								<hr>
 							</div>';
 }
+
+echo '				<div class="cell small-12">
+								<span class="add-address add-button"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address" /> Add Address</span>
+							</div>
+							<div class="cell small-12">
+								<hr>
+							</div>';
 
 if($days >= 2557) {
 	echo '			<div class="cell small-12">
@@ -386,18 +385,11 @@ echo '				<div class="cell medium-6 small-12">
 		var personid = $("#PersonID").val();
 		var pname = $("#package").val();
 		var addrid = $("#addrid").val();
-
+		var current_address = $("#current").val();
 		var saveLocation = "../App_Ajax_New/ajax_add_address.php";
 
 		if(addrid > 0) {
 			saveLocation = "../App_Ajax_New/ajax_save_address.php";
-		}
-
-		if($("#current").val() == 'N') {
-			var current_address = $("#current").val();
-		}
-		else {
-			var current_address = 'N';
 		}
 
 		if($("#addr1").val() > '') {
