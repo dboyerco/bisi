@@ -628,8 +628,6 @@ echo '				<div class="cell medium-6 small-12">
 	}
 
 	function deleteaddr(AddrID) {
-		alert("In deleteaddr");
-
 		if(confirm('Are you sure you want to delete this address?')) {
 			var personid = $("#PersonID").val();
 
