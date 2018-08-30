@@ -130,10 +130,10 @@ echo '<div class="cell small-6 required">
 ?>
 
 	<style type="text/css">
-		#overlay { display: none; position: absolute; left: 0px; top: 25%; width: 100%; height:100%; text-align: center; z-index: 1000; }
+		#overlay { display: none; position: absolute; left: 0px; top: 90%; width: 100%; height:100%; text-align: center; z-index: 1000; }
 		#overlay #header { width: 400px; height: 5px; OVERFLOW: auto; background-color: #eee; position: absolute; right: 248px; top: 5px; border:0px; }
 		#overlay div {width:400px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
-		#valcarddiv {visibility: hidden; position: absolute; left: 0px; top:25%; width:100%; height:100%; text-align:center; z-index: 1000;}
+		#valcarddiv {visibility: hidden; position: absolute; left: 0px; top:85%; width:100%; height:100%; text-align:center; z-index: 1000;}
 		#valcarddiv div {width:300px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
 		#processdata {visibility: hidden; position: absolute; left: 0px; top:15%; width:100%; height:100%; text-align:center; z-index: 1000;}
 		#processdata div {width:350px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
