@@ -48,7 +48,7 @@ if(isSet($PersonID)) {
 					$ssn = "";
 				}
 				else {
-					$ssn = "XXX-XX-" . substr($row[4], 7);
+					$ssn = "XXX-XX-" . substr($row[4], 8);
 				}
 
 				$num = $row[4];
@@ -161,7 +161,7 @@ echo '					<strong>Please make sure that the first and last name is as it appear
 							<div class="cell small-12 medium-3">
 								<label>
 									Date Maiden Name Changed
-									<input type="text" name="namechg" id="namechg" size="13" maxlength="10" id="namechg" value="' . htmlspecialchars($namechg) . '" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+									<input type="text" name="namechg" id="namechg" maxlength="10" value="' . htmlspecialchars($namechg) . '" placeholder="mm/dd/yyyy" readonly>
 								</label>
 							</div>
 							<div class="cell medium-4"></div>
@@ -236,14 +236,14 @@ echo '						</tbody>
 							<div class="cell small-6 medium-3">
 								<label>
 									Date of Birth <span class="required">*</span>
-									' . ($birthdate != "" ? '<input type="text" name="birthdate" id="birthdate" placeholder="mm/dd/yyyy" value="' . $masked_birthdate . '">' : '<input type="date" name="birthdate" id="birthdate" placeholder="mm/dd/yyyy" value="">') . '
+									<input type="text" name="birthdate" id="birthdate" placeholder="mm/dd/yyyy" value="' . $masked_birthdate . '" readonly>
 									<input type="hidden" name="fbdate" id="fbdate" value="' . $birthdate . '">
 								</label>
 							</div>
 							<div class="cell small-6 medium-3">
 								<label>
 									SSN <span class="required">*</span>
-									<input type="tel" id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this,\'up\')" onKeyDown="return frmtssn(this,\'down\')" value="' . htmlspecialchars($ssn) . '" />
+									<input type="tel" id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this, \'up\')" onKeyDown="return frmtssn(this, \'down\')" value="' . htmlspecialchars($ssn) . '" />
 								</label>
 							</div>
 							<div class="cell medium-3"></div>
@@ -301,6 +301,7 @@ echo '				<div class="cell small-12"><hr></div>
 								<label>
 									Enter an E-mail address: ' . ($No_Email == 'N' ? '<span class="required">*</span>' : '') . '
 									<input type="email" name="email" id="email" value="' . htmlspecialchars($email) . '">
+								</label>
 							</div>
 
 							<div class="cell small-12"><hr></div>
@@ -346,7 +347,7 @@ echo '				<div class="cell small-12"><hr></div>
 					Date Last Used
 				</div>
 				<div class="cell small-12">
-					<input type="date" name="akachanged" id="akachanged" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+					<input type="text" name="akachanged" id="akachanged" maxlength="10" placeholder="mm/dd/yyyy" readonly>
 				</div>
 
 				<div class="cell small-12">
@@ -375,8 +376,9 @@ echo '				<div class="cell small-12"><hr></div>
 
  	$("#Alias_dialog").dialog({ autoOpen: false });
 	$("#NOMI_dialog").dialog({ autoOpen: false });
-	if($('#akachanged')[0].type != 'date' ) $('#akachanged').datepicker();
-	if($('#birthdate')[0].type != 'date' ) $('#birthdate').datepicker();
+	if($('#namechg')[0].type != 'date') $('#namechg').datepicker();
+	if($('#akachanged')[0].type != 'date') $('#akachanged').datepicker();
+	if($('#birthdate')[0].type != 'date') $('#birthdate').datepicker();
 
 	$(".add-alias").click(function() {
 		addAlias();

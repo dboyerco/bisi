@@ -1,5 +1,5 @@
 <?php
-$testLayout = true;
+$testLayout = false;
 
 $ipaddress = getenv("REMOTE_ADDR");
 $currentPage = 0;
@@ -71,7 +71,7 @@ else {
 
     //if($package == "XXX") {
       //                    0         1       2           3             4             5             6               7               8           9
-      $pageOrder = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+      $pageOrder = Array('person', 'additional', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
       $pageUnder18 = 7;
       $pageCardInfo = 8;
       $pageThanks = 9;
@@ -83,7 +83,7 @@ else {
     $package = "";
     $noemail = 'Y';
 
-    $pageOrder = Array('person', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+    $pageOrder = Array('person', 'additional', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
     $pageUnder18 = 7;
     $pageCardInfo = 8;
     $pageThanks = 9;
@@ -147,7 +147,7 @@ else {
       echo '<br />
             <div class="grid-x">
               <div class="cell medium-2 show-for-medium"></div>
-              <div class="cell small-12 medium-8 not-logged-in">
+                <div class="cell small-12 medium-8 not-logged-in">
                 To access the Background Screen Application please use the link in the email that was sent to you.
               </div>
               <div class="cell medium-2 show-for-medium"></div>
@@ -172,4 +172,8 @@ else {
     include_once("{$currentPageString}.php");
 	}
 }
+
+echo '  </body>
+      </html>';
+
 ?>

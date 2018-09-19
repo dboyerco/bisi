@@ -5229,10 +5229,21 @@ h3, .add-button {
       .person-form input[type='text'], .person-form input[type='tel'], .person-form input[type='date'], .person-form input[type='email'], .person-form select {
         height: 18px;
         font-size: 11px; } }
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: none) {
+      .person-form input[type='text'], .person-form input[type='tel'], .person-form input[type='date'], .person-form input[type='email'], .person-form select {
+        height: 32px; } }
+  .person-form input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none; }
   .person-form input[type='checkbox'] {
     width: 18px;
     height: 18px;
     margin: 0; }
+  .person-form input[readonly] {
+    background: #FFF;
+    border: 1px solid #cacaca;
+    border-radius: 0;
+    cursor: pointer; }
   .person-form .required {
     color: #FF0000; }
   .person-form label {

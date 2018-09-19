@@ -154,12 +154,28 @@ h3, .add-button {
       height: 18px;
       font-size: 11px;
     }
+
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: none) {
+      height: 32px;
+    }
+  }
+
+  input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
   }
 
   & input[type='checkbox'] {
     width: 18px;
     height: 18px;
     margin: 0;
+  }
+
+  input[readonly] {
+    background: #FFF;
+    border: 1px solid #cacaca;
+    border-radius: 0;
+    cursor: pointer;
   }
 
   & .required {
