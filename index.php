@@ -70,8 +70,8 @@ else {
   	}
 
     //if($package == "XXX") {
-      //                    0         1       2           3             4             5             6               7               8           9
-      $pageOrder = Array('person', 'additional', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+      //                    0         1             2      3        4           5             6             7              8                9
+      $pageOrder = Array('person', 'additional', 'bank', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
       $pageUnder18 = 7;
       $pageCardInfo = 8;
       $pageThanks = 9;
@@ -122,6 +122,11 @@ else {
 	if(!isset($CD)) {
 		$CD = '';
 	}
+
+  echo '<script>
+          var nextPage = "' . $nextPage . '";
+          var cd = "' . $CD . '";
+        </script>';
 
 	$cnt = 1;
 	$end = strrpos($_SERVER['REQUEST_URI'], '/');

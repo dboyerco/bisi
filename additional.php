@@ -131,7 +131,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 								Insurance Exp. Date <span class="required">*</span>
 							</div>
 							<div class="cell small-12">
-								<input type="date" name="insuranceexpdate" id="insuranceexpdate" value="' . htmlspecialchars($Insurance_Exp_Date) . '" maxlength="10" placeholder="mm/dd/yyyy">
+								<input type="text" name="insuranceexpdate" id="insuranceexpdate" value="' . htmlspecialchars($Insurance_Exp_Date) . '" maxlength="10" placeholder="mm/dd/yyyy">
 							</div>
 
 							<div class="cell small-12">
@@ -252,7 +252,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 					return false;
 				}
 				else {
-		 			window.location = 'dmv.php?PersonID=' + personid;
+		 			window.location = 'index.php?pg=' + nextPage + '&PersonID=' + personid + '&CD=' + cd;
 				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {

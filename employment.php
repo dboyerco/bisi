@@ -354,14 +354,14 @@ echo '	<div class="cell small-12">
 					From Date <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="date" name="empfromdate" id="empfromdate" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+					<input type="text" name="empfromdate" id="empfromdate" maxlength="10" placeholder="mm/dd/yyyy" readonly>
 				</div>
 
 				<div class="cell small-12 medium-6">
 					To Date <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="date" name="emptodate" id="emptodate" maxlength="10" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+					<input type="text" name="emptodate" id="emptodate" maxlength="10" placeholder="mm/dd/yyyy" readonly>
 				</div>
 
 				<div class="cell small-12 medium-6">

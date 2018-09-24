@@ -207,14 +207,14 @@ echo '				<div class="cell small-12 medium-6">
 								Attended From <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<input type="date" name="edufromdate" id="edufromdate" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="text" name="edufromdate" id="edufromdate" placeholder="mm/dd/yyyy" readonly>
 							</div>
 
 							<div class="cell small-12 medium-6">
 								Attended To <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<input type="date" name="edutodate" id="edutodate" placeholder="mm/dd/yyyy" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="text" name="edutodate" id="edutodate" placeholder="mm/dd/yyyy" readonly>
 							</div>
 
 							<div class="cell small-12 medium-6">

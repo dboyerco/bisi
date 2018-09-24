@@ -5228,10 +5228,8 @@ h3, .add-button {
     @media print, screen and (min-width: 40em) {
       .person-form input[type='text'], .person-form input[type='tel'], .person-form input[type='date'], .person-form input[type='email'], .person-form select {
         height: 18px;
-        font-size: 11px; } }
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: none) {
-      .person-form input[type='text'], .person-form input[type='tel'], .person-form input[type='date'], .person-form input[type='email'], .person-form select {
-        height: 32px; } }
+        font-size: 11px;
+        padding: 0 .5em 0 .5em; } }
   .person-form input[type=date]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     display: none; }

@@ -113,7 +113,7 @@ echo '				<div class="cell small-12">
 								Expires <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="date" name="dle" id="dle" maxlength="10" placeholder="mm/dd/yyyy" value="" onKeyUp="return frmtdate(this,\'up\')">
+								<input type="text" name="dle" id="dle" maxlength="10" placeholder="mm/dd/yyyy" value="" readonly>
 							</div>
 							<div class="cell medium-6 small-12">
 								State/Country Issued <span class="required">*</span>

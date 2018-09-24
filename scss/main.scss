@@ -153,10 +153,7 @@ h3, .add-button {
     @include breakpoint(medium) {
       height: 18px;
       font-size: 11px;
-    }
-
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: none) {
-      height: 32px;
+      padding: 0 .5em 0 .5em;
     }
   }
 
