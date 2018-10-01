@@ -668,8 +668,6 @@ echo '				<div class="cell medium-6 small-12">
 		var nodays = $("#days").val();
 		var pname = $("#package").val();
 
-		//alert('Number of Days: ' + nodays);
-
 		if(nodays < 2557) {
 			alert('You have not entered at least 7 years of address information');
 			return false;
