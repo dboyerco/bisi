@@ -3,11 +3,16 @@
 #echo 'AliasID is '.$AliasID."<br />";
 require_once('../pdotriton.php');
 $compname = $dbo->query("Select Company_Name from App_Person where PersonID = ".$PersonID.";")->fetchColumn();	
+$noemail = $dbo->query("Select No_Email from App_Person where PersonID = ".$PersonID.";")->fetchColumn();  
 $days = 0;
 $YR = 0;
 $MO = 0;
 $DY = 0;
-$FormAction = "address.php?PersonID=".$PersonID;
+	if ($noemail == 'Y') {
+		$FormAction = "certification.php?PersonID=".$PersonID;
+	} else {
+		$FormAction = "disclosure1.php?PersonID=".$PersonID;
+	}
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -59,12 +64,12 @@ echo "<FORM METHOD=\"POST\" ACTION=\"$FormAction\" NAME=\"ALCATEL\">";
 <table width="763" bgcolor="#E4E8E8">
 	<tr>
 		<td>
-			<p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Bank Information</strong> </font></p>
+			<p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Business Information</strong> </font></p>
 		</td>
 	</tr>	
 	<tr> 
 		<td colspan="2"> 
-			<font size="2" face="Verdana, Arial, Helvetica, sans-serif">Please provide your bank information.</font>
+			<font size="2" face="Verdana, Arial, Helvetica, sans-serif">Please provide your business information.</font>
 		</td>
 	</tr>
 	<tr> 
@@ -73,29 +78,28 @@ echo "<FORM METHOD=\"POST\" ACTION=\"$FormAction\" NAME=\"ALCATEL\">";
 </table>
   
 <?php  
-	$maxBankID = $dbo->query("Select max(BankID) from App_Bank where PersonID = ".$PersonID.";")->fetchColumn();	
-	if ($maxBankID > 0) { 
-		$selectaddr="select BankID, Bank_Name, Bank_Address, Bank_City, Bank_State, Bank_Country, Bank_ZipCode, Account_Type, Account_Number from App_Bank where PersonID = :PersonID;";
-		$bank_result = $dbo->prepare($selectaddr);
-		$bank_result->bindValue(':PersonID', $PersonID);
-		$bank_result->execute();
-		while($row = $bank_result->fetch(PDO::FETCH_BOTH)) {		
-			$fullaccount = $row[8];
-			$displayaccount = 'xxxxxxxxxxxx';
-			echo '<table width="763" id="banktbl" bgcolor="#E4E8E8">';
+	$maxBusinessID = $dbo->query("Select max(RecID) from App_Business where PersonID = ".$PersonID.";")->fetchColumn();	
+	if ($maxBusinessID > 0) { 
+		$selectbus="select RecID, BusinessID, Business_Name, Business_Address, Business_City, Business_State, Business_Zip, Formation_Date, Registered_Agents, Agent_Address, Status from App_Business where PersonID = :PersonID;";
+		$Business_result = $dbo->prepare($selectbus);
+		$Business_result->bindValue(':PersonID', $PersonID);
+		$Business_result->execute();
+		while($row = $Business_result->fetch(PDO::FETCH_BOTH)) {	
+			$formation_date	= date("m/d/Y", strtotime($row[7]));
+			echo '<table width="763" id="bustbl" bgcolor="#E4E8E8">';
 			echo '<tr><td width="100"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;'.htmlspecialchars($row[1]).'</font></td>';
 			echo '<td width="100"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[2]).'</font></td>';
 			echo '<td width="50"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[3]).'</font></td>';
-			if ($row[5] > '') {
-				echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[5]).'</font></td>';
-			} else {	
-				echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[4]).'</font></td>';
-			}	
+			echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[4]).'</font></td>';	
+			echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[5]).'</font></td>';
 			echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[6]).'</font></td>';
-			echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[7]).'</font></td>';
+			echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($formation_date).'</font></td>';
+			echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[8]).'</font></td>';
+			echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[9]).'</font></td>';
+			echo '<td width="30"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">'.htmlspecialchars($row[10]).'</font></td>';
 			echo '<td width="60">
-				<a http="#" onclick="updatebank('.$row[0].')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Bank" title="Edit Bank"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a http="#" onclick="deletebank('.$row[0].')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete Bank" title="Delete Bank"/></a>
+				<a http="#" onclick="updatebusiness('.$row[0].')"><img src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Business" title="Edit Business"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a http="#" onclick="deletebusiness('.$row[0].')"><img src="images/deletetrashcan.png" height="15" width="15" alt="Delete Business" title="Delete Business"/></a>
 				</td>
 			</tr>
 			</table>
@@ -104,45 +108,65 @@ echo "<FORM METHOD=\"POST\" ACTION=\"$FormAction\" NAME=\"ALCATEL\">";
 				<td><hr></td>
 			</tr>
 			</table>
-			<table width="763" id="banktbl2" bgcolor="#E4E8E8">';
+			<table width="763" id="bustbl2" bgcolor="#E4E8E8">';
 		}	
 		echo '</table>';
 	} 
+
+	if ($maxBusinessID > 0) { 	
+		echo '<table width="763">
+			<tr><td>&nbsp;</td></tr>
+			<tr>
+				<td align="center">
+			 		<INPUT TYPE="submit" VALUE="Next" style="font-size:medium; font-family=Tahoma; color:green; border-radius:5px; padding: 5px 24px;">
+				</td>
+			</tr>
+			<tr><td>&nbsp;</td></tr>
+		</table>';	
+	}
+if ($maxBusinessID == 0) { 
 		
-	echo '<fieldset><legend><strong>Add Bank Information</strong></legend>
+	echo '<fieldset><legend><strong>Add Business Information</strong></legend>
 		<table width="100%" bgcolor="#E4E8E8">
 		<tr>
 			<td><font color="FF0000" size="1" face="Verdana, Arial, Helvetica, sans-serif">* Denotes Required Field</font></td>
 		</tr>';
 	echo '<tr>
-			<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank Name<font color="#FF0000">*</font></font></td>
+			<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Business ID<font color="#FF0000">*</font></font></td>
 			<td width="351">
 				<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-					<input name="newbankname" id="newbankname" size="20" maxlength="100" placeholder="Required">
+					<input name="newbusinessid" id="newbusinessid" size="20" maxlength="100" placeholder="Required">
+				</font>
+			</td>
+		</tr>';
+	echo '<tr>
+			<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Business Name<font color="#FF0000">*</font></font></td>
+			<td width="351">
+				<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
+					<input name="newbusinessname" id="newbusinessname" size="20" maxlength="100" placeholder="Required">
 				</font>
 			</td>
 		</tr>';
 	echo '<tr> 
-		<td width="160"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank Street<font color="#FF0000">*</font></font></td>
+		<td width="160"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Business Street<font color="#FF0000">*</font></font></td>
 		<td width="351">
 			<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-				<input name="newbankaddress" id="newbankaddress" size="20" maxlength="100" placeholder="Required">
+				<input name="newbusinessaddress" id="newbusinessaddress" size="20" maxlength="100" placeholder="Required">
 			</font>
 		</td>
 	</tr>
 	<tr> 
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank City<font color="#FF0000">*</font></font></td>
+		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Business City<font color="#FF0000">*</font></font></td>
 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-				<input name="newbankcity" id="newbankcity" size="20" maxlength="40" placeholder="Required">
+				<input name="newbusinesscity" id="newbusinesscity" size="20" maxlength="40" placeholder="Required">
 			</font>
 		</td>
 	</tr>
 	<tr> 
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank State<font color="#FF0000">*</font></font></td>
+		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Business State<font color="#FF0000">*</font></font></td>
 		<td><span style="font-size:small; font-family=Tahoma; color:#000000;">
-				<select name="newbankstate" id="newbankstate">
-					<option value="">Select a State</option>
-					<option value="">-Other-</option>';
+				<select name="newbusinessstate" id="newbusinessstate">
+					<option value="">Select a State</option>';
 					$sql = "Select Name, Abbrev from State order by Name";
 					$state_result = $dbo->prepare($sql);
 					$state_result->execute();
@@ -152,101 +176,97 @@ echo "<FORM METHOD=\"POST\" ACTION=\"$FormAction\" NAME=\"ALCATEL\">";
 			echo '</select></span>
 		</td>
 	</tr>';	
-echo '<tr> 
-		<td><font size="1">&nbsp;</font></td>
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"> OR If bank is out of the US, please select the Country</font></td>
-	</tr>';
-echo '<tr>
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank Country</font></td>
-		<td><span style="font-size:small; font-family=Tahoma; color:#000000;">
-			<select name="newbankcountry" id="newbankcountry">
-				<option value="">Select a Country</option>';	
-				$sql = "Select Alpha2Code, FullName from isocountrycodes Order By FullName;";
-				$country_result = $dbo->prepare($sql);
-				$country_result->execute();
-				while($rows = $country_result->fetch(PDO::FETCH_BOTH)) {		
-					echo "<option value=".$rows[0].">".$rows[1]."</option>";
-				}		
-		echo '</select></span>
-		</td>
-	</tr>';
 	echo '<tr> 
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank Zip Code<font color="#FF0000">*</font></font></td>
+		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Business Zip Code<font color="#FF0000">*</font></font></td>
 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-			<input name="newbankzip" id="newbankzip" size="10" maxlength="10">
+			<input name="newbusinesszip" id="newbusinesszip" size="10" maxlength="10">
 			</font>
 		</td>
-	</tr>
-	<tr> 
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Acoount Type<font color="#FF0000">*</font></font></td>
-		<td>
-			<select name="newaccounttype" id="newaccounttype">
-					<option VALUE="Checking">Checking</OPTION>
-					<option value="Savings">Savings</option>
-				</select>
+	</tr>';
+	echo '<tr>
+			<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Formation Date<font color="#FF0000">*</font></font></td>
+			<td width="351">
+				<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
+					<input name="newformatdate" id="newformationdate" size="20" maxlength="100" placeholder="mm/dd/yyyy">
+				</font>
 			</td>
-	</tr>
-	<tr> 
-		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Account Number<font color="#FF0000">*</font></font></td>
-		<td nowrap>
-			<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-				<input name="newaccountnumber" id="newaccountnumber" size="15" maxlength="25" placeholder="requires">
-			</font>
-		</td>
-	</tr>
-	<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+		</tr>';
+	echo '<tr>
+			<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Registered Agents<font color="#FF0000">*</font></font></td>
+			<td width="351">
+				<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
+					<input name="newregistered_agents" id="newregistered_agents" size="20" maxlength="100" placeholder="Required">
+				</font>
+			</td>
+		</tr>';
+	echo '<tr>
+			<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Agent_Address<font color="#FF0000">*</font></font></td>
+			<td width="351">
+				<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
+					<input name="newagent_address" id="newagent_address" size="20" maxlength="100" placeholder="Required">
+				</font>
+			</td>
+		</tr>';
+	echo '<tr>
+			<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Status<font color="#FF0000">*</font></font></td>
+			<td width="351">
+				<font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
+					<input name="newstatus" id="newstatus" size="20" maxlength="100" placeholder="Required">
+				</font>
+			</td>
+		</tr>';
+	echo '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 	<tr>
 		<td>&nbsp;</td>
 		<td>
-			<INPUT TYPE="button" id="add_new_bank" VALUE="Save Bank" style="font-size:medium; font-family=Tahoma; color:green; border-radius:5px; padding: 5px 24px;">
+			<INPUT TYPE="button" id="add_new_business" VALUE="Save Business" style="font-size:medium; font-family=Tahoma; color:green; border-radius:5px; padding: 5px 24px;">
 		</td>
 	</tr>
 	</table></fieldset>';
-echo '<table width="763">
-	<tr><td>&nbsp;</td></tr>
-	<tr>
-		<td align="center">
-			 <INPUT TYPE="submit" VALUE="Next" style="font-size:medium; font-family=Tahoma; color:green; border-radius:5px; padding: 5px 24px;">
-		</td>
-	</tr>
-	<tr><td>&nbsp;</td></tr>
-</table>';	
+}	
 echo "<INPUT TYPE=\"hidden\" NAME=\"PersonID\" ID=\"PersonID\" VALUE=\"$PersonID\">
-	  <INPUT TYPE=\"hidden\" NAME=\"BankID\" ID=\"BankID\" VALUE=\"$maxBankID\">";
+	  <INPUT TYPE=\"hidden\" NAME=\"BusinessID\" ID=\"BusinessID\" VALUE=\"$maxBusinessID\">";
 ?>
-	<div name="Bank_dialog" id="Bank_dialog" title="Dialog Title">
+	<div name="Business_dialog" id="Business_dialog" title="Dialog Title">
 		<div>
 			<br/>
-			<input type="hidden" name="dlgbankid" id="dlgbankid">
-			<input type="hidden" name="dlgaccounthidden" id="dlgaccounthidden">
+			<input type="hidden" name="dlgrecid" id="dlgrecid">
 			<table width="100%" align="left" border="0" bgcolor="#eeeeee">
-				<tr> 
-					<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Bank Name</font></td>
+				<tr>
+					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Business ID<font color="#FF0000">*</font></font></td>
 					<td width="351">
 						<font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-							<input name="dlgbankname" id="dlgbankname" size="20" maxlength="100">
+							<input name="dlgbusinessid" id="dlgbusinessid" size="20" maxlength="100" placeholder="Required">
 						</font>
 					</td>
 				</tr>
 				<tr> 
-					<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Bank Street</font></td>
+					<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Business Name</font></td>
 					<td width="351">
 						<font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-							<input name="dlgbankaddress" id="dlgbankaddress" size="20" maxlength="100">
+							<input name="dlgbusinessname" id="dlgbusinessname" size="20" maxlength="100">
 						</font>
 					</td>
 				</tr>
 				<tr> 
-					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Bank City</font></td>
+					<td width="160"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Business Street</font></td>
+					<td width="351">
+						<font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+							<input name="dlgbusinessaddress" id="dlgbusinessaddress" size="20" maxlength="100">
+						</font>
+					</td>
+				</tr>
+				<tr> 
+					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Business City</font></td>
 					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-							<input name="dlgbankcity" id="dlgbankcity" size="20" maxlength="40" >
+							<input name="dlgbusinesscity" id="dlgbusinesscity" size="20" maxlength="40" >
 						</font>
 					</td>
 				</tr>
 				<tr> 
-					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Bank State</font></td>
+					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Business State</font></td>
 					<td><span style="font-size:small; font-family=Tahoma; color:#000000;">
-						<select name="dlgbankstate" id="dlgbankstate">
+						<select name="dlgbusinessstate" id="dlgbusinessstate">
 							<option value="">Select a State</option>
 							<option value="other">-Other-</option>
 							<?php
@@ -261,46 +281,41 @@ echo "<INPUT TYPE=\"hidden\" NAME=\"PersonID\" ID=\"PersonID\" VALUE=\"$PersonID
 					</td>
 				</tr>
 				<tr> 
-					<td><font size="2">&nbsp;</font></td>
-					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> OR If bank is out of the US, please select the Country</font></td>
-				</tr>
-				<tr>
-					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Bank Country</font></td>
-					<td><span style="font-size:small; font-family=Tahoma; color:#000000;">
-						<select name="dlgbankcountry" id="dlgbankcountry">
-							<option value="">Select a Country</option>	
-						<?php	
-							$sql = "Select Alpha2Code, FullName from isocountrycodes Order By FullName;";
-							$country_result = $dbo->prepare($sql);
-							$country_result->execute();
-							while($rows = $country_result->fetch(PDO::FETCH_BOTH)) {		
-								echo "<option value=".$rows[0].">".$rows[1]."</option>";
-							}
-						?>			
-						</select></span>
-					</td>
-				</tr>
-				<tr> 
-					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Bank Zip Code</font></td>
+					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Business Zip Code</font></td>
 					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-							<input name="dlgbankzip" id="dlgbankzip" size="10" maxlength="10">
+							<input name="dlgbusinesszip" id="dlgbusinesszip" size="10" maxlength="10">
 						</font>
 					</td>
 				</tr>
 				<tr>
-					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Account Type</font></td>
-					<td>
-					    <select name="dlgaccounttype" id="dlgaccounttype">
-							<option VALUE="Checking">Checking</OPTION>
-							<option value="Savings">Savings</option>
-						</select>
+					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Formation Date<font color="#FF0000">*</font></font></td>
+					<td width="351">
+						<font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+							<input name="dlgformatdate" id="dlgformationdate" size="20" maxlength="100" placeholder="mm/dd/yyyy">
+						</font>
 					</td>
 				</tr>
-				<tr> 
-					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Account Number</font></td>
-					<td nowrap>
+				<tr>
+					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Registered Agents<font color="#FF0000">*</font></font></td>
+					<td width="351">
 						<font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-							<input name="dlgaccountnumber" id="dlgaccountnumber" size="20" maxlength="50">
+							<input name="dlgregistered_agents" id="dlgregistered_agents" size="20" maxlength="100" placeholder="Required">
+						</font>
+					</td>
+				</tr>
+				<tr>
+					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Agent_Address<font color="#FF0000">*</font></font></td>
+					<td width="351">
+						<font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+							<input name="dlgagent_address" id="dlgagent_address" size="20" maxlength="100" placeholder="Required">
+						</font>
+					</td>
+				</tr>
+				<tr>
+					<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Status<font color="#FF0000">*</font></font></td>
+					<td width="351">
+						<font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+							<input name="dlgstatus" id="dlgstatus" size="20" maxlength="100" placeholder="Required">
 						</font>
 					</td>
 				</tr>
@@ -309,8 +324,8 @@ echo "<INPUT TYPE=\"hidden\" NAME=\"PersonID\" ID=\"PersonID\" VALUE=\"$PersonID
 				<tr><td>&nbsp;</td></tr>
 				<tr>
 					<td align="center">
-						<INPUT TYPE="button" id="save_bank" VALUE="Save Bank">
-						<INPUT TYPE="button" id="close_bank" VALUE="Close">
+						<INPUT TYPE="button" id="save_business" VALUE="Save Business">
+						<INPUT TYPE="button" id="close_business" VALUE="Close">
 					</td>
 				</tr>
 			</table>
@@ -320,79 +335,106 @@ echo "<INPUT TYPE=\"hidden\" NAME=\"PersonID\" ID=\"PersonID\" VALUE=\"$PersonID
 </body>
 </html>
 <script language="JavaScript" type="text/javascript">
-	$( "#Bank_dialog" ).dialog({ autoOpen: false });
+	$( "#Business_dialog" ).dialog({ autoOpen: false });
 
- 	$( "#add_new_bank" ).click(function() {	
+ 	$( "#add_new_business" ).click(function() {	
 		var personid = document.getElementById("PersonID").value;
-		if (document.getElementById("newbankname").value > '') {
-			var bankname = document.getElementById("newbankname").value;
+ 	 
+		if (document.getElementById("newbusinessid").value > '') {
+			var businessid = document.getElementById("newbusinessid").value;
 		} else {		
-			document.ALCATEL.newbankname.focus();
-			alert("Bank name is required");
+			document.ALCATEL.newbusinessid.focus();
+			alert("Business ID is required");
 			return;
 		}	
-		if (document.getElementById("newbankaddress").value > '') {
-			var bankaddress = document.getElementById("newbankaddress").value;
+		if (document.getElementById("newbusinessname").value > '') {
+			var businessname = document.getElementById("newbusinessname").value;
 		} else {		
-			document.ALCATEL.newbankaddress.focus();
-			alert("Bank street is required");
+			document.ALCATEL.newbusinessname.focus();
+			alert("Business name is required");
+			return;
+		}	
+ 	 
+		if (document.getElementById("newbusinessaddress").value > '') {
+			var businessaddress = document.getElementById("newbusinessaddress").value;
+		} else {		
+			document.ALCATEL.newbusinessaddress.focus();
+			alert("Business address is required");
 			return;
 		}	
 			
-		if (document.getElementById("newbankcity").value > '') {
-			var bankcity = document.getElementById("newbankcity").value;
+		if (document.getElementById("newbusinesscity").value > '') {
+			var businesscity = document.getElementById("newbusinesscity").value;
 		} else {		
-			document.ALCATEL.newbankcity.focus();
-			alert("Bank city is required");
+			document.ALCATEL.newbusinesscity.focus();
+			alert("Business city is required");
 			return;
 		}	
 			
-		if (document.getElementById("newbankstate").value == '' && document.getElementById("newbankcountry").value == '' ) {
-			document.ALCATEL.newbankstate.focus();
-			alert("Bank State or Country is required");
+		if (document.getElementById("newbusinessstate").value == '') {
+			document.ALCATEL.newbusinessstate.focus();
+			alert("Business State is required");
 			return;
 		} else {		
-			var bankstate = document.getElementById("newbankstate").value;
-			var bankcountry = document.getElementById("newbankcountry").value;
+			var businessstate = document.getElementById("newbusinessstate").value;
 		}	
 			
-		if (document.getElementById("newbankzip").value > '') {
-			var bankzipcode = document.getElementById("newbankzip").value;
+		if (document.getElementById("newbusinesszip").value > '') {
+			var businesszip = document.getElementById("newbusinesszip").value;
 		} else {		
-			document.ALCATEL.newbankzip.focus();
-			alert("Bank Zip Code is required");
+			document.ALCATEL.newbusinesszip.focus();
+			alert("Business Zip Code is required");
 			return;
 		}	
-		
-		var accounttype = document.getElementById("newaccounttype").value;
-		
-		if (document.getElementById("newaccountnumber").value > '') {
-			var accountnumber = document.getElementById("newaccountnumber").value;
+		if (document.getElementById("newformationdate").value > '') {
+			var formationdate = document.getElementById("newformationdate").value;
 		} else {		
-			document.ALCATEL.newaccountnumber.focus();
-			alert("Account number is required");
+			document.ALCATEL.newformationdate.focus();
+			alert("Formation Date is required");
 			return;
 		}	
-		
+		if (document.getElementById("newregistered_agents").value > '') {
+			var registered_agents = document.getElementById("newregistered_agents").value;
+		} else {		
+			document.ALCATEL.newregistered_agents.focus();
+			alert("Registered Agents is required");
+			return;
+		}	
+		if (document.getElementById("newagent_address").value > '') {
+			var agent_address = document.getElementById("newagent_address").value;
+		} else {		
+			document.ALCATEL.newagent_address.focus();
+			alert("Agent Address is required");
+			return;
+		}	
+		if (document.getElementById("newstatus").value > '') {
+			var status = document.getElementById("newstatus").value;
+		} else {		
+			document.ALCATEL.newstatus.focus();
+			alert("Status is required");
+			return;
+		}	
+				
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_add_bank.php", 
-			data: {personid: personid, bankname: bankname, bankaddress: bankaddress, bankcity: bankcity, bankstate: bankstate, bankcountry: bankcountry, bankzipcode: bankzipcode, accounttype: accounttype, accountnumber: accountnumber},
+			url: "../App_Ajax/ajax_add_business.php", 
+			data: {personid: personid, businessname: businessname, businessaddress: businessaddress, businesscity: businesscity, businessstate: businessstate, businesszip: businesszip, businessid: businessid, formationdate: formationdate, registered_agents: registered_agents, agent_address: agent_address, status: status},
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
 				if (obj2.length > 30) {
 					alert(obj2);
 				} else {
-//					var BankID = obj2;
-					document.getElementById("newaccounttype").value = 'Checking';
-					document.getElementById("newbankaddress").value = '';
-					document.getElementById("newbankname").value = '';
-					document.getElementById("newbankcity").value = '';
-					document.getElementById("newbankstate").value = '';
-					document.getElementById("newbankcountry").value = '';
-					document.getElementById("newbankzip").value = '';
-					document.getElementById("newaccountnumber").value = '';
+					document.getElementById("newbusinessid").value = '';
+					document.getElementById("newbusinessaddress").value = '';
+					document.getElementById("newbusinessname").value = '';
+					document.getElementById("newbusinesscity").value = '';
+					document.getElementById("newbusinessstate").value = '';
+					document.getElementById("newbusinesszip").value = '';
+					document.getElementById("newformationdate").value = '';
+					document.getElementById("newregistered_agents").value = '';
+					document.getElementById("newagent_address").value = '';
+					document.getElementById("newstatus").value = '';
 					location.reload();
 				}
 				return;
@@ -402,44 +444,48 @@ echo "<INPUT TYPE=\"hidden\" NAME=\"PersonID\" ID=\"PersonID\" VALUE=\"$PersonID
 			} 					
 		});
 	});
-	function updatebank(bankid) {
+	function updatebusiness(recid) {
 		var personid = document.getElementById("PersonID").value;
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_find_bank.php", 
-			data: {personid: personid, bankid: bankid},
+			url: "../App_Ajax/ajax_find_business.php", 
+			data: {personid: personid, recid: recid},
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
 				if (valor.length > 0) { 
 					for (var i = 0; i < obj2.length; i++) {	
-						var BankID = obj2[i].BankID;
-						var Account_Type = obj2[i].Account_Type;
-						var Bank_Address = obj2[i].Bank_Address;
-						var Bank_Name = obj2[i].Bank_Name;
-						var Bank_City = obj2[i].Bank_City;
-						var Bank_State = obj2[i].Bank_State;
-						var Bank_Country = obj2[i].Bank_Country;
-						var Bank_ZipCode = obj2[i].Bank_ZipCode;
-						var Account_Number = obj2[i].Account_Number;
+						var RecID = obj2[i].RecID;
+						var Business_Address = obj2[i].Business_Address;
+						var Business_Name = obj2[i].Business_Name;
+						var Business_City = obj2[i].Business_City;
+						var Business_State = obj2[i].Business_State;
+						var Business_Zip = obj2[i].Business_Zip;
+						var BusinessID = obj2[i].BusinessID;
+						var fd = obj2[i].Formation_Date;
+						var Formation_Date = fd.substr(5,2)+"/"+fd.substr(8)+"/"+fd.substr(0,4);
+ 						var Registered_Agents = obj2[i].Registered_Agents;
+						var Agent_Address = obj2[i].Agent_Address;
+						var Status = obj2[i].Status;
 			    	}
-					document.getElementById("dlgaccounttype").value = Account_Type;
-					document.getElementById("dlgbankid").value = BankID;
-					document.getElementById("dlgbankaddress").value = Bank_Address;
-					document.getElementById("dlgbankname").value = Bank_Name;
-					document.getElementById("dlgbankcity").value = Bank_City;
-					document.getElementById("dlgbankstate").value = Bank_State;
-					document.getElementById("dlgbankcountry").value = Bank_Country;
-					document.getElementById("dlgbankzip").value = Bank_ZipCode;
-					document.getElementById("dlgaccountnumber").value = 'xxxxxxxxxxxx';
-					document.getElementById("dlgaccounthidden").value = Account_Number;
+					document.getElementById("dlgrecid").value = RecID;
+					document.getElementById("dlgbusinessaddress").value = Business_Address;
+					document.getElementById("dlgbusinessname").value = Business_Name;
+					document.getElementById("dlgbusinesscity").value = Business_City;
+					document.getElementById("dlgbusinessstate").value = Business_State;
+					document.getElementById("dlgbusinesszip").value = Business_Zip;
+					document.getElementById("dlgbusinessid").value = BusinessID;
+					document.getElementById("dlgformationdate").value = Formation_Date;
+					document.getElementById("dlgregistered_agents").value = Registered_Agents;
+					document.getElementById("dlgagent_address").value = Agent_Address;
+					document.getElementById("dlgstatus").value = Status;
 
-					$( "#Bank_dialog" ).dialog( "option", "title", "Edit Bank Information");	
-					$( "#Bank_dialog" ).dialog( "option", "modal", true );
-					$( "#Bank_dialog" ).dialog( "option", "width", 700 );
-					$( "#Bank_dialog" ).dialog( "open" );
+					$( "#Business_dialog" ).dialog( "option", "title", "Edit Business Information");	
+					$( "#Business_dialog" ).dialog( "option", "modal", true );
+					$( "#Business_dialog" ).dialog( "option", "width", 700 );
+					$( "#Business_dialog" ).dialog( "open" );
 				} else {
-					alert('No Bank Data Found');
+					alert('No Business Data Found');
 				}
 				return;
 			},	
@@ -448,86 +494,116 @@ echo "<INPUT TYPE=\"hidden\" NAME=\"PersonID\" ID=\"PersonID\" VALUE=\"$PersonID
 			} 					
 		}); 
 	}	
- 	$("#save_bank").click(function() {	
+ 	$("#save_business").click(function() {	
 		var personid = document.getElementById("PersonID").value;
-		var bankid = document.getElementById("dlgbankid").value;		
- 		if (document.getElementById("dlgbankname").value > '') {
-			var bankname = document.getElementById("dlgbankname").value;
+		var recid = document.getElementById("dlgrecid").value;	
+		
+		if (document.getElementById("dlgbusinessid").value > '') {
+			var businessid = document.getElementById("dlgbusinessid").value;
 		} else {		
-			document.ALCATEL.dlgbankname.focus();
-			alert("Bank name is required");
-			return;
-		}	
-		if (document.getElementById("dlgbankaddress").value > '') {
-			var bankaddress = document.getElementById("dlgbankaddress").value;
-		} else {		
-			document.ALCATEL.dlgbankaddress.focus();
-			alert("Bank street is required");
+			document.ALCATEL.dlgbusinessid.focus();
+			alert("Business ID is required");
 			return;
 		}	
 			
-		if (document.getElementById("dlgbankcity").value > '') {
-			var bankcity = document.getElementById("dlgbankcity").value;
+ 		if (document.getElementById("dlgbusinessname").value > '') {
+			var businessname = document.getElementById("dlgbusinessname").value;
 		} else {		
-			document.ALCATEL.dlgbankcity.focus();
-			alert("Bank city is required");
+			document.ALCATEL.dlgbusinessname.focus();
+			alert("Business name is required");
+			return;
+		}	
+		if (document.getElementById("dlgbusinessaddress").value > '') {
+			var businessaddress = document.getElementById("dlgbusinessaddress").value;
+		} else {		
+			document.ALCATEL.dlgbusinessaddress.focus();
+			alert("Business address is required");
 			return;
 		}	
 			
-		if (document.getElementById("dlgbankstate").value == '' && document.getElementById("dlgbankcountry").value == '' ) {
-			document.ALCATEL.dlgbankstate.focus();
-			alert("Bank State or Country is required");
-			return;
+		if (document.getElementById("dlgbusinesscity").value > '') {
+			var businesscity = document.getElementById("dlgbusinesscity").value;
 		} else {		
-			var bankstate = document.getElementById("dlgbankstate").value;
-			var bankcountry = document.getElementById("dlgbankcountry").value;
+			document.ALCATEL.dlgbusinesscity.focus();
+			alert("Business city is required");
+			return;
 		}	
 			
-		if (document.getElementById("dlgbankzip").value > '') {
-			var bankzipcode = document.getElementById("dlgbankzip").value;
+		if (document.getElementById("dlgbusinessstate").value == '') {
+			document.ALCATEL.dlgbusinessstate.focus();
+			alert("Business State is required");
+			return;
 		} else {		
-			document.ALCATEL.dlgbankzip.focus();
-			alert("Bank Zip Code is required");
+			var businessstate = document.getElementById("dlgbusinessstate").value;
+		}	
+			
+		if (document.getElementById("dlgbusinesszip").value > '') {
+			var businesszip = document.getElementById("dlgbusinesszip").value;
+		} else {		
+			document.ALCATEL.dlgbusinesszip.focus();
+			alert("Business Zip is required");
 			return;
 		}	
-		
-		var accounttype = document.getElementById("dlgaccounttype").value;
-		var accounthidden = document.getElementById("dlgaccounthidden").value;
-		var accountnumber = document.getElementById("dlgaccountnumber").value;
-		
-		if (accountnumber.indexOf('x') > -1 || accountnumber == '') {
-			var accountnumber = accounthidden;
-		} 
-		
+		if (document.getElementById("dlgformationdate").value > '') {
+			var formationdate = document.getElementById("dlgformationdate").value;
+		} else {		
+			document.ALCATEL.dlgformationdate.focus();
+			alert("Formation Date is required");
+			return;
+		}	
+		if (document.getElementById("dlgregistered_agents").value > '') {
+			var registered_agents = document.getElementById("dlgregistered_agents").value;
+		} else {		
+			document.ALCATEL.dlgregistered_agents.focus();
+			alert("Registered Agents is required");
+			return;
+		}	
+		if (document.getElementById("dlgagent_address").value > '') {
+			var agent_address = document.getElementById("dlgagent_address").value;
+		} else {		
+			document.ALCATEL.dlgagent_address.focus();
+			alert("Agent Address is required");
+			return;
+		}	
+		if (document.getElementById("dlgstatus").value > '') {
+			var status = document.getElementById("dlgstatus").value;
+		} else {		
+			document.ALCATEL.dlgstatus.focus();
+			alert("Status is required");
+			return;
+		}	
+
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_save_bank.php", 
-			data: {personid: personid, bankid: bankid, bankname: bankname, bankaddress: bankaddress, bankcity: bankcity, bankstate: bankstate, bankcountry: bankcountry, bankzipcode: bankzipcode, accounttype: accounttype, accountnumber: accountnumber},
+			url: "../App_Ajax/ajax_save_business.php", 
+			data: {personid: personid, recid: recid, businessname: businessname, businessaddress: businessaddress, businesscity: businesscity, businessstate: businessstate, businesszip: businesszip, businessid: businessid, formationdate: formationdate, registered_agents: registered_agents, agent_address: agent_address, status: status},
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
 				if (obj2 > '' ) {
 					alert(obj2);
 				} else {	
-					$( "#Bank_dialog" ).dialog( "close" );
+					$( "#Business_dialog" ).dialog( "close" );
 					location.reload();
 				}	
 				return;
 			},	
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: '+textStatus); alert('Error: '+errorThrown);
+					$( "#Business_dialog" ).dialog( "close" );
+					location.reload();
+//				alert('Status: '+textStatus); alert('Error: '+errorThrown);
 			} 					
 		}); 
 	});
 	
-	function deletebank(bankid) {	
+	function deletebusiness(recid) {	
 //		alert("In dltaka");
-		if (confirm('Are you sure you want to delete this bank?')) {
+		if (confirm('Are you sure you want to delete the business info?')) {
 			var personid = document.getElementById("PersonID").value;
 			$.ajax({
 				type: "POST",
-				url: "../App_Ajax/ajax_delete_bank.php", 
-				data: {personid: personid, bankid: bankid},
+				url: "../App_Ajax/ajax_delete_business.php", 
+				data: {personid: personid, recid: recid},
 				datatype: "JSON",
 				success: function(valor) {
 					var obj2 = $.parseJSON(valor);
@@ -546,8 +622,8 @@ echo "<INPUT TYPE=\"hidden\" NAME=\"PersonID\" ID=\"PersonID\" VALUE=\"$PersonID
 		}
 	}
 	
-	$( "#close_bank" ).click(function() {	
-		$( "#Bank_dialog" ).dialog( "close" );
+	$( "#close_business" ).click(function() {	
+		$( "#Business_dialog" ).dialog( "close" );
 	});
 </script>	
 
@@ -556,11 +632,11 @@ var frmvalidator = new Validator("ALCATEL");
 frmvalidator.setAddnlValidationFunction("DoCustomValidation");
 
 function DoCustomValidation() {
-	var bankid = document.getElementById("BankID").value;
+	var businessid = document.getElementById("BusinessID").value;
 //	alert('Number of Days: '+nodays);
-	if (bankid == 0) {
-		document.ALCATEL.newbankname.focus();
-		alert('You have not entered at least one bank account');
+	if (businessid == 0) {
+		document.ALCATEL.newbusinessname.focus();
+		alert('You have not entered your Business info');
 		return false;
 	} else {
 		return true;		
