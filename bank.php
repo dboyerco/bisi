@@ -1,10 +1,5 @@
 <?
 
-$days = 0;
-$YR = 0;
-$MO = 0;
-$DY = 0;
-
 $FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
@@ -38,144 +33,141 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			$fullaccount = $row[8];
 			$displayaccount = 'xxxxxxxxxxxx';
 
-			echo '<div class="cell small-6">
-							&nbsp;' . htmlspecialchars($row[1]) . '
-						</div>
-						<div class="cell small-6 right">
-							<span onclick="updatebank(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Bank" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<span onclick="updatebank(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Bank" title="Delete Address"/></span>
-						</div>
+			echo '	<div class="cell small-6">
+						 		&nbsp;' . htmlspecialchars($row[1]) . '
+							</div>
+							<div class="cell small-6 right">
+								<span onclick="updatebank(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Bank" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span onclick="updatebank(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Bank" title="Delete Address"/></span>
+							</div>
 
-						<div class="cell small-6">
-							' . htmlspecialchars($row[7]) . '
-						</div>
-						<div class="cell small-6">
-							' . htmlspecialchars($row[6]) . '
-						</div>
-						
-						<div class="cell small-4">
-							' . htmlspecialchars($row[2]) . '
-						</div>
+							<div class="cell small-6">
+								' . htmlspecialchars($row[7]) . '
+							</div>
+							<div class="cell small-6">
+								' . htmlspecialchars($row[6]) . '
+							</div>
 
-						<div class="cell small-4">
-							' . htmlspecialchars($row[3]) . '
-						</div>';
+							<div class="cell small-4">
+								' . htmlspecialchars($row[2]) . '
+							</div>
+							<div class="cell small-4">
+								' . htmlspecialchars($row[3]) . '
+							</div>';
 
-						if($row[4] > '') {
-							echo '<div class="cell small-4">
-											' . htmlspecialchars($row[4]) . '
-										</div>';
-						}
-						else {
-							echo '<div class="cell small-4">
-											' . htmlspecialchars($row[5]) . '
-										</div>';
-						}
+			if($row[4] > '') {
+				echo '<div class="cell small-4">
+								' . htmlspecialchars($row[4]) . '
+							</div>';
+			}
+			else {
+				echo '<div class="cell small-4">
+								' . htmlspecialchars($row[5]) . '
+							</div>';
+			}
 
-						echo '<div class="cell small-12">
-										<hr>
-									</div>';
+			echo '	<div class="cell small-12">
+								<hr>
+							</div>';
 		}
-
-		echo '			</div>';
 	}
 
-	echo '				<div class="cell small-12">
-									<span class="add-bank add-button"><img class="icon" src="images/plus.png" alt="Add Bank" title="Add Bank" /> Add Bank</span>
-								</div>
-								<div class="cell small-12">
-									<hr>
-								</div>
-
-								<div class="cell small-12">
-									<input class="button float-center" type="submit" value="Next">
-								</div>
+	echo '			<div class="cell small-12">
+								<span class="add-bank add-button"><img class="icon" src="images/plus.png" alt="Add Bank" title="Add Bank" /> Add Bank</span>
+							</div>
+							<div class="cell small-12">
+								<hr>
 							</div>
 
-							<div class="grid-x margins person-form" name="Bank_dialog" id="Bank_dialog" title="Dialog Title">
-								<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
-								<input type="hidden" name="bankid" id="bankid">
-								<input type="hidden" name="accounthidden" id="accounthidden">
+							<div class="cell small-12">
+								<input class="button float-center" type="submit" value="Next">
+							</div>
+						</div>
 
-								<div class="cell small-12 required">
-									* Required Fields To Continue
-								</div>
+						<div class="grid-x margins person-form" name="Bank_dialog" id="Bank_dialog" title="Dialog Title">
+							<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
+							<input type="hidden" name="bankid" id="bankid">
+							<input type="hidden" name="accounthidden" id="accounthidden">
 
-								<div class="cell medium-6 small-12">
-									Bank Name <span class="required">*</span>
-								</div>
-								<div class="cell medium-4 small-8">
-									<input type="text" name="bankname" id="bankname" maxlength="100" placeholder="Required">
-								</div>
+							<div class="cell small-12 required">
+								* Required Fields To Continue
+							</div>
 
-								<div class="cell medium-6 small-12">
-									Bank Street <span class="required">*</span>
-								</div>
-								<div class="cell medium-4 small-8">
-									<input type="text" name="bankaddress" id="bankaddress" maxlength="100" placeholder="Required">
-								</div>
+							<div class="cell medium-6 small-12">
+								Bank Name <span class="required">*</span>
+							</div>
+							<div class="cell medium-4 small-8">
+								<input type="text" name="bankname" id="bankname" maxlength="100" placeholder="Required">
+							</div>
 
-								<div class="cell medium-6 small-12">
-									Bank City <span class="required">*</span>
-								</div>
-								<div class="cell medium-4 small-8">
-									<input type="text" name="bankcity" id="bankcity" maxlength="40" placeholder="Required">
-								</div>
+							<div class="cell medium-6 small-12">
+								Bank Street <span class="required">*</span>
+							</div>
+							<div class="cell medium-4 small-8">
+								<input type="text" name="bankaddress" id="bankaddress" maxlength="100" placeholder="Required">
+							</div>
 
-								<div class="cell medium-6 small-12">
-									Bank State
-								</div>
-								<div class="cell medium-4 small-8">
-									<select name="bankstate" id="bankstate">
-										<option value="">Select a State</option>
-										<option value="">-Other-</option>
-										' . $state_options . '
-									</select>
-								</div>
+							<div class="cell medium-6 small-12">
+								Bank City <span class="required">*</span>
+							</div>
+							<div class="cell medium-4 small-8">
+								<input type="text" name="bankcity" id="bankcity" maxlength="40" placeholder="Required">
+							</div>
 
-								<div class="cell small-12">
-									OR If bank is out of the US, please select the Country
-								</div>
-
-								<div class="cell medium-6 small-12">
-									Bank Country
-								</div>
-								<div class="cell medium-6 small-12">
-									<select name="bankcountry" id="bankcountry">
-										<option value="">Select a Country</option>
-										' . $country_options . '
-									</select>
-								</div>
-
-								<div class="cell medium-6 small-12">
-									Bank Zip Code <span class="required">*</span>
-								</div>
-								<div class="cell medium-6 small-12">
-									<input type="text" name="bankzip" id="bankzip" maxlength="10" placeholder="Required">
-								</div>
-
-								<div class="cell medium-6 small-12">
-									Account Type <span class="required">*</span>
-								</div>
-								<div class="cell medium-6 small-12">
-									<select name="accounttype" id="accounttype">
-										<option value="Checking">Checking</option>
-										<option value="Savings">Savings</option>
+							<div class="cell medium-6 small-12">
+								Bank State
+							</div>
+							<div class="cell medium-4 small-8">
+								<select name="bankstate" id="bankstate">
+									<option value="">Select a State</option>
+									<option value="">-Other-</option>
+									' . $state_options . '
 								</select>
-								</div>
-
-								<div class="cell medium-6 small-12">
-									Account Number <span class="required">*</span>
-								</div>
-								<div class="cell medium-6 small-12">
-									<input type="text" name="accountnumber" id="accountnumber" maxlength="50" placeholder="Required">
-								</div>
-
-								<div class="cell small-12 padding-bottom">
-									<input id="save_bank" class="float-center" type="button" value="Save Bank">
-								</div>
 							</div>
-						</form>';
+
+							<div class="cell small-12">
+								OR If bank is out of the US, please select the Country
+							</div>
+
+							<div class="cell medium-6 small-12">
+								Bank Country
+							</div>
+							<div class="cell medium-6 small-12">
+								<select name="bankcountry" id="bankcountry">
+									<option value="">Select a Country</option>
+									' . $country_options . '
+								</select>
+							</div>
+
+							<div class="cell medium-6 small-12">
+								Bank Zip Code <span class="required">*</span>
+							</div>
+							<div class="cell medium-6 small-12">
+								<input type="text" name="bankzip" id="bankzip" maxlength="10" placeholder="Required">
+							</div>
+
+							<div class="cell medium-6 small-12">
+								Account Type <span class="required">*</span>
+							</div>
+							<div class="cell medium-6 small-12">
+								<select name="accounttype" id="accounttype">
+									<option value="Checking">Checking</option>
+									<option value="Savings">Savings</option>
+							</select>
+							</div>
+
+							<div class="cell medium-6 small-12">
+								Account Number <span class="required">*</span>
+							</div>
+							<div class="cell medium-6 small-12">
+								<input type="text" name="accountnumber" id="accountnumber" maxlength="50" placeholder="Required">
+							</div>
+
+							<div class="cell small-12 padding-bottom">
+								<input id="save_bank" class="float-center" type="button" value="Save Bank">
+							</div>
+						</div>
+					</form>';
 ?>
 
 <script language="JavaScript" type="text/javascript">
@@ -280,8 +272,6 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			accountnumber: accountnumber
 		};
 
-		console.log(saveLocation);
-		console.log(data);
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
