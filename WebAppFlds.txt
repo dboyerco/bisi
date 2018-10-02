@@ -1,0 +1,123 @@
+Web_App_Pages;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| Web_App_Name  | varchar(100) | NO   |     |         |       |
+| Web_App_Value | varchar(100) | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+
+select * from Web_App_Pages;
++----------------------+---------------+
+| Web_App_Name         | Web_App_Value |
++----------------------+---------------+
+| Address              | Address       |
+| Bank                 | Bank          |
+| Authorization        | Authorization |
+| Credit Card          | CardInfo      |
+| Disclosure           | Disclosure    |
+| Driver License       | DMV           |
+| Education            | Education     |
+| Employment           | Employment    |
+| Landlords            | Landlord      |
+| Military             | Military      |
+| Professional License | ProfLicense   |
+| References           | Reference     |
+| Last Page            | Thanks        |
+| Person               | Person        |
++----------------------+---------------+
+
+
+WebApp_Address_Flds
++----------------+--------------+------+-----+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------+
+| Field          | Type         | Null | Key | Default                                                                                                                                                                                               | Extra |
++----------------+--------------+------+-----+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------+
+| CompanyID      | varchar(30)  | NO   | PRI |                                                                                                                                                                                                       |       |
+| Company_Name   | varchar(100) | NO   | PRI |                                                                                                                                                                                                       |       |
+| Package_Name   | varchar(100) | NO   | PRI |                                                                                                                                                                                                       |       |
+| LimitEntriesBy | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| LimitEntries   | int(11)      | YES  |     | 0                                                                                                                                                                                                     |       |
+| Display_Msg    | varchar(256) | YES  |     | Please provide your address information for the past 7 years, starting with your current address. <br /> Please be as detailed as possible when providing this information to include a full 7 years. |       |
+| FLD1           | varchar(30)  | YES  |     | Current Address                                                                                                                                                                                       |       |
+| FLD1_ID        | varchar(30)  | YES  |     | current                                                                                                                                                                                               |       |
+| FLD1_Visible   | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD1_Required  | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD2           | varchar(30)  | YES  |     | Street                                                                                                                                                                                                |       |
+| FLD2_ID        | varchar(30)  | YES  |     | street                                                                                                                                                                                                |       |
+| FLD2_Visible   | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD2_Required  | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD3           | varchar(30)  | YES  |     | City                                                                                                                                                                                                  |       |
+| FLD3_ID        | varchar(30)  | YES  |     | city                                                                                                                                                                                                  |       |
+| FLD3_Visible   | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD3_Required  | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD4           | varchar(30)  | YES  |     | State                                                                                                                                                                                                 |       |
+| FLD4_ID        | varchar(30)  | YES  |     | state                                                                                                                                                                                                 |       |
+| FLD4_Visible   | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD4_Required  | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD5           | varchar(30)  | YES  |     | Country                                                                                                                                                                                               |       |
+| FLD5_ID        | varchar(30)  | YES  |     | country                                                                                                                                                                                               |       |
+| FLD5_Visible   | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD5_Required  | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD6           | varchar(30)  | YES  |     | County                                                                                                                                                                                                |       |
+| FLD6_ID        | varchar(30)  | YES  |     | county                                                                                                                                                                                                |       |
+| FLD6_Visible   | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD6_Required  | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD7           | varchar(30)  | YES  |     | Zip Code                                                                                                                                                                                              |       |
+| FLD7_ID        | varchar(30)  | YES  |     | zipcode                                                                                                                                                                                               |       |
+| FLD7_Visible   | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD7_Required  | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD8           | varchar(30)  | YES  |     | From Date                                                                                                                                                                                             |       |
+| FLD8_ID        | varchar(30)  | YES  |     | fromdate                                                                                                                                                                                              |       |
+| FLD8_Visible   | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD8_Required  | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD9           | varchar(30)  | YES  |     | To Date                                                                                                                                                                                               |       |
+| FLD9_ID        | varchar(30)  | YES  |     | todate                                                                                                                                                                                                |       |
+| FLD9_Visible   | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
+| FLD9_Required  | char(1)      | YES  |     | Y                                                                                                                                                                                                     |       |
++----------------+--------------+------+-----+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------+
+
+
+WebApp_Person_Flds
++----------------+--------------+------+-----+-----------------------------------------------------------------------------------------------------------------------------------------+-------+
+| Field          | Type         | Null | Key | Default                                                                                                                                 | Extra |
++----------------+--------------+------+-----+-----------------------------------------------------------------------------------------------------------------------------------------+-------+
+| CompanyID      | varchar(30)  | NO   | PRI |                                                                                                                                         |       |
+| Company_Name   | varchar(100) | NO   | PRI |                                                                                                                                         |       |
+| Package_Name   | varchar(100) | NO   | PRI |                                                                                                                                         |       |
+| Disclaimer     | varchar(256) | YES  |     | All information requested in this application is pertinent and necessary. Not filling out all information can delay the hiring process. |       |
+| FLD1           | varchar(30)  | YES  |     | First Name                                                                                                                              |       |
+| FLD1_Visible   | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD1_Required  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD2           | varchar(30)  | YES  |     | M.I.                                                                                                                                    |       |
+| FLD2_Visible   | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD2_Required  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD3           | varchar(30)  | YES  |     | Last Name                                                                                                                               |       |
+| FLD3_Visible   | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD3_Required  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD4           | varchar(30)  | YES  |     | Maiden Name                                                                                                                             |       |
+| FLD4_Visible   | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD4_Required  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD5           | varchar(30)  | YES  |     | Date Maiden Name Changed                                                                                                                |       |
+| FLD5_Visible   | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD5_Required  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD6           | varchar(30)  | YES  |     | AKAs                                                                                                                                    |       |
+| FLD6_Visible   | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD6_Required  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD7           | varchar(30)  | YES  |     | Date of Birth                                                                                                                           |       |
+| FLD7_Visible   | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD7_Required  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD8           | varchar(30)  | YES  |     | SSN                                                                                                                                     |       |
+| FLD8_Visible   | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD8_Required  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD9           | varchar(30)  | YES  |     | DL                                                                                                                                      |       |
+| FLD9_Visible   | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD9_Required  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD10          | varchar(30)  | YES  |     | Contact Number                                                                                                                          |       |
+| FLD10_Visible  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD10_Required | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD11          | varchar(30)  | YES  |     | Enter an E-mail address                                                                                                                 |       |
+| FLD11_Visible  | char(1)      | YES  |     | Y                                                                                                                                       |       |
+| FLD11_Required | char(1)      | YES  |     | Y                                                                                                                                       |       |
++----------------+--------------+------+-----+-----------------------------------------------------------------------------------------------------------------------------------------+-------+
+
+
+
