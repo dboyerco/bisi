@@ -101,7 +101,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							Business ID <span class="required">*</span>
 						</div>
 						<div class="cell medium-4 small-8">
-							<input type="text" name="businessid" id="businessid" maxlength="100" placeholder="Required">
+							<input type="text" name="BusinessID" id="BusinessID" maxlength="100" placeholder="Required">
 						</div>
 
 						<div class="cell medium-6 small-12">
@@ -147,7 +147,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							Formation Date <span class="required">*</span>
 						</div>
 						<div class="cell medium-4 small-8">
-							<input type="text" name="formatdate" id="formatdate" maxlength="10" placeholder="mm/dd/yyyy">
+							<input type="text" name="formationdate" id="formationdate" maxlength="10" placeholder="mm/dd/yyyy">
 						</div>
 
 						<div class="cell medium-6 small-12">
@@ -172,7 +172,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 						</div>
 
 						<div class="cell small-12 padding-bottom">
-							<input id="save_bank" class="float-center" type="button" value="Save Business">
+							<input id="save_business" class="float-center" type="button" value="Save Business">
 						</div>
 					</div>
 				</form>';
@@ -180,6 +180,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 <script language="JavaScript" type="text/javascript">
 	$("#Business_dialog").dialog({ autoOpen: false });
+	if($('#formationdate')[0].type != 'date' ) $('#formationdate').datepicker();
 
 	$(".add-business").click(function() {
 		addBusiness();
@@ -213,11 +214,11 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			saveLocation = "../App_Ajax_New/ajax_save_business.php";
 		}
 
-		if($("#businessid").val() > '') {
-			var businessid = $("#businessid").val();
+		if($("#BusinessID").val() > '') {
+			var businessid = $("#BusinessID").val();
 		}
 		else {
-			$("#businessid").focus();
+			$("#BusinessID").focus();
 			alert("Business ID is required");
 			return;
 		}
@@ -350,7 +351,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
-
+				console.log(obj2);
 				if(obj2) {
 					var fd = obj2.Formation_Date;
 					var Formation_Date = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
@@ -361,7 +362,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 					$("#businesscity").val(obj2.Business_City);
 					$("#businessstate").val(obj2.Business_State);
 					$("#businesszip").val(pbj2.Business_Zip);
-					$("#businessid").val(obj2.BusinessID);
+					$("#BusinessID").val(obj2.BusinessID);
 					$("#formationdate").val(Formation_Date);
 					$("#registered_agents").val(obj2.Registered_Agents);
 					$("#agent_address").val(obj2.Agent_Address);
