@@ -38,43 +38,41 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			$fullaccount = $row[8];
 			$displayaccount = 'xxxxxxxxxxxx';
 
-			echo '<div class="cell small-12 medium-3">
+			echo '<div class="cell small-6">
 							&nbsp;' . htmlspecialchars($row[1]) . '
 						</div>
+						<div class="cell small-6 right">
+							<span onclick="updatebank(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Bank" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<span onclick="updatebank(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Bank" title="Delete Address"/></span>
+						</div>
 
-						<div class="cell small-12 medium-3">
+						<div class="cell small-6">
+							' . htmlspecialchars($row[7]) . '
+						</div>
+						<div class="cell small-6">
+							' . htmlspecialchars($row[6]) . '
+						</div>
+						
+						<div class="cell small-4">
 							' . htmlspecialchars($row[2]) . '
 						</div>
 
-						<div class="cell small-12 medium-3">
+						<div class="cell small-4">
 							' . htmlspecialchars($row[3]) . '
 						</div>';
 
-						if($row[5] > '') {
-							echo '<div class="cell small-12 medium-3">
-											' . htmlspecialchars($row[5]) . '
-										</div>';
-						}
-						else {
-							echo '<div class="cell small-12 medium-3">
+						if($row[4] > '') {
+							echo '<div class="cell small-4">
 											' . htmlspecialchars($row[4]) . '
 										</div>';
 						}
+						else {
+							echo '<div class="cell small-4">
+											' . htmlspecialchars($row[5]) . '
+										</div>';
+						}
 
-						echo '<div class="cell small-12 medium-3">
-										' . htmlspecialchars($row[6]) . '
-									</div>
-
-									<div class="cell small-12 medium-3">
-										' . htmlspecialchars($row[7]) . '
-									</div>
-
-									<div class="cell small-6 right">
-										<span onclick="updatebank(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Bank" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<span onclick="updatebank(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Bank" title="Delete Address"/></span>
-									</div>
-
-									<div class="cell small-12">
+						echo '<div class="cell small-12">
 										<hr>
 									</div>';
 		}
@@ -178,111 +176,6 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 								</div>
 							</div>
 						</form>';
-
-// <input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
-// <input type="hidden" name="BankID" id="BankID" VALUE="' . $maxBankID . '">
-// 	echo '<fieldset><legend><strong>Add Bank Information</strong></legend>
-// 		<table width="100%" bgcolor="#E4E8E8">
-// 		<tr>
-// 			<td><font color="FF0000" size="1" face="Verdana, Arial, Helvetica, sans-serif">* Denotes Required Field</font></td>
-// 		</tr>';
-// 	echo '<tr>
-// 			<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank Name<font color="#FF0000">*</font></font></td>
-// 			<td width="351">
-// 				<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-// 					<input name="newbankname" id="newbankname" size="20" maxlength="100" placeholder="Required">
-// 				</font>
-// 			</td>
-// 		</tr>';
-// 	echo '<tr>
-// 		<td width="160"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank Street<font color="#FF0000">*</font></font></td>
-// 		<td width="351">
-// 			<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-// 				<input name="newbankaddress" id="newbankaddress" size="20" maxlength="100" placeholder="Required">
-// 			</font>
-// 		</td>
-// 	</tr>
-// 	<tr>
-// 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank City<font color="#FF0000">*</font></font></td>
-// 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-// 				<input name="newbankcity" id="newbankcity" size="20" maxlength="40" placeholder="Required">
-// 			</font>
-// 		</td>
-// 	</tr>
-// 	<tr>
-// 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank State<font color="#FF0000">*</font></font></td>
-// 		<td><span style="font-size:small; font-family=Tahoma; color:#000000;">
-// 				<select name="newbankstate" id="newbankstate">
-// 					<option value="">Select a State</option>
-// 					<option value="">-Other-</option>';
-// 					$sql = "Select Name, Abbrev from State order by Name";
-// 					$state_result = $dbo->prepare($sql);
-// 					$state_result->execute();
-// 					while($rows = $state_result->fetch(PDO::FETCH_BOTH)) {
-// 						echo "<option value=".$rows[1].">".$rows[0]."</option>";
-// 					}
-// 			echo '</select></span>
-// 		</td>
-// 	</tr>';
-// echo '<tr>
-// 		<td><font size="1">&nbsp;</font></td>
-// 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"> OR If bank is out of the US, please select the Country</font></td>
-// 	</tr>';
-// echo '<tr>
-// 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank Country</font></td>
-// 		<td><span style="font-size:small; font-family=Tahoma; color:#000000;">
-// 			<select name="newbankcountry" id="newbankcountry">
-// 				<option value="">Select a Country</option>';
-// 				$sql = "Select Alpha2Code, FullName from isocountrycodes Order By FullName;";
-// 				$country_result = $dbo->prepare($sql);
-// 				$country_result->execute();
-// 				while($rows = $country_result->fetch(PDO::FETCH_BOTH)) {
-// 					echo "<option value=".$rows[0].">".$rows[1]."</option>";
-// 				}
-// 		echo '</select></span>
-// 		</td>
-// 	</tr>';
-// 	echo '<tr>
-// 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Bank Zip Code<font color="#FF0000">*</font></font></td>
-// 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-// 			<input name="newbankzip" id="newbankzip" size="10" maxlength="10">
-// 			</font>
-// 		</td>
-// 	</tr>
-// 	<tr>
-// 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Acoount Type<font color="#FF0000">*</font></font></td>
-// 		<td>
-// 			<select name="newaccounttype" id="newaccounttype">
-// 					<option VALUE="Checking">Checking</OPTION>
-// 					<option value="Savings">Savings</option>
-// 				</select>
-// 			</td>
-// 	</tr>
-// 	<tr>
-// 		<td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">Account Number<font color="#FF0000">*</font></font></td>
-// 		<td nowrap>
-// 			<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-// 				<input name="newaccountnumber" id="newaccountnumber" size="15" maxlength="25" placeholder="requires">
-// 			</font>
-// 		</td>
-// 	</tr>
-// 	<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-// 	<tr>
-// 		<td>&nbsp;</td>
-// 		<td>
-// 			<INPUT TYPE="button" id="add_new_bank" VALUE="Save Bank" style="font-size:medium; font-family=Tahoma; color:green; border-radius:5px; padding: 5px 24px;">
-// 		</td>
-// 	</tr>
-// 	</table></fieldset>';
-// echo '<table width="763">
-// 	<tr><td>&nbsp;</td></tr>
-// 	<tr>
-// 		<td align="center">
-// 			 <INPUT TYPE="submit" VALUE="Next" style="font-size:medium; font-family=Tahoma; color:green; border-radius:5px; padding: 5px 24px;">
-// 		</td>
-// 	</tr>
-// 	<tr><td>&nbsp;</td></tr>
-// </table>';
 ?>
 
 <script language="JavaScript" type="text/javascript">
@@ -392,7 +285,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
-			data: { data },
+			data: data,
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
