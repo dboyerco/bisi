@@ -101,7 +101,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							Business ID <span class="required">*</span>
 						</div>
 						<div class="cell medium-4 small-8">
-							<input type="text" name="BusinessID" id="BusinessID" maxlength="100" placeholder="Required">
+							<input type="text" name="businessid" id="businessid" maxlength="100" placeholder="Required">
 						</div>
 
 						<div class="cell medium-6 small-12">
@@ -214,11 +214,11 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			saveLocation = "../App_Ajax_New/ajax_save_business.php";
 		}
 
-		if($("#BusinessID").val() > '') {
-			var businessid = $("#BusinessID").val();
+		if($("#businessid").val() > '') {
+			var businessid = $("#businessid").val();
 		}
 		else {
-			$("#BusinessID").focus();
+			$("#businessid").focus();
 			alert("Business ID is required");
 			return;
 		}
@@ -317,7 +317,8 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			agent_address: agent_address,
 			status: status
 		};
-
+		console.log(data);
+		return;
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
@@ -350,7 +351,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			data: { personid: personid, recid: recid },
 			datatype: "JSON",
 			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
+				var obj2 = $.parseJSON(valor)[0];
 				console.log(obj2);
 				if(obj2) {
 					var fd = obj2.Formation_Date;
@@ -361,8 +362,8 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 					$("#businessname").val(obj2.Business_Name);
 					$("#businesscity").val(obj2.Business_City);
 					$("#businessstate").val(obj2.Business_State);
-					$("#businesszip").val(pbj2.Business_Zip);
-					$("#BusinessID").val(obj2.BusinessID);
+					$("#businesszip").val(obj2.Business_Zip);
+					$("#businessid").val(obj2.BusinessID);
 					$("#formationdate").val(Formation_Date);
 					$("#registered_agents").val(obj2.Registered_Agents);
 					$("#agent_address").val(obj2.Agent_Address);
@@ -423,7 +424,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 	frmvalidator.setAddnlValidationFunction("DoCustomValidation");
 
 	function DoCustomValidation() {
-		var businessid = $("#BusinessID").val();
+		var businessid = $("#businessid").val();
 
 		if(businessid == 0) {
 			$("#newbusinessname").focus();

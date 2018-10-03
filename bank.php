@@ -305,7 +305,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			data: { personid: personid, bankid: bankid },
 			datatype: "JSON",
 			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
+				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
 					$("#accounttype").val(obj2.Account_Type);
