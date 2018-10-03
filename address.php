@@ -4,13 +4,6 @@ $YR = 0;
 $MO = 0;
 $DY = 0;
 
-// if($noemail == 'Y') {
-// 	$FormAction = "index.php?pg=certification&PersonID=" . $PersonID . "&CD=" . $CD; // certification is not on this pass
-// }
-// else {
-// 	$FormAction = "index.php?pg=disclosure1&PersonID=" . $PersonID . "&CD=" . $CD;
-// }
-
 $FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
@@ -34,136 +27,98 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							</div>';
 
 $currentaddress = 'N';
+$maxAddrID = $dbo->query("Select max(AddrID) from App_Address where PersonID = " . $PersonID . ";")->fetchColumn();
 
-if(!$testLayout) {
-	$maxAddrID = $dbo->query("Select max(AddrID) from App_Address where PersonID = " . $PersonID . ";")->fetchColumn();
+if($maxAddrID > 0) {
+	$selectaddr = "select AddrID, Addr1, Apt, City, State_addr, StateOther, County, ZipCode, FromDate, ToDate, Current_Address from App_Address where PersonID = " . $PersonID . ";";
+	$addr_result = $dbo->prepare($selectaddr);
+	$addr_result->bindValue(':PersonID', $PersonID);
+	$addr_result->execute();
+	$i = 0;
 
-	if($maxAddrID > 0) {
-		$selectaddr = "select AddrID, Addr1, Apt, City, State_addr, StateOther, County, ZipCode, FromDate, ToDate, Current_Address from App_Address where PersonID = " . $PersonID . ";";
-		$addr_result = $dbo->prepare($selectaddr);
-		$addr_result->bindValue(':PersonID', $PersonID);
-		$addr_result->execute();
-		$i = 0;
-
-		while($row = $addr_result->fetch(PDO::FETCH_BOTH)) {
-			if($row[8] == '1900-01-01') {
-				$fromdate = '';
-			}
-			else {
-				$fromdate = date("m/d/Y", strtotime($row[8]));
-			}
-
-			if($row[9] == '1900-01-01') {
-				$todate = '';
-			}
-			else {
-				$todate = date("m/d/Y", strtotime($row[9]));
-			}
-
-			if($fromdate != '' && $todate != '') {
-				$datediff = strtotime($todate) - strtotime($fromdate);
-				$days = $days + floor($datediff / (60 * 60 * 24));
-			}
-
-			if($row[10] == 'Y') {
-				$addressType = "Current";
-				$currentaddress = $row[10];
-			}
-			else {
-				$addressType = "Additional";
-			}
-
-			echo '	<div class="cell small-12">
-								<h3>' . $addressType . ' Address</h3>
-							</div>
-							<div class="cell small-6 sub-heading">
-								&nbsp;' . htmlspecialchars($fromdate) . '&nbsp;&nbsp;-&nbsp;&nbsp;' . htmlspecialchars($todate) . '
-							</div>
-							<div class="cell small-6 right">
-								<span onclick="updateaddr(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Address" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<span onclick="deleteaddr(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Address" title="Delete Address"/></span>
-							</div>
-							<div class="cell small-12 medium-3">
-								' . htmlspecialchars($row[1]) . ' ' . ($row[2] > '' ? '&nbsp;&nbsp;&nbsp;Apt:&nbsp;' . htmlspecialchars($row[2]) : '') . '
-							</div>
-							<div class="cell small-4 medium-3">
-								' . htmlspecialchars($row[3]) . '
-							</div>';
-
-			if($row[5] > '') {
-				echo '<div class="cell small-2 medium-1">
-								' . htmlspecialchars($row[5]) . '
-							</div>';
-			}
-			else {
-				echo '<div class="cell small-2 medium-1">
-								' . htmlspecialchars($row[4]) . '
-							</div>';
-			}
-
-			echo '	<div class="cell small-4 medium-3">
-								' . htmlspecialchars($row[6]) . '
-							</div>
-							<div class="cell small-2">
-								' . htmlspecialchars($row[7]) . '
-							</div>
-
-							<div class="cell small-12">
-								<hr>
-							</div>';
-
-			$i++;
-		}
-
-		if($days > 0){
-			$YR = floor($days / 365);
-			$MO = floor(($days - (floor($days / 365) * 365)) / 30);
-			$DY = $days - (($YR * 365) + ($MO * 30));
+	while($row = $addr_result->fetch(PDO::FETCH_BOTH)) {
+		if($row[8] == '1900-01-01') {
+			$fromdate = '';
 		}
 		else {
-			$YR = 0;
-			$MO = 0;
-			$DY = 0;
+			$fromdate = date("m/d/Y", strtotime($row[8]));
 		}
+
+		if($row[9] == '1900-01-01') {
+			$todate = '';
+		}
+		else {
+			$todate = date("m/d/Y", strtotime($row[9]));
+		}
+
+		if($fromdate != '' && $todate != '') {
+			$datediff = strtotime($todate) - strtotime($fromdate);
+			$days = $days + floor($datediff / (60 * 60 * 24));
+		}
+
+		if($row[10] == 'Y') {
+			$addressType = "Current";
+			$currentaddress = $row[10];
+		}
+		else {
+			$addressType = "Additional";
+		}
+
+		echo '	<div class="cell small-12">
+							<h3>' . $addressType . ' Address</h3>
+						</div>
+						<div class="cell small-6 sub-heading">
+							&nbsp;' . htmlspecialchars($fromdate) . '&nbsp;&nbsp;-&nbsp;&nbsp;' . htmlspecialchars($todate) . '
+						</div>
+						<div class="cell small-6 right">
+							<span onclick="updateaddr(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Address" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<span onclick="deleteaddr(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Address" title="Delete Address"/></span>
+						</div>
+						<div class="cell small-12 medium-3">
+							' . htmlspecialchars($row[1]) . ' ' . ($row[2] > '' ? '&nbsp;&nbsp;&nbsp;Apt:&nbsp;' . htmlspecialchars($row[2]) : '') . '
+						</div>
+						<div class="cell small-4 medium-3">
+							' . htmlspecialchars($row[3]) . '
+						</div>';
+
+		if($row[5] > '') {
+			echo '<div class="cell small-2 medium-1">
+							' . htmlspecialchars($row[5]) . '
+						</div>';
+		}
+		else {
+			echo '<div class="cell small-2 medium-1">
+							' . htmlspecialchars($row[4]) . '
+						</div>';
+		}
+
+		echo '	<div class="cell small-4 medium-3">
+							' . htmlspecialchars($row[6]) . '
+						</div>
+						<div class="cell small-2">
+							' . htmlspecialchars($row[7]) . '
+						</div>
+
+						<div class="cell small-12">
+							<hr>
+						</div>';
+
+		$i++;
+	}
+
+	if($days > 0){
+		$YR = floor($days / 365);
+		$MO = floor(($days - (floor($days / 365) * 365)) / 30);
+		$DY = $days - (($YR * 365) + ($MO * 30));
 	}
 	else {
-		$maxAddrID = 0;
+		$YR = 0;
+		$MO = 0;
+		$DY = 0;
 	}
 }
 else {
 	$maxAddrID = 0;
-	$days = 2557;
-
-	echo '			<div class="cell small-12">
-								<h3>Current Address</h3>
-							</div>
-
-							<div class="cell small-6 sub-heading">
-								02/03/2007&nbsp;&nbsp;-&nbsp;&nbsp;05/30/2018
-							</div>
-							<div class="cell small-6 right">
-								<span onclick="updateaddr(1)"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Address" title="Edit Address"/></span>&nbsp;&nbsp;
-								<span onclick="deleteaddr(1)"><img class="icon" src="images/deletetrashcan.png" alt="Delete Address" title="Delete Address"/></span>
-							</div>
-							<div class="cell small-12 medium-3">
-								123 My Street &nbsp;&nbsp;&nbsp;&nbsp; Apt 1
-							</div>
-							<div class="cell small-4 medium-3">
-								Loveland
-							</div>
-							<div class="cell small-2 medium-1">
-								CO
-							</div>
-							<div class="cell small-4 medium-3">
-								Larimer
-							</div>
-							<div class="cell small-2">
-								80537
-							</div>
-
-							<div class="cell small-12">
-								<hr>
-							</div>';
 }
 
 echo '				<div class="cell small-12">
