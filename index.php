@@ -70,11 +70,11 @@ else {
   	}
 
     //if($package == "XXX") {
-      //                    0           1          2         3         4        5            6            7             8               9
-      $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
-      $pageUnder18 = 7;
-      $pageCardInfo = 8;
-      $pageThanks = 9;
+      //                    0           1          2         3               4             5        6            7             8            9             10               11             12         13
+      $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+      $pageUnder18 = 11;
+      $pageCardInfo = 12;
+      $pageThanks = 13;
     //}
   }
 	else {
@@ -83,10 +83,10 @@ else {
     $package = "";
     $noemail = 'Y';
 
-    $pageOrder = Array('person', 'additional', 'dmv', 'business', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
-    $pageUnder18 = 7;
-    $pageCardInfo = 8;
-    $pageThanks = 9;
+    $pageOrder = Array('person', 'additional', 'dmv', 'business', 'dmv_with_vehicle', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+    $pageUnder18 = 11;
+    $pageCardInfo = 12;
+    $pageThanks = 13;
 
     $state_options = '<option value="co">CO</option>';
     $country_options = '<option value="usa">USA</option>';

@@ -22,67 +22,46 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 $currentDMV = 'N';
 $maxRecID = 0;
+$maxRecID = $dbo->query("Select max(RecID) from App_DMV where PersonID = " . $PersonID . ";")->fetchColumn();
 
-if(!$testLayout) {
-	$maxRecID = $dbo->query("Select max(RecID) from App_DMV where PersonID = " . $PersonID . ";")->fetchColumn();
+if($maxRecID > 0) {
+	$selectstmt = "select RecID, Driver_License, Date_Expires, Issue_State, Issue_StateOther, Current_DMV from App_DMV where PersonID = :PersonID;";
+	$dmv = $dbo->prepare($selectstmt);
+	$dmv->bindValue(':PersonID', $PersonID);
+	$dmv->execute();
 
-	if($maxRecID > 0) {
-		$selectstmt = "select RecID, Driver_License, Date_Expires, Issue_State, Issue_StateOther, Current_DMV from App_DMV where PersonID = :PersonID;";
-		$dmv = $dbo->prepare($selectstmt);
-		$dmv->bindValue(':PersonID', $PersonID);
-		$dmv->execute();
+	while($DMV = $dmv->fetch(PDO::FETCH_BOTH)) {
+		$dateExpires = date("m/d/Y", strtotime($DMV[2]));
 
-		while($DMV = $dmv->fetch(PDO::FETCH_BOTH)) {
-			$dateExpires = date("m/d/Y", strtotime($DMV[2]));
+		echo '	<div class="cell small-4">
+							' . htmlspecialchars($DMV[1]) . '
+						</div>
+						<div class="cell small-4">
+							' . htmlspecialchars($dateExpires) . '
+						</div>';
 
-			echo '	<div class="cell small-4">
-								' . htmlspecialchars($DMV[1]) . '
-							</div>
-							<div class="cell small-4">
-								' . htmlspecialchars($dateExpires) . '
-							</div>';
-
-			if($DMV[4] > '') {
-				echo '<div class="cell small-1">
-								' . htmlspecialchars($DMV[4]) . '
-							</div>';
-			}
-			else {
-				echo '<div class="cell small-1">
-								' . htmlspecialchars($DMV[3]) . '
-							</div>';
-			}
-
-			echo '	<div class="cell small-3 right">
-								<span onclick="updatedmv(' . $DMV[0] . ')"><img class="icon" src="images/pen-edit-icon.png" alt="Edit License" title="Edit License"/></span>&nbsp;&nbsp;&nbsp;
-								<span onclick="dltdmv(' . $DMV[0] . ')"><img class="icon" src="images/deletetrashcan.png" alt="Delete License" title="Delete License"/></span>
-							</div>
-							<div class="cell small-12">
-								<hr>
-							</div>';
+		if($DMV[4] > '') {
+			echo '<div class="cell small-1">
+							' . htmlspecialchars($DMV[4]) . '
+						</div>';
 		}
-	}
-	else {
-		$maxRecID = 0;
+		else {
+			echo '<div class="cell small-1">
+							' . htmlspecialchars($DMV[3]) . '
+						</div>';
+		}
+
+		echo '	<div class="cell small-3 right">
+							<span onclick="updatedmv(' . $DMV[0] . ')"><img class="icon" src="images/pen-edit-icon.png" alt="Edit License" title="Edit License"/></span>&nbsp;&nbsp;&nbsp;
+							<span onclick="dltdmv(' . $DMV[0] . ')"><img class="icon" src="images/deletetrashcan.png" alt="Delete License" title="Delete License"/></span>
+						</div>
+						<div class="cell small-12">
+							<hr>
+						</div>';
 	}
 }
 else {
-	echo '			<div class="cell small-4">
-								92-123456
-							</div>
-							<div class="cell small-4">
-								01/30/2025
-							</div>
-							<div class="cell small-1">
-								CO
-							</div>
-							<div class="cell small-3 right">
-								<span onclick="updatedmv(1)"><img class="icon" src="images/pen-edit-icon.png" alt="Edit License" title="Edit License"/></span>&nbsp;&nbsp;&nbsp;
-								<span onclick="dltdmv(1)"><img class="icon" src="images/deletetrashcan.png" alt="Delete License" title="Delete License"/></span>
-							</div>
-							<div class="cell small-12">
-								<hr>
-							</div>';
+	$maxRecID = 0;
 }
 
 echo '				<div class="cell small-12">
