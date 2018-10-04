@@ -163,16 +163,16 @@ echo '				<div class="cell medium-6 small-12">
 								Street <span class="required">*</span>
 							</div>
 							<div class="cell medium-4 small-8">
-								<input type="text" name="addr1" id="addr1" size="20" maxlength="100" placeholder="Required">
+								<input type="text" name="addr1" id="addr1" maxlength="100" placeholder="Required">
 							</div>
 							<div class="cell medium-2 small-4">
-								<input type="text" name="apt" id="apt" size="5" maxlength="9" value="" placeholder="Apt/Suite">
+								<input type="text" name="apt" id="apt" maxlength="9" value="" placeholder="Apt/Suite">
 							</div>
 							<div class="cell medium-6 small-12">
 								City <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="city" id="city" size="20" maxlength="40" placeholder="Required">
+								<input type="text" name="city" id="city" maxlength="40" placeholder="Required">
 							</div>';
 
 if($package == 'zinc') {
@@ -463,6 +463,7 @@ echo '				<div class="cell medium-6 small-12">
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
+
 				if(obj2.length > 30) {
 					alert(obj2);
 				}

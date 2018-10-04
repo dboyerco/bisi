@@ -1,6 +1,4 @@
 <?php
-$FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
-
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
 					<div class="sub-menu">&nbsp;</div>
@@ -36,10 +34,10 @@ if($maxProfID > 0) {
 		echo '		<div class="cell small-12 medium-3">
 								' . htmlspecialchars($row[1]) . '
 							</div>
-							<div class="cell small-12 medium-3">
+							<div class="cell small-12 medium-1">
 								' . htmlspecialchars($row[2]) . '
 							</div>
-							<div class="cell small-12 medium-3">
+							<div class="cell small-12 medium-2">
 								' . htmlspecialchars($row[3]) . '
 							</div>
 							<div class="cell small-12 medium-3">
