@@ -1,4 +1,5 @@
 <?php
+
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
 					<div class="sub-menu">&nbsp;</div>

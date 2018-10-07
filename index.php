@@ -70,11 +70,11 @@ else {
   	}
 
     //if($package == "XXX") {
-      //                    0           1          2         3               4                 5             6          7        8           9             10            11             12             13              14         15
-      $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
-      $pageUnder18 = 13;
-      $pageCardInfo = 14;
-      $pageThanks = 15;
+      //                    0           1          2         3               4                 5             6            7        8        9           10            11           12             13             14               15         16
+      $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+      $pageUnder18 = 14;
+      $pageCardInfo = 15;
+      $pageThanks = 16;
     //}
   }
 	else {
@@ -83,10 +83,10 @@ else {
     $package = "";
     $noemail = 'Y';
 
-    $pageOrder = Array('person', 'additional', 'dmv', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
-    $pageUnder18 = 13;
-    $pageCardInfo = 14;
-    $pageThanks = 15;
+    $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+    $pageUnder18 = 14;
+    $pageCardInfo = 15;
+    $pageThanks = 16;
 
     $state_options = '<option value="co">CO</option>';
     $country_options = '<option value="usa">USA</option>';

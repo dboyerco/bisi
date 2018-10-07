@@ -1,10 +1,9 @@
 <?php
+
 $days = 0;
 $YR = 0;
 $MO = 0;
 $DY = 0;
-
-$FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
