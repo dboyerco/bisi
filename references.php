@@ -138,7 +138,7 @@ echo '				<div class="cell small-12">
 	$('.button-prev').click(function() {
 		location.href = prevAction;
 	});
-	
+
   function addReference() {
 		$("#refid").val('');
     $("#reffirstname").val('');
@@ -194,7 +194,7 @@ echo '				<div class="cell small-12">
 
  	$("#save_reference").click(function() {
 		var personid = $("#PersonID").val();
-		var refid = $("#dlgrefid").val();
+		var refid = $("#refid").val();
     var saveLocation = "../App_Ajax_New/ajax_add_reference.php";
 
 		if(refid > 0) {

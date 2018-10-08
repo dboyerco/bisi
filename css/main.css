@@ -5198,8 +5198,11 @@ h3, .add-button {
   background-color: #E4E8E8; }
 
 .sub-heading {
-  font-size: .813rem;
+  font-size: 1rem;
   font-weight: bold; }
+  @media print, screen and (min-width: 40em) {
+    .sub-heading {
+      font-size: .813rem; } }
 
 .person-form {
   padding: 1px; }

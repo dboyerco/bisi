@@ -57,7 +57,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							</div>
 
 							<div class="cell small-6 sub-heading">
-								&nbsp;' . htmlspecialchars($fromdate) . '&nbsp;&nbsp;-&nbsp;&nbsp;' . htmlspecialchars($todate) . '
+								' . htmlspecialchars($fromdate) . '&nbsp;&nbsp;-&nbsp;&nbsp;' . htmlspecialchars($todate) . '
 							</div>
 							<div class="cell small-6 right">
 								<span onclick="updateRental(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Rental" title="Edit Rental"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -205,7 +205,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 										Postal Code <span class="required">*</span>
 									</div>
 									<div class="cell medium-6 small-12">
-										<input type="text" name="rentalzip" id="rentalzip" maxlength="10">
+										<input type="text" name="rentalzipcode" id="rentalzipcode" maxlength="10">
 									</div>
 
 									<div class="cell medium-6 small-12">
@@ -239,7 +239,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 										Move Out Date <span class="required">*</span>
 									</div>
 									<div class="cell medium-6 small-12">
-										<input type="text" name="moveouttodate" id="moveouttodate" maxlength="10" placeholder="mm/dd/yyyy">
+										<input type="text" name="moveoutdate" id="moveoutdate" maxlength="10" placeholder="mm/dd/yyyy">
 									</div>
 
 									<div class="cell small-12 padding-bottom">
@@ -258,7 +258,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 <script language="JavaScript" type="text/javascript">
  	$("#Rental_dialog").dialog({ autoOpen: false });
 	if($('#moveindate')[0].type != 'date' ) $('#moveindate').datepicker();
-	if($('#moveouttodate')[0].type != 'date' ) $('#moveouttodate').datepicker();
+	if($('#moveoutdate')[0].type != 'date' ) $('#moveoutdate').datepicker();
 
 	$('.button-prev').click(function() {
 		location.href = prevAction;
@@ -296,13 +296,14 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 		var mm = today.getMonth() + 1;
 		var yyyy = today.getFullYear();
 
-		if(dd < 10)
+		if(dd < 10) {
 			dd = '0' + dd;
+		}
 
-		if(mm < 10)
+		if(mm < 10) {
 			mm = '0' + mm;
+		}
 
-		//today = mm + '/' + dd + '/' + yyyy;
 		today = yyyy + '-' + mm + '-' + dd;
 
 		return today;
@@ -463,11 +464,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
 
-				if(obj2 > '' ) {
+				if(obj2.length > 30) {
 					alert(obj2);
 				}
 				else {
-					$( "#Rental_dialog" ).dialog( "close" );
 					location.reload();
 				}
 

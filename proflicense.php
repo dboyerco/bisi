@@ -31,19 +31,23 @@ if($maxProfID > 0) {
 	$result2->execute();
 
 	while($row = $result2->fetch(PDO::FETCH_BOTH)) {
-		echo '		<div class="cell small-12 medium-3">
-								' . htmlspecialchars($row[1]) . '
+		echo '		<div class="cell small-9">
+								<div class="grid-x margins">
+									<div class="cell small-6 medium-4">
+										' . htmlspecialchars($row[1]) . '
+									</div>
+									<div class="cell small-6 medium-1">
+										' . htmlspecialchars($row[2]) . '
+									</div>
+									<div class="cell small-6 medium-3">
+										' . htmlspecialchars($row[3]) . '
+									</div>
+									<div class="cell small-6 medium-4">
+										' . htmlspecialchars($row[4]) . '
+									</div>
+								</div>
 							</div>
-							<div class="cell small-12 medium-1">
-								' . htmlspecialchars($row[2]) . '
-							</div>
-							<div class="cell small-12 medium-2">
-								' . htmlspecialchars($row[3]) . '
-							</div>
-							<div class="cell small-12 medium-3">
-								' . htmlspecialchars($row[4]) . '
-							</div>
-							<div class="cell small-12 medium-3">
+							<div class="cell small-3 right">
 								<span onclick="updateprof(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit License" title="Edit License"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<span onclick="deleteprof(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete License" title="Delete License"/></span>
 							</div>
@@ -136,7 +140,7 @@ echo '				<div class="cell small-12">
 	$('.button-prev').click(function() {
 		location.href = prevAction;
 	});
-	
+
 	function addProfLicense() {
 		$("#profid").val('');
 		$("#proflictype").val('');

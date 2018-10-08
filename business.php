@@ -29,8 +29,8 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 		while($row = $Business_result->fetch(PDO::FETCH_BOTH)) {
 			$formation_date	= date("m/d/Y", strtotime($row[7]));
 
-			echo '<div class="cell small-6">
-							&nbsp;' . htmlspecialchars($row[1]) . '
+			echo '<div class="cell small-6 sub-heading">
+							' . htmlspecialchars($row[1]) . '
 						</div>
 						<div class="cell small-6 right">
 							<span onclick="updatebusiness(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Business" title="Edit Business"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -67,6 +67,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 						<div class="cell small-12">
 							' . htmlspecialchars($row[10]) . '
+						</div>
+
+						<div class="cell small-12">
+							<hr>
 						</div>';
 		}
 	}
@@ -189,8 +193,9 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 	$('.button-prev').click(function() {
 		location.href = prevAction;
 	});
-	
+
 	function addBusiness() {
+		$("#recid").val('');
 		$("#businessid").val('');
 		$("#businessaddress").val('');
 		$("#businessname").val('');
@@ -309,6 +314,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 		}
 
 		var data = {
+			recid: recid,
 			personid: personid,
 			businessname: businessname,
 			businessaddress: businessaddress,
@@ -321,8 +327,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			agent_address: agent_address,
 			status: status
 		};
-		console.log(data);
-		return;
+		
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
@@ -337,6 +342,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				else {
 					location.reload();
 				}
+
 				return;
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -423,20 +429,4 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 	$("#close_business").click(function() {
 		$("#Business_dialog").dialog("close");
 	});
-
-	var frmvalidator = new Validator("ALCATEL");
-	frmvalidator.setAddnlValidationFunction("DoCustomValidation");
-
-	function DoCustomValidation() {
-		var businessid = $("#businessid").val();
-
-		if(businessid == 0) {
-			$("#newbusinessname").focus();
-			alert('You have not entered your Business info');
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
 </script>

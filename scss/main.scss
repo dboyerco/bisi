@@ -114,8 +114,12 @@ h3, .add-button {
 }
 
 .sub-heading {
-  font-size: .813rem;
+  font-size: 1rem;
   font-weight: bold;
+
+  @include breakpoint(medium) {
+    font-size: .813rem;
+  }
 }
 
 .person-form {

@@ -29,7 +29,7 @@ echo '<!DOCTYPE HTML>
       		<script language="JavaScript" type="text/javascript" src="../App_JS/validate.js"></script>
           <script language="JavaScript" type="text/javascript" src="../App_JS/validation.js"></script>
       		<script language="JavaScript" type="text/javascript" src="../App_JS/autoTab.js"></script>
-      		<script language="JavaScript" type="text/javascript" src="../App_JS/autoFormats.js"></script>
+      		<script language="JavaScript" type="text/javascript" src="js/autoFormats.js"></script>
         </head>
 
         <body>';

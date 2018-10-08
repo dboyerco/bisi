@@ -33,20 +33,20 @@ if($maxRecID > 0) {
 	while($DMV = $dmv->fetch(PDO::FETCH_BOTH)) {
 		$dateExpires = date("m/d/Y", strtotime($DMV[2]));
 
-		echo '	<div class="cell small-4">
+		echo '	<div class="cell small-4 sub-heading">
 							' . htmlspecialchars($DMV[1]) . '
 						</div>
-						<div class="cell small-4">
+						<div class="cell small-4 sub-heading">
 							' . htmlspecialchars($dateExpires) . '
 						</div>';
 
 		if($DMV[4] > '') {
-			echo '<div class="cell small-1">
+			echo '<div class="cell small-1 sub-heading">
 							' . htmlspecialchars($DMV[4]) . '
 						</div>';
 		}
 		else {
-			echo '<div class="cell small-1">
+			echo '<div class="cell small-1 sub-heading">
 							' . htmlspecialchars($DMV[3]) . '
 						</div>';
 		}

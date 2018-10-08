@@ -33,8 +33,8 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			$fullaccount = $row[8];
 			$displayaccount = 'xxxxxxxxxxxx';
 
-			echo '	<div class="cell small-6">
-						 		&nbsp;' . htmlspecialchars($row[1]) . '
+			echo '	<div class="cell small-6 sub-heading">
+						 		' . htmlspecialchars($row[1]) . '
 							</div>
 							<div class="cell small-6 right">
 								<span onclick="updatebank(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Bank" title="Edit Address"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -183,7 +183,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 	$('.button-prev').click(function() {
 		location.href = prevAction;
 	});
-	
+
 	function addBank() {
 		$("#accounttype").val('Checking');
 		$("#bankaddress").val('');
