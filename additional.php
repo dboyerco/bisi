@@ -138,7 +138,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 								<hr>
 							</div>
 
-							<div class="cell small-12 padding-bottom">
+							<div class="cell small-6">
+								<input class="button button-prev float-center" type="button" value="Prev">
+							</div>
+							<div class="cell small-6">
 								<input id="save_additional_info" class="float-center" type="button" value="Next">
 							</div>
 
@@ -155,6 +158,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 <?php
 	echo "setIndexes('" . $stype . "', '" . $empbefore . "', '" . $stationid . "');";
 ?>
+
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
 
 	function setIndexes(stype, empbefore, stationid) {
 		$("#screentype").val(stype);

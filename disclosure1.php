@@ -85,8 +85,11 @@ echo '					<br /><br />
 								' . ($rights > '' ? '<strong>Click <a href="https://proteus.bisi.com/' . $rights . '" target="blank">HERE</a> to view your States Summary of Rights.</strong>' : '') . '
 							</div>
 
-							<div class="cell small-12 padding-bottom">
-								<input class="float-center" id="savesign" type="button" value="Next">
+							<div class="cell small-6">
+								<input class="button button-prev float-center" type="button" value="Prev">
+							</div>
+							<div class="cell small-6">
+								<input class="button float-center" type="submit" value="Next">
 							</div>
 
 							<input type="hidden" name="signdate" id="signdate" value="' . $date . '">
@@ -103,6 +106,10 @@ echo '					<br /><br />
 ?>
 
 			<script language="JavaScript" type="text/javascript">
+				$('.button-prev').click(function() {
+					location.href = prevAction;
+				});
+
 				$("#savesign").click(function() {
 					var personid = $("#PersonID").val();
 					var signdate = $("#signdate").val();

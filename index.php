@@ -5,6 +5,7 @@ $ipaddress = getenv("REMOTE_ADDR");
 $currentPage = 0;
 $currentPageString = "person";
 $nextPage = 1;
+$prevPage = 0;
 
 if(!$testLayout) {
   require_once('../pdotriton.php');
@@ -93,7 +94,7 @@ else {
   }
 
   function assignPage($p) {
-    global $pageOrder, $currentPage, $nextPage, $currentPageString;
+    global $pageOrder, $currentPage, $nextPage, $prevPage, $currentPageString;
 
     $currentPage = $p;
     $lenPages = count($pageOrder);
@@ -103,6 +104,13 @@ else {
     }
     else {
       $nextPage = $currentPage + 1;
+    }
+
+    if($currentPage - 1 <= 0) {
+      $prevPage = 0;
+    }
+    else {
+      $prevPage = $currentPage - 1;
     }
 
     $currentPageString = $pageOrder[$currentPage];
@@ -126,6 +134,7 @@ else {
   echo '<script>
           var nextPage = "' . $nextPage . '";
           var cd = "' . $CD . '";
+          var prevAction = "index.php?pg=' . $prevPage . '&PersonID=' . $PersonID . '&CD=' . $CD . '";
         </script>';
 
 	$cnt = 1;

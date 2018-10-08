@@ -71,8 +71,11 @@ echo '				<div class="cell small-12">
 								<hr>
 							</div>
 
-							<div class="cell small-12">
-								<input class="float-center" type="submit" value="Next">
+							<div class="cell small-6">
+								<input class="button button-prev float-center" type="button" value="Prev">
+							</div>
+							<div class="cell small-6">
+								<input class="button float-center" type="submit" value="Next">
 							</div>
 						</div>
 
@@ -138,6 +141,10 @@ if($maxRecID == 0) {
 	echo 'addDMV();';
 }
 ?>
+
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
 
 	function addDMV() {
 		$("#recid").val('');

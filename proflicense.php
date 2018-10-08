@@ -62,7 +62,10 @@ echo '				<div class="cell small-12">
 								<hr>
 							</div>
 
-							<div class="cell small-12">
+							<div class="cell small-6">
+								<input class="button button-prev float-center" type="button" value="Prev">
+							</div>
+							<div class="cell small-6">
 								<input class="button float-center" type="submit" value="Next">
 							</div>
 						</div>
@@ -130,6 +133,10 @@ echo '				<div class="cell small-12">
 		addProfLicense();
 	});
 
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
+	
 	function addProfLicense() {
 		$("#profid").val('');
 		$("#proflictype").val('');

@@ -144,8 +144,11 @@ echo '				<div class="cell small-12">
 								<hr>
 							</div>
 
-							<div class="cell small-12 padding-bottom">
-								<input class="float-center" type="submit" value="Next">
+							<div class="cell small-6">
+								<input class="button button-prev float-center" type="button" value="Prev">
+							</div>
+							<div class="cell small-6">
+								<input class="button float-center" type="submit" value="Next">
 							</div>
 						</div>
 
@@ -274,6 +277,10 @@ echo '				<div class="cell small-12 medium-6">
 		echo 'addEducation();';
 	}
 ?>
+
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
 
 	$(".add-education").click(function() {
 		addEducation();

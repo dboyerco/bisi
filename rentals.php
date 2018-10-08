@@ -117,7 +117,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 									<hr>
 								</div>
 
-								<div class="cell small-12">
+								<div class="cell small-6">
+									<input class="button button-prev float-center" type="button" value="Prev">
+								</div>
+								<div class="cell small-6">
 									<input class="button float-center" type="submit" value="Next">
 								</div>
 
@@ -256,6 +259,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
  	$("#Rental_dialog").dialog({ autoOpen: false });
 	if($('#moveindate')[0].type != 'date' ) $('#moveindate').datepicker();
 	if($('#moveouttodate')[0].type != 'date' ) $('#moveouttodate').datepicker();
+
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
 
 	$(".add-rental").click(function() {
 		addRental();

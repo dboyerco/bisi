@@ -79,7 +79,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 						</div>';
 
 	if($maxBusinessID > 0) {
-		echo '	<div class="cell small-12">
+		echo '	<div class="cell small-6">
+							<input class="button button-prev float-center" type="button" value="Prev">
+						</div>
+						<div class="cell small-6">
 							<input class="button float-center" type="submit" value="Next">
 						</div>';
 	}
@@ -183,6 +186,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 		addBusiness();
 	});
 
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
+	
 	function addBusiness() {
 		$("#businessid").val('');
 		$("#businessaddress").val('');

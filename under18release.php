@@ -52,8 +52,11 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 								Thank you<br /><br />
 							</div>
 
-							<div class="cell small-12">
-								<input type="submit" name="submitid" id="submitid" value="Next">
+							<div class="cell small-6">
+								<input class="button button-prev float-center" type="button" value="Prev">
+							</div>
+							<div class="cell small-6">
+								<input class="button float-center" type="submit" value="Next">
 							</div>
 						</div>
 					</div>';
@@ -68,6 +71,10 @@ echo '		<input type="hidden" name="PersonID" id="PersonID" value=" ' . $PersonID
 
 <script src="Upload/Upload.js"></script>
 <script language="JavaScript" type="text/javascript">
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
+
 	function downloadForm() {
 		$("#dlform").hide();
 		$("#submitid").show();

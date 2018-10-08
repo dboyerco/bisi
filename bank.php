@@ -79,7 +79,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 								<hr>
 							</div>
 
-							<div class="cell small-12">
+							<div class="cell small-6">
+								<input class="button button-prev float-center" type="button" value="Prev">
+							</div>
+							<div class="cell small-6">
 								<input class="button float-center" type="submit" value="Next">
 							</div>
 						</div>
@@ -177,6 +180,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 		addBank();
 	});
 
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
+	
 	function addBank() {
 		$("#accounttype").val('Checking');
 		$("#bankaddress").val('');

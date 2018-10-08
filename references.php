@@ -61,67 +61,71 @@ echo '				<div class="cell small-12">
 								<hr>
 							</div>
 
-              <div class="cell small-12">
+							<div class="cell small-6">
+								<input class="button button-prev float-center" type="button" value="Prev">
+							</div>
+							<div class="cell small-6">
 								<input class="button float-center" type="submit" value="Next">
 							</div>
+						</div>
 
-              <div class="grid-x margins person-form" name="Reference_dialog" id="Reference_dialog" title="Dialog Title">
-  							<div class="cell small-12 required">
-  								* Required Fields To Continue
-  							</div>
+            <div class="grid-x margins person-form" name="Reference_dialog" id="Reference_dialog" title="Dialog Title">
+							<div class="cell small-12 required">
+								* Required Fields To Continue
+							</div>
 
-                <div class="cell medium-6 small-12">
-  								Contact First Name <span class="required">*</span>
-  							</div>
-  							<div class="cell medium-6 small-12">
-  								<input type="text" name="reffirstname" id="reffirstname" maxlength="40" placeholder="Required">
-  							</div>
+              <div class="cell medium-6 small-12">
+								Contact First Name <span class="required">*</span>
+							</div>
+							<div class="cell medium-6 small-12">
+								<input type="text" name="reffirstname" id="reffirstname" maxlength="40" placeholder="Required">
+							</div>
 
-  							<div class="cell medium-6 small-12">
-  								Contact Last Name <span class="required">*</span>
-  							</div>
-  							<div class="cell medium-6 small-12">
-  								<input type="text" name="reflastname" id="reflastname" maxlength="40" placeholder="Required">
-  							</div>
+							<div class="cell medium-6 small-12">
+								Contact Last Name <span class="required">*</span>
+							</div>
+							<div class="cell medium-6 small-12">
+								<input type="text" name="reflastname" id="reflastname" maxlength="40" placeholder="Required">
+							</div>
 
-                <div class="cell medium-6 small-12">
-  								Contact Phone <span class="required">*</span>
-  							</div>
-  							<div class="cell medium-6 small-12">
-  								<input type="text" name="refphone" id="refphone" maxlength="40" placeholder="### ### #### #####" onkeypress="return numericOnly(event, this);" onKeyUp="return frmtphone(this, \'up\')">
-  							</div>
+              <div class="cell medium-6 small-12">
+								Contact Phone <span class="required">*</span>
+							</div>
+							<div class="cell medium-6 small-12">
+								<input type="text" name="refphone" id="refphone" maxlength="40" placeholder="### ### #### #####" onkeypress="return numericOnly(event, this);" onKeyUp="return frmtphone(this, \'up\')">
+							</div>
 
-                <div class="cell medium-6 small-12">
-  								Contact Email <span class="required">*</span>
-  							</div>
-  							<div class="cell medium-6 small-12">
-  								<input type="text" name="refemail" id="refemail" maxlength="40" placeholder="Required">
-  							</div>
+              <div class="cell medium-6 small-12">
+								Contact Email <span class="required">*</span>
+							</div>
+							<div class="cell medium-6 small-12">
+								<input type="text" name="refemail" id="refemail" maxlength="40" placeholder="Required">
+							</div>
 
-                <div class="cell medium-6 small-12">
-  								Contact Name <span class="required">*</span>
-  							</div>
-  							<div class="cell medium-6 small-12">
-  								<input type="text" name="refcompanyname" id="refcompanyname" maxlength="40" placeholder="Required">
-  							</div>
+              <div class="cell medium-6 small-12">
+								Contact Name <span class="required">*</span>
+							</div>
+							<div class="cell medium-6 small-12">
+								<input type="text" name="refcompanyname" id="refcompanyname" maxlength="40" placeholder="Required">
+							</div>
 
-                <div class="cell medium-6 small-12">
-  								Contact Phone <span class="required">*</span>
-  							</div>
-  							<div class="cell medium-6 small-12">
-  								<input type="text" name="refcompanyphone" id="refcompanyphone" maxlength="40" placeholder="### ### #### #####" onkeypress="return numericOnly(event, this);" onKeyUp="return frmtphone(this, \'up\')">
-  							</div>
+              <div class="cell medium-6 small-12">
+								Contact Phone <span class="required">*</span>
+							</div>
+							<div class="cell medium-6 small-12">
+								<input type="text" name="refcompanyphone" id="refcompanyphone" maxlength="40" placeholder="### ### #### #####" onkeypress="return numericOnly(event, this);" onKeyUp="return frmtphone(this, \'up\')">
+							</div>
 
-                <div class="cell small-12 padding-bottom">
-  								<input id="save_reference" class="float-center" type="button" value="Save Reference">
-  							</div>
-              </div>
-
-              <input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
-              <input type="hidden" name="refid" id="refid">
+              <div class="cell small-12 padding-bottom">
+								<input id="save_reference" class="float-center" type="button" value="Save Reference">
+							</div>
             </div>
+
+            <input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
+            <input type="hidden" name="refid" id="refid">
           </div>
-        </form>';
+        </div>
+      </form>';
 ?>
 
 <script language="JavaScript" type="text/javascript">
@@ -131,6 +135,10 @@ echo '				<div class="cell small-12">
     addReference();
   });
 
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
+	
   function addReference() {
 		$("#refid").val('');
     $("#reffirstname").val('');

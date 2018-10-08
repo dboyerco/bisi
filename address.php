@@ -128,7 +128,10 @@ echo '				<div class="cell small-12">
 							</div>';
 
 if($days >= 2557) {
-	echo '			<div class="cell small-12">
+	echo '			<div class="cell small-6">
+								<input class="button button-prev float-center" type="button" value="Prev">
+							</div>
+							<div class="cell small-6">
 								<input class="button float-center" type="submit" value="Next">
 							</div>';
 }
@@ -266,6 +269,10 @@ echo '				<div class="cell medium-6 small-12">
 		echo 'addAddress();';
 	}
 ?>
+
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
 
 	$(".add-address").click(function() {
 		addAddress();
