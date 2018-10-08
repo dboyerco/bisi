@@ -520,7 +520,6 @@ echo '				<div class="cell medium-6 small-12">
 	}
 
 	function updateaddr(addrid) {
-		// alert('In updateaddr');
 		var personid = $("#PersonID").val();
 		var pname = $("#package").val();
 
