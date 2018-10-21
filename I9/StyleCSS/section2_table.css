@@ -1,0 +1,26 @@
+table.db-table { border-right:0px solid #ccc; border-bottom:0px solid #ccc;}
+table.db-table tr {cursor:pointer;} .highlight {background:yellow;}
+table.db-table tr:nth-child(even){background:#eee;}
+table.db-table th {background:lightgrey; padding:5px; border-left:0px solid #ccc; border-top:0px solid #ccc; }
+table.db-table td {padding:5px; border-left:0px solid #ccc; border-top:0px solid #ccc; white-space: nowrap; }
+table.db-table a:link {text-decoration:none; color:#0000FF;}
+table.db-table a:visited {text-decoration:none; color:#0000FF;}
+table.db-table a:active {text-decoration:none; color:#0000FF;}
+table.db-table a:focus {outline:none; text-decoration:underline;} 
+table.db-table a:hover {color:#0033FF; text-decoration:underline;}
+.tooltip {display: inline; position: relative; text-decoration: none; top: 0px; left: 0px;}
+.tooltip:hover:after { background: #333; background: rgba(0,0,0,.8); border-radius: 5px; top: -1px; color: #fff; content: attr(alt); left: -150px; padding: 5px 15px; position: absolute; z-index: 98; width: 100px;}
+table#tableA { border-right:1px solid #000; border-bottom:0px solid #000;}
+table#tableA td {border-left:1px solid #000; border-top:0px solid #000;}
+table#tableB { border-right:1px solid #000; border-bottom:0px solid #000;}
+table#tableB td {border-left:1px solid #000; border-top:0px solid #000;}
+table#tableC { border-right:1px solid #000; border-bottom:0px solid #000;}
+table#tableC td {border-left:1px solid #000; border-top:0px solid #000;}
+table#tableD { border-right:1px solid #000; border-bottom:0px solid #000;}
+table#tableD td {border-left:1px solid #000; border-top:0px solid #000;}
+table#tableE { border-right:1px solid #000; border-bottom:0px solid #000;}
+table#tableE td {border-left:1px solid #000; border-top:0px solid #000;}
+table#tableF { border-right:0px solid #000; border-bottom:1px solid #000;}
+table#tableF td {border-left:1px solid #000; border-top:0px solid #000;}
+table#tableG { border-right:0px solid #000; border-bottom:0px solid #000;}
+table#tableG td {border-left:1px solid #000; border-top:0px solid #000;}
