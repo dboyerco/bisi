@@ -1,9 +1,16 @@
 <?php
 require_once('../pdotriton.php');
-$PersonID = $_REQUEST['PersonID'];
-$JobID = $_REQUEST['JobId'];
-$CD = $_REQUEST['CD']; 
-$CustomerID = $_REQUEST['CustomerId'];
+#$PersonID = $_REQUEST['PersonID'];
+#$JobID = $_REQUEST['JobId'];
+#$CD = $_REQUEST['CD']; 
+#$CustomerID = $_REQUEST['CustomerId'];
+
+$PersonID = 15341;
+$JobID = 3067;
+$CD = 'j9kNiyGx0T2uDzLd'; 
+$CustomerID = 9351;
+
+
 session_start();
 $codeid = $dbo->query("Select CodeID from I9Section1 where PersonID = ".$PersonID." and JobID = ".$JobID." and CustomerID = ".$CustomerID.";")->fetchColumn();
 $_SESSION['SESS_JobID'] = $JobID;
