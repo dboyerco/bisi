@@ -563,8 +563,8 @@ also constitute illegal discrimination.</font></p>
 		<tr>
 			<td>	
 				<input type="checkbox" name="clicksign" id="clicksign" onclick="setSignature()"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">I, '.htmlspecialchars($fname).' '.htmlspecialchars($mname).' '.htmlspecialchars($lname).'
-				, agree to sign these electronic documents using "click" signature technologny. I understand that a record of each document and my signing of it will be stored in electronic code. I intend both 
-				the signature I inscribe with the "click" signature technologny and the electronic record of it to be my legal signature to the document. I confirm that the document is "written" or "in writing" 
+				, agree to sign these electronic documents using "click" signature technology. I understand that a record of each document and my signing of it will be stored in electronic code. I intend both 
+				the signature I inscribe with the "click" signature technology and the electronic record of it to be my legal signature to the document. I confirm that the document is "written" or "in writing" 
 				and that any accurate record of the document is an original of the document.
 			</td>	
 		</tr>
