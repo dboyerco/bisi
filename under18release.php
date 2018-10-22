@@ -56,7 +56,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 								<input class="button button-prev float-center" type="button" value="Prev">
 							</div>
 							<div class="cell small-6">
-								<input class="button float-center" type="submit" value="Next">
+								<input type="submit" name="submitid" id="submitid" value="Next">
 							</div>
 						</div>
 					</div>';

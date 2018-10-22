@@ -89,7 +89,7 @@ echo '					<br /><br />
 								<input class="button button-prev float-center" type="button" value="Prev">
 							</div>
 							<div class="cell small-6">
-								<input class="button float-center" type="submit" value="Next">
+								<input class="float-center" id="savesign" type="button" value="Next">
 							</div>
 
 							<input type="hidden" name="signdate" id="signdate" value="' . $date . '">

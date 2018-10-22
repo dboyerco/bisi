@@ -5,8 +5,6 @@ $MO = 0;
 $DY = 0;
 $empCount = 0;
 
-$FormAction = "index.php?pg=" . $nextPage . "&PersonID=" . $PersonID . "&CD=" . $CD;
-
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
 					<div class="sub-menu">&nbsp;</div>
