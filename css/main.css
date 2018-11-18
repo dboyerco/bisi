@@ -5261,6 +5261,13 @@ h3, .add-button {
         height: 15px;
         width: 15px; } }
 
+.ui-dialog-inner-title {
+  left: -16px;
+  width: 108.5%; }
+  @media print, screen and (min-width: 40em) {
+    .ui-dialog-inner-title {
+      width: 104.9%; } }
+
 input[type='button'], input[type='submit'], button, .button {
   font-size: medium;
   color: green;

@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $testLayout = false;
 
 $ipaddress = getenv("REMOTE_ADDR");
@@ -7,13 +11,7 @@ $currentPageString = "person";
 $nextPage = 1;
 $prevPage = 0;
 
-if(!$testLayout) {
-  require_once('../pdotriton.php');
-}
-else {
-  $PersonID = "6444";
-  $CD = "BnzfFtZQs4Jw6VLX";
-}
+require_once('../pdotriton.php');
 
 echo '<!DOCTYPE HTML>
       <html>
@@ -34,7 +32,6 @@ echo '<!DOCTYPE HTML>
 
         <body>';
 
-
 if(!isSet($PersonID)) {
   echo '<br />
         <div class="grid-x">
@@ -46,51 +43,57 @@ if(!isSet($PersonID)) {
         </div>';
 }
 else {
-  if(!$testLayout) {
-    $compname = $dbo->query("Select Company_Name from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
-    $package = $dbo->query("Select Package from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
-    $codeid = $dbo->query("Select CodeID from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
-    $noemail = $dbo->query("Select No_Email from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
-    $etype = $dbo->query("Select Email_Type from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
+  $compname = $dbo->query("Select Company_Name from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+  $package = $dbo->query("Select Package from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+  $codeid = $dbo->query("Select CodeID from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+  $noemail = $dbo->query("Select No_Email from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
+  $etype = $dbo->query("Select Email_Type from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
 
-    // states & countries (almost all forms use this)
-  	$state_result = $dbo->prepare("Select Name, Abbrev from State order by Name");
-  	$state_result->execute();
-    $state_options = "";
+  // states & countries (almost all forms use this)
+	$state_result = $dbo->prepare("Select Name, Abbrev from State order by Name");
+	$state_result->execute();
+  $state_options = "";
 
-		while($state_rows = $state_result->fetch(PDO::FETCH_BOTH)) {
-			$state_options .= '<option value="' . $state_rows[1] . '">' . $state_rows[0] . '</option>';
-		}
+	while($state_rows = $state_result->fetch(PDO::FETCH_BOTH)) {
+		$state_options .= '<option value="' . $state_rows[1] . '">' . $state_rows[0] . '</option>';
+	}
 
-  	$country_result = $dbo->prepare("Select Alpha2Code, FullName from isocountrycodes Order By FullName;");
-  	$country_result->execute();
-    $country_options = "";
+	$country_result = $dbo->prepare("Select Alpha2Code, FullName from isocountrycodes Order By FullName;");
+	$country_result->execute();
+  $country_options = "";
 
-  	while($country_rows = $country_result->fetch(PDO::FETCH_BOTH)) {
-  		$country_options .= '<option value="' . $country_rows[0] . '">' . $country_rows[1] . '</option>';
-  	}
+	while($country_rows = $country_result->fetch(PDO::FETCH_BOTH)) {
+		$country_options .= '<option value="' . $country_rows[0] . '">' . $country_rows[1] . '</option>';
+	}
 
-    //if($package == "XXX") {
-      //                    0           1          2         3               4                 5             6            7        8        9           10            11           12             13             14               15         16
-      $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
-      $pageUnder18 = 14;
-      $pageCardInfo = 15;
-      $pageThanks = 16;
-    //}
+  //                     0          1          2         3               4                 5             6            7        8        9           10            11           12             13             14               15         16
+  $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+  $pageUnder18 = 14;
+  $pageCardInfo = 15;
+  $pageThanks = 16;
+  $days_list = '<option>Day</option>';
+  $months_list = '<option value="">Month</option>
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>';
+  $years_list = '<option>Year</option>';
+
+  for($yr = date("Y"); $yr >= 1900; $yr--) {
+    $years_list .= '<option value="' . $yr . '">' . $yr . '</option>';
   }
-	else {
-    $compname = "Mike Test";
-    $codeid = "BnzfFtZQs4Jw6VLX";
-    $package = "";
-    $noemail = 'Y';
 
-    $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
-    $pageUnder18 = 14;
-    $pageCardInfo = 15;
-    $pageThanks = 16;
-
-    $state_options = '<option value="co">CO</option>';
-    $country_options = '<option value="usa">USA</option>';
+  for($day = 1; $day <= 31; $day++) {
+    $day_string = ($day < 10 ? "0" . $day : $day);
+    $days_list .= '<option value="' . $day_string . '">' . $day_string . '</option>';
   }
 
   function assignPage($p) {
@@ -140,10 +143,7 @@ else {
 	$cnt = 1;
 	$end = strrpos($_SERVER['REQUEST_URI'], '/');
 	$appname = substr($_SERVER['REQUEST_URI'], 1, $end - 1);
-
-  if(!$testLayout) {
-    $cnt = $dbo->query("Select count(*) from App_Person where PersonID = " . $PersonID . " and App_Name = '" . $appname . "';")->fetchColumn();
-  }
+  $cnt = $dbo->query("Select count(*) from App_Person where PersonID = " . $PersonID . " and App_Name = '" . $appname . "';")->fetchColumn();
 
 	if($PersonID == '' || $cnt == 0 || $codeid != $CD) {
 		if($cnt == 0) {

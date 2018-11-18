@@ -92,87 +92,95 @@ echo '				<div class="cell small-12">
 							</div>
 						</div>
 
-						<div class="grid-x margins person-form" name="DMV_dialog" id="DMV_dialog" title="Dialog Title">
+						<div name="DMV_dialog" id="DMV_dialog" title="Dialog Title">
 						  <input type="hidden" name="recid" id="recid">
 
-							<div class="cell small-12 required">
-								* Required Fields To Continue
+							<div class="grid-x margins person-form">
+								<div class="cell small-12 required">
+									* Required Fields To Continue
+								</div>
+
+								<div class="cell medium-6 small-12">
+									Drive License # <span class="required">*</span>
+								</div>
+								<div class="cell medium-6 small-12">
+									<input type="text" maxlength="40" name="dl" id="dl">
+								</div>
+
+								<div class="cell medium-6 small-12">
+									Expires <span class="required">*</span>
+								</div>
+								<div class="cell medium-6 small-12">
+									<input type="text" name="dle" id="dle" maxlength="10" placeholder="mm/dd/yyyy" value="" readonly>
+								</div>
+
+								<div class="cell medium-6 small-12">
+									State/Country Issued <span class="required">*</span>
+								</div>
+								<div class="cell medium-6 small-12">
+									<select name="dlstate" id="dlstate">
+										<option value="">Select a State</option>
+										<option value="">-Other-</option>
+										' . $state_options . '
+									</select>
+								</div>
+
+								<div class="cell small-12">
+									OR If license issued out of the US, please select the Country
+								</div>
+
+								<div class="cell medium-6 small-12">
+									Country
+								</div>
+								<div class="cell medium-6 small-12">
+									<select name="dlcountry" id="dlcountry">
+										<option value="">Select a Country</option>
+										' . $country_options . '
+									</select>
+								</div>
 							</div>
 
-							<div class="cell medium-6 small-12">
-								Drive License # <span class="required">*</span>
-							</div>
-							<div class="cell medium-6 small-12">
-								<input type="text" maxlength="40" name="dl" id="dl">
+							<div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-dialog-inner-title">
+								<span class="ui-dialog-title">Vehicle Information</span>
 							</div>
 
-							<div class="cell medium-6 small-12">
-								Expires <span class="required">*</span>
-							</div>
-							<div class="cell medium-6 small-12">
-								<input type="text" name="dle" id="dle" maxlength="10" placeholder="mm/dd/yyyy" value="" readonly>
-							</div>
+							<div class="grid-x margins person-form">
+								<div class="cell medium-6 small-12">
+									Vehicle Make <span class="required">*</span>
+								</div>
+								<div class="cell medium-6 small-12">
+									<input type="text" name="vmake" id="vmake" maxlength="40">
+								</div>
 
-							<div class="cell medium-6 small-12">
-								State/Country Issued <span class="required">*</span>
-							</div>
-							<div class="cell medium-6 small-12">
-								<select name="dlstate" id="dlstate">
-									<option value="">Select a State</option>
-									<option value="">-Other-</option>
-									' . $state_options . '
-								</select>
-							</div>
+								<div class="cell medium-6 small-12">
+									Vehicle Model <span class="required">*</span>
+								</div>
+								<div class="cell medium-6 small-12">
+									<input type="text" name="vmodel" id="vmodel" maxlength="40">
+								</div>
 
-							<div class="cell small-12">
-								OR If license issued out of the US, please select the Country
-							</div>
+								<div class="cell medium-6 small-12">
+									Vehicle Year <span class="required">*</span>
+								</div>
+								<div class="cell medium-6 small-12">
+									<input type="text" name="vyear" id="vyear" maxlength="40">
+								</div>
 
-							<div class="cell medium-6 small-12">
-								Country
-							</div>
-							<div class="cell medium-6 small-12">
-								<select name="dlcountry" id="dlcountry">
-									<option value="">Select a Country</option>
-									' . $country_options . '
-								</select>
-							</div>
+								<div class="cell medium-6 small-12">
+									Vehicle License Plate <span class="required">*</span>
+								</div>
+								<div class="cell medium-6 small-12">
+									<input type="text" name="vplate" id="vplate" maxlength="40">
+								</div>
 
-							<div class="cell medium-6 small-12">
-								Vehicle Make <span class="required">*</span>
-							</div>
-							<div class="cell medium-6 small-12">
-								<input type="text" name="vmake" id="vmake" maxlength="40">
-							</div>
+								<div class="cell small-12">
+									<input class="float-center" type="button" id="save_dmv" value="Save License">
+								</div>
 
-							<div class="cell medium-6 small-12">
-								Vehicle Model <span class="required">*</span>
+								<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
+						  	<input type="hidden" name="Current" id="Current" value="' . $currentDMV . '">
+						  	<input type="hidden" name="RecID" id="RecID" value="' . $maxRecID . '">
 							</div>
-							<div class="cell medium-6 small-12">
-								<input type="text" name="vmodel" id="vmodel" maxlength="40">
-							</div>
-
-							<div class="cell medium-6 small-12">
-								Vehicle Year <span class="required">*</span>
-							</div>
-							<div class="cell medium-6 small-12">
-								<input type="text" name="vyear" id="vyear" maxlength="40">
-							</div>
-
-							<div class="cell medium-6 small-12">
-								Vehicle License Plate <span class="required">*</span>
-							</div>
-							<div class="cell medium-6 small-12">
-								<input type="text" name="vplate" id="vplate" maxlength="40">
-							</div>
-
-							<div class="cell small-12">
-								<input class="float-center" type="button" id="save_dmv" value="Save License">
-							</div>
-
-							<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
-					  	<input type="hidden" name="Current" id="Current" value="' . $currentDMV . '">
-					  	<input type="hidden" name="RecID" id="RecID" value="' . $maxRecID . '">
 						</div>
 					</div>
 				</div>

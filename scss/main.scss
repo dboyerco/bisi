@@ -203,6 +203,15 @@ h3, .add-button {
   }
 }
 
+.ui-dialog-inner-title {
+  left: -16px;
+  width: 108.5%;
+
+  @include breakpoint(medium) {
+    width: 104.9%;
+  }
+}
+
 input[type='button'], input[type='submit'], button, .button {
   font-size: medium;
   color: green;

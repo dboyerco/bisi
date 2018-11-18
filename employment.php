@@ -26,233 +26,144 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 $currentEmployer = 'N';
 
-if(!$testLayout) {
-	$maxEmpID = $dbo->query("Select max(EmpID) from App_Employment where PersonID = ".$PersonID.";")->fetchColumn();
+$maxEmpID = $dbo->query("Select max(EmpID) from App_Employment where PersonID = ".$PersonID.";")->fetchColumn();
 
-	if($maxEmpID > 0) {
-		$selectemp = "select EmpID, EmpName, EmpCity, EmpState, EmpStateOther, EmpStreet, EmpZip, EmpDateFrom, EmpDateTo, EmpSupervisor, EmpReasonForLeaving, EmpTitle, EmpPhone, EmpSupervisorPhone, EmpSupervisorEmail, EmpMayWeContact, EmpCurrent, EmpDotReg, EmpDotTst from App_Employment where PersonID = :PersonID;";
+if($maxEmpID > 0) {
+	$selectemp = "select EmpID, EmpName, EmpCity, EmpState, EmpStateOther, EmpStreet, EmpZip, EmpDateFrom, EmpDateTo, EmpSupervisor, EmpReasonForLeaving, EmpTitle, EmpPhone, EmpSupervisorPhone, EmpSupervisorEmail, EmpMayWeContact, EmpCurrent, EmpDotReg, EmpDotTst from App_Employment where PersonID = :PersonID;";
 
-		$emp_result = $dbo->prepare($selectemp);
-		$emp_result->bindValue(':PersonID', $PersonID);
-		$emp_result->execute();
-		$i = 0;
+	$emp_result = $dbo->prepare($selectemp);
+	$emp_result->bindValue(':PersonID', $PersonID);
+	$emp_result->execute();
+	$i = 0;
 
-		while($row = $emp_result->fetch(PDO::FETCH_BOTH)) {
-			$empCount++;
+	while($row = $emp_result->fetch(PDO::FETCH_BOTH)) {
+		$empCount++;
 
-			if($row[16] == 'Y') {
-				$currentEmployer = 'Y';
+		if($row[16] == 'Y') {
+			$currentEmployer = 'Y';
 
-				echo '<div class="cell small-12">
-								<h3>Current Employment</h3>
-							</div>
+			echo '<div class="cell small-12">
+							<h3>Current Employment</h3>
+						</div>
 
-							<div class="cell small-12 medium-3">
-								<label>May we contact your current employer?</label>
-							</div>
-							<div class="cell small-12 medium-3">
-								' . ($row[15] == "Y" ? "Yes" : "No") . '
-							</div>
-							<div class="cell small-12 medium-6"></div>';
-			}
-
-			echo '<div class="cell small-12 medium-3">
-							<label>Company Name:</label>
+						<div class="cell small-12 medium-3">
+							<label>May we contact your current employer?</label>
 						</div>
 						<div class="cell small-12 medium-3">
-							' . htmlspecialchars($row[1]) . '
+							' . ($row[15] == "Y" ? "Yes" : "No") . '
+						</div>
+						<div class="cell small-12 medium-6"></div>';
+		}
+
+		echo '<div class="cell small-12 medium-3">
+						<label>Company Name:</label>
+					</div>
+					<div class="cell small-12 medium-3">
+						' . htmlspecialchars($row[1]) . '
+					</div>
+					<div class="cell small-12 medium-6"></div>
+
+					<div class="cell small-12 medium-3">
+						<label>Company Address:</label>
+					</div>
+					<div class="cell small-12 medium-3">
+						' . htmlspecialchars($row[5]) . '<br />
+						' . htmlspecialchars($row[2]) . '<br />
+						' . ($row[4] > '' ? htmlspecialchars($row[4]) : htmlspecialchars($row[3])) . '
+					</div>
+					<div class="cell small-12 medium-6"></div>';
+
+		if($row[7] == '1900-01-01') {
+			$fromdate = '';
+		}
+		else {
+			$fromdate = date("m/d/Y", strtotime($row[7]));
+		}
+
+		if($row[8] == '1900-01-01') {
+			$todate = '';
+		}
+		else {
+			$todate = date("m/d/Y", strtotime($row[8]));
+		}
+
+		if($fromdate != '' && $todate != '') {
+			$datediff = strtotime($todate) - strtotime($fromdate);
+			$days = $days + floor($datediff / (60 * 60 * 24));
+		}
+
+		echo '  <div class="cell small-12 medium-3">
+							<label>Dates:</label>
+						</div>
+						<div class="cell small-12 medium-3">
+							' . htmlspecialchars($fromdate) . ' - ' . htmlspecialchars($todate) . '
 						</div>
 						<div class="cell small-12 medium-6"></div>
 
 						<div class="cell small-12 medium-3">
-							<label>Company Address:</label>
+							<label>Position:</label>
 						</div>
 						<div class="cell small-12 medium-3">
-							' . htmlspecialchars($row[5]) . '<br />
-							' . htmlspecialchars($row[2]) . '<br />
-							' . ($row[4] > '' ? htmlspecialchars($row[4]) : htmlspecialchars($row[3])) . '
+							' . htmlspecialchars($row[11]) . '
 						</div>
-						<div class="cell small-12 medium-6"></div>';
+						<div class="cell small-12 medium-3">
+							<label>Supervisor:</label>
+						</div>
+						<div class="cell small-12 medium-3">
+							' . htmlspecialchars($row[9]) . '
+						</div>
 
-			if($row[7] == '1900-01-01') {
-				$fromdate = '';
-			}
-			else {
-				$fromdate = date("m/d/Y", strtotime($row[7]));
-			}
+						<div class="cell small-12 medium-3">
+							<label>Phone:</label>
+						</div>
+						<div class="cell small-12 medium-3">
+							' . htmlspecialchars($row[12]) . '
+						</div>
+						<div class="cell small-12 medium-3">
+							<label>Supervisor Phone:</label>
+						</div>
+						<div class="cell small-12 medium-3">
+							' . htmlspecialchars($row[13]) . '
+						</div>
 
-			if($row[8] == '1900-01-01') {
-				$todate = '';
-			}
-			else {
-				$todate = date("m/d/Y", strtotime($row[8]));
-			}
+						<div class="cell small-12 medium-3">
+							<label>Reason for Leaving:</label>
+						</div>
+						<div class="cell small-12 medium-3">
+							' . htmlspecialchars($row[10]) . '
+						</div>
+						<div class="cell small-12 medium-3">
+							<label>Supervisor Email:</label>
+						</div>
+						<div class="cell small-12 medium-3">
+							' . htmlspecialchars($row[14]) . '
+						</div>
 
-			if($fromdate != '' && $todate != '') {
-				$datediff = strtotime($todate) - strtotime($fromdate);
-				$days = $days + floor($datediff / (60 * 60 * 24));
-			}
+						<div class="cell small-12 right">
+							<span onclick="updateemp(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Employment" title="Edit Employment"/></span>&nbsp;&nbsp;&nbsp;
+							<span onclick="deleteemp(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" alt="Delete Employment" title="Delete Employment"/></span>
+						</div>
 
-			echo '  <div class="cell small-12 medium-3">
-								<label>Dates:</label>
-							</div>
-							<div class="cell small-12 medium-3">
-								' . htmlspecialchars($fromdate) . ' - ' . htmlspecialchars($todate) . '
-							</div>
-							<div class="cell small-12 medium-6"></div>
+						<div class="cell small-12">
+							<hr>
+						</div>';
 
-							<div class="cell small-12 medium-3">
-								<label>Position:</label>
-							</div>
-							<div class="cell small-12 medium-3">
-								' . htmlspecialchars($row[11]) . '
-							</div>
-							<div class="cell small-12 medium-3">
-								<label>Supervisor:</label>
-							</div>
-							<div class="cell small-12 medium-3">
-								' . htmlspecialchars($row[9]) . '
-							</div>
+		$i++;
+	} // end while
 
-							<div class="cell small-12 medium-3">
-								<label>Phone:</label>
-							</div>
-							<div class="cell small-12 medium-3">
-								' . htmlspecialchars($row[12]) . '
-							</div>
-							<div class="cell small-12 medium-3">
-								<label>Supervisor Phone:</label>
-							</div>
-							<div class="cell small-12 medium-3">
-								' . htmlspecialchars($row[13]) . '
-							</div>
-
-							<div class="cell small-12 medium-3">
-								<label>Reason for Leaving:</label>
-							</div>
-							<div class="cell small-12 medium-3">
-								' . htmlspecialchars($row[10]) . '
-							</div>
-							<div class="cell small-12 medium-3">
-								<label>Supervisor Email:</label>
-							</div>
-							<div class="cell small-12 medium-3">
-								' . htmlspecialchars($row[14]) . '
-							</div>
-
-							<div class="cell small-12 right">
-								<span onclick="updateemp(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Employment" title="Edit Employment"/></span>&nbsp;&nbsp;&nbsp;
-								<span onclick="deleteemp(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" alt="Delete Employment" title="Delete Employment"/></span>
-							</div>
-
-							<div class="cell small-12">
-								<hr>
-							</div>';
-
-			$i++;
-		} // end while
-
-		if($days > 0){
-			$YR = floor($days / 365);
-			$MO = floor(($days - (floor($days / 365) * 365)) / 30);
-			$DY = $days - (($YR * 365) + ($MO * 30));
-		}
-		else {
-			$YR = 0;
-			$MO = 0;
-			$DY = 0;
-		}
-	} // end if()$maxEmpID > 0)
-	else {
-		$maxEmpID = 0;
+	if($days > 0){
+		$YR = floor($days / 365);
+		$MO = floor(($days - (floor($days / 365) * 365)) / 30);
+		$DY = $days - (($YR * 365) + ($MO * 30));
 	}
-} // end if(!$testLayout))
+	else {
+		$YR = 0;
+		$MO = 0;
+		$DY = 0;
+	}
+} // end if()$maxEmpID > 0)
 else {
-	echo '<div class="cell small-12">
-					<h3>Current Employment</h3>
-				</div>
-
-				<div class="cell small-12 medium-3">
-					<label>May we contact your current employer?</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					No
-				</div>
-				<div class="cell small-12 medium-6"></div>
-
-				<div class="cell small-12 medium-3">
-					<label>Company Name:</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					Zero300 Studios
-				</div>
-				<div class="cell small-12 medium-6"></div>
-
-				<div class="cell small-12 medium-3">
-					<label>Company Address:</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					Address Line 1<br />
-					Loveland, CO<br />
-					USA
-				</div>
-				<div class="cell small-12 medium-6"></div>
-
-				<div class="cell small-12 medium-3">
-					<label>Dates:</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					01/01/2001 - 05/04/2018
-				</div>
-				<div class="cell small-12 medium-6"></div>
-
-				<div class="cell small-12 medium-3">
-					<label>Position:</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					Owner
-				</div>
-				<div class="cell small-12 medium-3">
-					<label>Supervisor:</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					Myself
-				</div>
-
-				<div class="cell small-12 medium-3">
-					<label>Phone:</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					970-123-1234
-				</div>
-				<div class="cell small-12 medium-3">
-					<label>Supervisor Phone:</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					303-987-6543
-				</div>
-
-				<div class="cell small-12 medium-3">
-					<label>Reason for Leaving:</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					I didn\'t leave
-				</div>
-				<div class="cell small-12 medium-3">
-					<label>Supervisor Email:</label>
-				</div>
-				<div class="cell small-12 medium-3">
-					303-987-6543
-				</div>
-
-				<div class="cell small-12 right">
-					<span onclick="updateemp(1)"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Employment" title="Edit Employment"/></span>&nbsp;&nbsp;&nbsp;
-					<span onclick="deleteemp(1)"><img class="icon" src="images/deletetrashcan.png" alt="Delete Employment" title="Delete Employment"/></span>
-				</div>
-
-				<div class="cell small-12">
-					<hr>
-				</div>';
+	$maxEmpID = 0;
 }
 
 echo '	<div class="cell small-12">
@@ -355,14 +266,36 @@ echo '	<div class="cell small-12">
 					From Date <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="text" name="empfromdate" id="empfromdate" maxlength="10" placeholder="mm/dd/yyyy" readonly>
+					<select id="empfromdate_month" name="empfromdate_month" style="width: 30%">
+						' . $months_list . '
+					</select>
+					/
+					<select id="empfromdate_day" name="empfromdate_day" style="width: 30%">
+						' . $days_list . '
+					</select>
+					/
+					<select id="empfromdate_year" name="empfromdate_year" style="width: 30%">
+						' . $years_list . '
+					</select>
+					<!--<input type="text" name="empfromdate" id="empfromdate" maxlength="10" placeholder="mm/dd/yyyy" readonly>-->
 				</div>
 
 				<div class="cell small-12 medium-6">
 					To Date <span class="required">*</span>
 				</div>
 				<div class="cell small-12 medium-6">
-					<input type="text" name="emptodate" id="emptodate" maxlength="10" placeholder="mm/dd/yyyy" readonly>
+					<select id="emptodate_month" name="emptodate_month" style="width: 30%">
+						' . $months_list . '
+					</select>
+					/
+					<select id="emptodate_day" name="emptodate_day" style="width: 30%">
+						' . $days_list . '
+					</select>
+					/
+					<select id="emptodate_year" name="emptodate_year" style="width: 30%">
+						' . $years_list . '
+					</select>
+					<!--<input type="text" name="emptodate" id="emptodate" maxlength="10" placeholder="mm/dd/yyyy" readonly>-->
 				</div>
 
 				<div class="cell small-12 medium-6">
@@ -436,9 +369,8 @@ echo '<div class="cell small-12 padding-bottom">
 
 <script language="JavaScript" type="text/javascript">
  	$("#Employment_dialog").dialog({ autoOpen: false });
-	if($('#empfromdate')[0].type != 'date' ) $('#empfromdate').datepicker();
-	if($('#emptodate')[0].type != 'date' ) $('#emptodate').datepicker();
-
+	//if($('#empfromdate')[0].type != 'date' ) $('#empfromdate').datepicker();
+	//if($('#emptodate')[0].type != 'date' ) $('#emptodate').datepicker();
 	var currentEmployer = true;
 
 <?php
@@ -468,8 +400,12 @@ echo '<div class="cell small-12 padding-bottom">
 		$("#empcity").val('');
 		$("#empstate").val('');
 		$("#empcountry").val('');
-		$("#empfromdate").val('');
-		$("#emptodate").val('');
+		$("#empfromdate_month").val('');
+		$("#empfromdate_day").val('');
+		$("#empfromdate_year").val('');
+		$("#emptodate_month").val('');
+		$("#emptodate_day").val('');
+		$("#emptodate_year").val('');
 		$("#empsuper").val('');
 		$("#reason").val('');
 		$("#emptitle").val('');
@@ -519,19 +455,14 @@ echo '<div class="cell small-12 padding-bottom">
 
 				console.log(obj2);
 				if(obj2) {
-					var fromDate = '';
-					var toDate = '';
-
-					if($('#empfromdate')[0].type != 'date') {
-						fd = obj2.EmpDateFrom.split("-");
-						fromDate = fd[1] + "/" + fd[2] + "/" + fd[0];
-						td = obj2.EmpDateTo.split("-");
-						toDate = td[1] + "/" + td[2] + "/" + td[0];
-					}
-					else {
-						fromDate = obj2.EmpDateFrom;
-						toDate = obj2.EmpDateTo;
-					}
+					var fd = obj2.EmpDateFrom.split("-");
+					var fromDateMonth = fd[1];
+					var fromDateDay = fd[2];
+					var fromDateYear = fd[0];
+					var td = obj2.EmpDateTo.split("-");
+					var toDateMonth = td[1];
+					var toDateDay = td[2];
+					var toDateYear = td[0];
 
 					$("#empid").val(obj2.EmpID);
 					$("#contact").val(obj2.EmpMayWeContact);
@@ -541,8 +472,12 @@ echo '<div class="cell small-12 padding-bottom">
 					$("#empcity").val(obj2.EmpCity);
 					$("#empstate").val(obj2.EmpState);
 					$("#empcountry").val(obj2.EmpStateOther);
-					$("#empfromdate").val(fromDate);
-					$("#emptodate").val(toDate);
+					$("#empfromdate_month").val(fromDateMonth);
+					$("#empfromdate_day").val(fromDateDay);
+					$("#empfromdate_year").val(fromDateYear);
+					$("#emptodate_month").val(toDateMonth);
+					$("#emptodate_day").val(toDateDay);
+					$("#emptodate_year").val(toDateYear);
 					$("#empsuper").val(obj2.EmpSupervisor);
 					$("#reason").val(obj2.EmpReasonForLeaving);
 					$("#emptitle").val(obj2.EmpTitle);
@@ -644,23 +579,40 @@ echo '<div class="cell small-12 padding-bottom">
 			return;
 		}
 
-		if($("#empfromdate").val() > '') {
-			var empfromdate = $("#empfromdate").val();
-		}
-		else {
-			$("#empfromdate").focus();
+		if($("#empfromdate_month").val() == "" || $("#empfromdate_day").val() == "" || $("#empfromdate_year").val() == "") {
+			$("#empfromdate_month").focus();
 			alert("From Date is required");
 			return;
 		}
-
-		if($("#emptodate").val() > '') {
-			var emptodate = $("#emptodate").val();
-		}
 		else {
-			$("#emptodate").focus();
+			var empfromdate = $("#empfromdate_year").val() + "-" + $("#empfromdate_month").val() + "-" + $("#empfromdate_day").val();
+		}
+
+		if($("#emptodate_month").val() == "" || $("#emptodate_day").val() == "" || $("#emptodate_year").val() == "") {
+			$("#emptodate_month").focus();
 			alert("To Date is required");
 			return;
 		}
+		else {
+			var emptodate = $("#emptodate_year").val() + "-" + $("#emptodate_month").val() + "-" + $("#emptodate_day").val();
+		}
+		// if($("#empfromdate").val() > '') {
+		// 	var empfromdate = $("#empfromdate").val();
+		// }
+		// else {
+		// 	$("#empfromdate").focus();
+		// 	alert("From Date is required");
+		// 	return;
+		// }
+		//
+		// if($("#emptodate").val() > '') {
+		// 	var emptodate = $("#emptodate").val();
+		// }
+		// else {
+		// 	$("#emptodate").focus();
+		// 	alert("To Date is required");
+		// 	return;
+		// }
 
 		if(!isValidDiff(empfromdate, emptodate)) {
 			$('#empfromdate').focus();

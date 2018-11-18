@@ -1,28 +1,52 @@
+<style type="text/css">
+	#overlay { display: none; position: absolute; left: 0px; top: 90%; width: 100%; height:100%; text-align: center; z-index: 1000; }
+	#overlay #header { width: 400px; height: 5px; OVERFLOW: auto; background-color: #eee; position: absolute; right: 248px; top: 5px; border:0px; }
+	#overlay div {width:400px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
+	#valcarddiv {visibility: hidden; position: absolute; left: 0px; top:85%; width:100%; height:100%; text-align:center; z-index: 1000;}
+	#valcarddiv div {width:300px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
+	#processdata {visibility: hidden; position: absolute; left: 0px; top:15%; width:100%; height:100%; text-align:center; z-index: 1000;}
+	#processdata div {width:350px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
+	.fieldset-auto-width {display: inline-block;}
+</style>
+
 <?
 $cnt = 0;
+$custid = $dbo->query("Select CustID from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
+$acctid = $dbo->query("Select bisAcct from App_HR_Company where Company_Name = '".$compname."';")->fetchColumn();
+$packageno = $dbo->query("Select PackageNo from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
+$NYchk = $dbo->query("Select NYchk from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
+$maxLandlordID = $dbo->query("Select max(LandlordID) from App_Landlord where PersonID = ".$PersonID.";")->fetchColumn();
+$packagecharge = $dbo->query("Select sCharge from services where sCustID = '".$custid."' and sServiceNo = '".$packageno."';")->fetchColumn();
+$packagename = $dbo->query("Select sServiceName from services where sCustID = '".$custid."' and sServiceNo = '".$packageno."';")->fetchColumn();
 
-if(!$testLayout) {
-	$custid = $dbo->query("Select CustID from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
-	$acctid = $dbo->query("Select bisAcct from App_HR_Company where Company_Name = '".$compname."';")->fetchColumn();
-	$packageno = $dbo->query("Select PackageNo from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
-	$NYchk = $dbo->query("Select NYchk from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
-	$maxLandlordID = $dbo->query("Select max(LandlordID) from App_Landlord where PersonID = ".$PersonID.";")->fetchColumn();
-	$packagecharge = $dbo->query("Select sCharge from services where sCustID = '".$custid."' and sServiceNo = '".$packageno."';")->fetchColumn();
-	$packagename = $dbo->query("Select sServiceName from services where sCustID = '".$custid."' and sServiceNo = '".$packageno."';")->fetchColumn();
+$selectaddr = "select Addr1, Apt, City, State_addr, StateOther, County, ZipCode from App_Address where PersonID = :PersonID; and Current_Address = 'Y'";
+$addr_result = $dbo->prepare($selectaddr);
+$addr_result->bindValue(':PersonID', $PersonID);
+$addr_result->execute();
 
-	$selectaddr = "select City, State_addr, StateOther, County from App_Address where PersonID = :PersonID;";
-	$addr_result = $dbo->prepare($selectaddr);
-	$addr_result->bindValue(':PersonID', $PersonID);
-	$addr_result->execute();
-}
-else {
-	$custid = 1;
-	$acctid = 1;
-	$packageno = 1;
-	$packagename = 'TEST PACKAGE';
-	$NYchk = 'Y';
-	$maxLandlordID = 1;
-	$packagecharge = 0;
+$addr1 = "";
+$apt = "";
+$city = "";
+$state = "";
+$country = "";
+$county = "";
+$zipCode = "";
+
+while($addr_row = $addr_result->fetch(PDO::FETCH_BOTH)) {
+	$addr1 = $addr_row[0];
+	$apt = $addr_row[1];
+	$city = $addr_row[2];
+	$state = $addr_row[3];
+
+	if($addr_row[4] > '') {
+		$country = $addr_row[3];
+	}
+	else {
+		$country = 'USA';
+	}
+
+	$county = $addr_row[5];
+	$zipCode = $addr_row[6];
 }
 
 $FormAction = "index.php?pg=" . $pageThanks . "&PersonID=" . $PersonID . "&CD=" . $CD;
@@ -52,68 +76,48 @@ echo '<form method="post" action="' . $FormAction . '" name="payform" id="payfor
 								$' . number_format($packagecharge, 2) . '
 							</div>';
 
-if(!$testLayout) {
-	while($addr_row = $addr_result->fetch(PDO::FETCH_BOTH)) {
-		$city = $addr_row[0];
-		$state = $addr_row[1];
+$sql = "Select sServiceNo, sDescrip from packages where sCustID = :CustID and sPkgSvcNo = :PackageNo;";
+$service_result = $dbo->prepare($sql);
+$service_result->bindValue(':CustID', $custid);
+$service_result->bindValue(':PackageNo', $packageno);
+$service_result->execute();
 
-		if($addr_row[2] > '') {
-			$country = $addr_row[2];
-		}
-		else {
-			$country = 'USA';
-		}
+while($service_row = $service_result->fetch(PDO::FETCH_BOTH)) {
+	$charge = 0;
+	$surcharge = 0;
+	$route_cost = 0;
+	$route_fee = 0;
+	$serviceno = $service_row[0];
+	$service_desc = $service_row[1];
 
-		$county = $addr_row[3];
-		$sql = "Select sServiceNo, sDescrip from packages where sCustID = :CustID and sPkgSvcNo = :PackageNo;";
-		$service_result = $dbo->prepare($sql);
-		$service_result->bindValue(':CustID', $custid);
-		$service_result->bindValue(':PackageNo', $packageno);
-		$service_result->execute();
-
-		while($service_row = $service_result->fetch(PDO::FETCH_BOTH)) {
-			$charge = 0;
-			$surcharge = 0;
-			$route_cost = 0;
-			$route_fee = 0;
-			$serviceno = $service_row[0];
-			$service_desc = $service_row[1];
-
-			switch($serviceno) {
-				case 'BAIN_00126':
-					if($NYchk == 'Y') {
-						$charge = $dbo->query("Select sCharge from services where sCustID = '{$custid}' and sServiceNo = '{$serviceno}';")->fetchColumn();
-					}
-					break;
-				case 'BAIN_00038':
-					if($maxLandlordID > 1) {
-						$charge = $dbo->query("Select sCharge from services where sCustID = '{$custid}' and sServiceNo = '{$serviceno}';")->fetchColumn();
-					}
-					break;
-				default:
-					$charge = $dbo->query("Select sCharge from services where sCustID = '{$custid}' and sServiceNo = '{$serviceno}';")->fetchColumn();
+	switch($serviceno) {
+		case 'BAIN_00126':
+			if($NYchk == 'Y') {
+				$charge = $dbo->query("Select sCharge from services where sCustID = '{$custid}' and sServiceNo = '{$serviceno}';")->fetchColumn();
 			}
-
-			$surcharge = $dbo->query("Select Service_Surcharge from Service_Surcharges where ServiceNo = '{$serviceno}' and Service_StateCD = '{$state}' and Service_County = '{$county}' and Service_City = '<All>';")->fetchColumn();
-
-			if($surcharge == 0) {
-				$surcharge = $dbo->query("Select Service_Surcharge from Service_Surcharges where ServiceNo = '{$serviceno}' and Service_StateCD = '{$state}' and Service_County = '<All>' and Service_City = '<All>';")->fetchColumn();
+			break;
+		case 'BAIN_00038':
+			if($maxLandlordID > 1) {
+				$charge = $dbo->query("Select sCharge from services where sCustID = '{$custid}' and sServiceNo = '{$serviceno}';")->fetchColumn();
 			}
-
-			$tcharge = $charge + $surcharge;
-
-			if($tcharge > 0) {
-				echo '<div class="cell small-12">
-								' . $service_desc . '
-							</div>';
-			}
-		}
+			break;
+		default:
+			$charge = $dbo->query("Select sCharge from services where sCustID = '{$custid}' and sServiceNo = '{$serviceno}';")->fetchColumn();
 	}
-}
-else {
-	echo '<div class="cell small-12">
-					TEST
-				</div>';
+
+	$surcharge = $dbo->query("Select Service_Surcharge from Service_Surcharges where ServiceNo = '{$serviceno}' and Service_StateCD = '{$state}' and Service_County = '{$county}' and Service_City = '<All>';")->fetchColumn();
+
+	if($surcharge == 0) {
+		$surcharge = $dbo->query("Select Service_Surcharge from Service_Surcharges where ServiceNo = '{$serviceno}' and Service_StateCD = '{$state}' and Service_County = '<All>' and Service_City = '<All>';")->fetchColumn();
+	}
+
+	$tcharge = $charge + $surcharge;
+
+	if($tcharge > 0) {
+		echo '<div class="cell small-12">
+						' . $service_desc . '
+					</div>';
+	}
 }
 
 echo '<div class="cell small-6 required">
@@ -126,155 +130,157 @@ echo '<div class="cell small-6 required">
 			<input type="hidden" name="amount" id="amount" value="' . $packagecharge . '">
 			<input type="hidden" name="PersonID" id="PersonID" value="'. $PersonID . '">
 			<input type="hidden" name="compname" id="compname" value="' . $compname . '">
-			<input type="hidden" name="acctid" id="acctid" value="' . $acctid . '">';
+			<input type="hidden" name="acctid" id="acctid" value="' . $acctid . '">
+
+			<div class="cell small-12">
+				<hr />
+			</div>
+
+			<div class="cell small-12 required">
+				* Required Fields To Continue
+			</div>
+
+			<div class="cell small-12">
+				<br />
+				<h3>Billing Information (required)</h3>
+			</div>
+
+			<div class="cell small-12 medium-6">
+				First Name: <span class="required">*</span>
+			</div>
+			<div class="cell small-12 medium-6">
+				<input name="firstName" id="firstName" type="text" placeholder="Required"/>
+			</div>
+
+			<div class="cell small-12 medium-6">
+				Last Name: <span class="required">*</span>
+			</div>
+			<div class="cell small-12 medium-6">
+				<input name="lastName" id="lastName" type="text" placeholder="Required" />
+			</div>
+
+			<div class="cell small-12 medium-6">
+				Company (optional):
+			</div>
+			<div class="cell small-12 medium-6">
+				<input name="company" id="company" type="text" placeholder="Optional" />
+			</div>
+
+			<div class="cell small-12 medium-6">
+				Street Address: <span class="required">*</span>
+			</div>
+			<div class="cell small-12 medium-6">
+				<input name="address" id="address" type="text" value="' . $addr1 . ' ' . $apt . '" placeholder="Required" />
+			</div>
+
+			<div class="cell small-12 medium-6">
+				City: <span class="required">*</span>
+			</div>
+			<div class="cell small-12 medium-6">
+				<input name="city" id="city" type="text" value="' . $city . '" placeholder="Required" />
+			</div>
+
+			<div class="cell small-12 medium-6">
+				State/Province: <span class="required">*</span>
+			</div>
+			<div class="cell medium-6 small-12">
+				<select name="state" id="state">
+					<option value="">Select a State</option>
+					<option value="">-Other-</option>
+					' . $state_options . '
+				</select>
+			</div>
+
+			<div class="cell small-12 medium-6">
+				Zip/Postal Code: <span class="required">*</span>
+			</div>
+			<div class="cell small-12 medium-6">
+				<input name="zip" id="zip" type="text" value="' . $zipCode . '" placeholder="Required" />
+			</div>
+
+			<div class="cell small-12 medium-6">
+				Contact Email: <span class="required">*</span>
+			</div>
+			<div class="cell small-12 medium-6">
+				<input name="contactEmail" id="contactEmail" type="text" placeholder="Required" />
+			</div>
+
+			<div class="cell small-12">
+				<br />
+				<h3>Credit Card (required)</h3>
+			</div>
+
+			<div class="cell small-12 medium-6">
+				Credit Card Number: <span class="required">*</span>
+			</div>
+			<div class="cell small-12 medium-6">
+				<input type="text" name="number" id="number" placeholder="Required" />
+			</div>
+
+			<div class="cell small-12 medium-6">
+				Expiration Date: <span class="required">*</span>
+			</div>
+			<div class="cell small-5 medium-2">
+				<input type="text" maxlength="2" name="expmonth" id="expmonth" placeholder="MM" />
+			</div>
+			<div class="cell small-2 medium-2 center">
+				&nbsp;/&nbsp;
+			</div>
+			<div class="cell small-5 medium-2">
+				<input type="text" maxlength="4" name="expyear" id="expyear" placeholder="YYYY" />
+			</div>
+
+			<div class="cell small-12 medium-6">
+				CCV code: <span class="required">*</span>
+			</div>
+			<div class="cell small-12 medium-6">
+				<input type="text" maxlength="4" name="ccv" id="ccv" />
+			</div>
+
+			<div class="cell small-12 center">
+				<img alt="" title="" src="images/credit_card_logos_11.gif" width="235" height="35" />
+			</div>
+			<div class="cell small-12">
+				<hr />
+			</div>
+			<div class="cell small-12 center">
+				<input type="button" name="submitid" id="submitid" value="SUBMIT" onclick="return validateform()" />
+			</div>
+
+			<div id="overlay" name="overlay" class="cell small-12 center">
+				<div>
+					<img onclick="overlayclose()" style="cursor:pointer; float:right; position:relative; top:0px; left:0px;" class="close" height="15" width="15" src="https://triton.bisi.com/rms/images/dialog_close.png" alt="Close" title="Close" />
+					<br/>
+					<table name="resultInfo" id="resultInfo" cellpadding="0" cellspacing="0" class="db-table" width="100%">
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div name="valcarddiv" id="valcarddiv" class="cell small-12 center">
+				<div>
+					<strong>Validating Credit Card. Please wait.</strong><br />
+				</div>
+			</div>
+
+			<div name="processdata" id="processdata" class="cell small-12 center">
+				<div>
+					<strong>Credit Card Approved, Thank You.<br />Processing data. Please Wait....<br />It should take less than a minute.</strong><br />
+				</div>
+			</div>
+
+			<div class="cell small-12 center">
+				<br />
+				&copy; ' . date('Y') . ' All rights reserved.
+			</div>
+		</form>';
 ?>
-
-	<style type="text/css">
-		#overlay { display: none; position: absolute; left: 0px; top: 90%; width: 100%; height:100%; text-align: center; z-index: 1000; }
-		#overlay #header { width: 400px; height: 5px; OVERFLOW: auto; background-color: #eee; position: absolute; right: 248px; top: 5px; border:0px; }
-		#overlay div {width:400px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
-		#valcarddiv {visibility: hidden; position: absolute; left: 0px; top:85%; width:100%; height:100%; text-align:center; z-index: 1000;}
-		#valcarddiv div {width:300px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
-		#processdata {visibility: hidden; position: absolute; left: 0px; top:15%; width:100%; height:100%; text-align:center; z-index: 1000;}
-		#processdata div {width:350px; margin: 100px auto; OVERFLOW: auto; background-color: #eee; border:5px solid #696969; border-radius:10px; padding:15px; text-align:left;}
-		.fieldset-auto-width {display: inline-block;}
-	</style>
-
-	<div class="cell small-12">
-		<br />
-		<h3>Billing Information (required)</h3>
-	</div>
-
-	<div class="cell small-12 medium-6">
-		First Name: <span class="required">*</span>
-	</div>
-	<div class="cell small-12 medium-6">
-		<input name="firstName" id="firstName" type="text" placeholder="Required"/>
-	</div>
-
-	<div class="cell small-12 medium-6">
-		Last Name: <span class="required">*</span>
-	</div>
-	<div class="cell small-12 medium-6">
-		<input name="lastName" id="lastName" type="text" placeholder="Required" />
-	</div>
-
-	<div class="cell small-12 medium-6">
-		Company (optional):
-	</div>
-	<div class="cell small-12 medium-6">
-		<input name="company" id="company" type="text" placeholder="Optional" />
-	</div>
-
-	<div class="cell small-12 medium-6">
-		Street Address: <span class="required">*</span>
-	</div>
-	<div class="cell small-12 medium-6">
-		<input name="address" id="address" type="text" placeholder="Required" />
-	</div>
-
-	<div class="cell small-12 medium-6">
-		City: <span class="required">*</span>
-	</div>
-	<div class="cell small-12 medium-6">
-		<input name="city" id="city" type="text" placeholder="Required" />
-	</div>
-
-	<div class="cell small-12 medium-6">
-		State/Province: <span class="required">*</span>
-	</div>
-	<div class="cell small-12 medium-6">
-		<input name="state" id="state" type="text" placeholder="Required" />
-	</div>
-
-	<div class="cell small-12 medium-6">
-		Zip/Postal Code: <span class="required">*</span>
-	</div>
-	<div class="cell small-12 medium-6">
-		<input name="zip" id="zip" type="text" placeholder="Required" />
-	</div>
-
-	<div class="cell small-12 medium-6">
-		Contact Email: <span class="required">*</span>
-	</div>
-	<div class="cell small-12 medium-6">
-		<input name="contactEmail" id="contactEmail" type="text" placeholder="Required" />
-	</div>
-
-	<div class="cell small-12">
-		<br />
-		<h3>Credit Card (required)</h3>
-	</div>
-
-	<div class="cell small-12 medium-6">
-		Credit Card Number: <span class="required">*</span>
-	</div>
-	<div class="cell small-12 medium-6">
-		<input type="text" name="number" id="number" placeholder="Required" />
-	</div>
-
-	<div class="cell small-12 medium-6">
-		Expiration Date: <span class="required">*</span>
-	</div>
-	<div class="cell small-5 medium-2">
-		<input type="text" maxlength="2" name="expmonth" id="expmonth" placeholder="MM" />
-	</div>
-	<div class="cell small-2 medium-2 center">
-		&nbsp;/&nbsp;
-	</div>
-	<div class="cell small-5 medium-2">
-		<input type="text" maxlength="4" name="expyear" id="expyear" placeholder="YYYY" />
-	</div>
-
-	<div class="cell small-12 medium-6">
-		CCV code: <span class="required">*</span>
-	</div>
-	<div class="cell small-12 medium-6">
-		<input type="text" maxlength="4" name="ccv" id="ccv" />
-	</div>
-
-	<div class="cell small-12 center">
-		<img alt="" title="" src="images/credit_card_logos_11.gif" width="235" height="35" />
-	</div>
-	<div class="cell small-12">
-		<hr />
-	</div>
-	<div class="cell small-12 center">
-		<input type="button" name="submitid" id="submitid" value="SUBMIT" onclick="return validateform()" />
-	</div>
-
-	<div id="overlay" name="overlay" class="cell small-12 center">
-		<div>
-			<img onclick="overlayclose()" style="cursor:pointer; float:right; position:relative; top:0px; left:0px;" class="close" height="15" width="15" src="https://triton.bisi.com/rms/images/dialog_close.png" alt="Close" title="Close"/>
-			<br/>
-			<table name="resultInfo" id="resultInfo" cellpadding="0" cellspacing="0" class="db-table" width="100%">
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-	</div>
-
-	<div name="valcarddiv" id="valcarddiv" class="cell small-12 center">
-		<div>
-			<strong>Validating Credit Card. Please wait.</strong><br />
-		</div>
-	</div>
-
-	<div name="processdata" id="processdata" class="cell small-12 center">
-		<div>
-			<strong>Credit Card Approved, Thank You.<br />Processing data. Please Wait....<br />It should take less than a minute.</strong><br />
-		</div>
-	</div>
-
-	<div class="cell small-12 center">
-		<br />
-		&copy; <? echo date('Y'); ?> All rights reserved.
-	</div>
-</form>
 
 <script language="JavaScript" type="text/javascript">
 	$().ready(function() {
-		$("#processdata").css("visibility","hidden");
+		$("#processdata").css("visibility", "hidden");
+		$("#state").val("<?php echo $state; ?>");
 	});
 
 <?php
