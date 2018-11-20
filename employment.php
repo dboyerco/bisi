@@ -277,7 +277,6 @@ echo '	<div class="cell small-12">
 					<select id="empfromdate_year" name="empfromdate_year" style="width: 30%">
 						' . $years_list . '
 					</select>
-					<!--<input type="text" name="empfromdate" id="empfromdate" maxlength="10" placeholder="mm/dd/yyyy" readonly>-->
 				</div>
 
 				<div class="cell small-12 medium-6">
@@ -295,7 +294,6 @@ echo '	<div class="cell small-12">
 					<select id="emptodate_year" name="emptodate_year" style="width: 30%">
 						' . $years_list . '
 					</select>
-					<!--<input type="text" name="emptodate" id="emptodate" maxlength="10" placeholder="mm/dd/yyyy" readonly>-->
 				</div>
 
 				<div class="cell small-12 medium-6">

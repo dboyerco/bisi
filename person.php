@@ -1,85 +1,75 @@
 <?php
-$num = "";
-$fname = "Mike";
-$mi = "D";
-$lname = "Perrotto";
-$birthdate = "1980-05-04";
-$ssn = "123-123-1234";
-$busphone = "";
-$homephone = "3031231234";
-$cellphone = "";
-$email = "test@test.com";
-$package = "";
-$gender = "M";
-$emergcontact = "";
-$emergnumber = "";
-$No_Email = "";
-$namechg = "";
-$maiden = '';
-
 if(isSet($PersonID)) {
-	if(!$testLayout) {
-		if($PersonID > '') {
-			$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Emergency_Contact, Emergency_Number, No_Email from App_Person where PersonID = :PersonID;";
-			$result2 = $dbo->prepare($selectstmt);
-			$result2->bindValue(':PersonID', $PersonID);
+	if($PersonID > '') {
+		$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Emergency_Contact, Emergency_Number, No_Email from App_Person where PersonID = :PersonID;";
+		$result2 = $dbo->prepare($selectstmt);
+		$result2->bindValue(':PersonID', $PersonID);
 
-			if(!$result2->execute()) {
+		if(!$result2->execute()) {
 
+		}
+		else {
+			$row = $result2->fetch(PDO::FETCH_BOTH);
+			$fname = $row[0];
+			$mi = $row[1];
+			$lname = $row[2];
+
+			if($row[3] == '1900-01-01') {
+				$birthdate = "";
+				$birthdateYear = "";
+				$birthdateMonth = "";
+				$birthdateDay = "";
+				$masked_birthdate = "";
 			}
 			else {
-				$row = $result2->fetch(PDO::FETCH_BOTH);
-				$fname = $row[0];
-				$mi = $row[1];
-				$lname = $row[2];
+				$birthdate = date("m/d/Y", strtotime($row[3]));
+				//$masked_birthdate = date("m/d/", strtotime($row[3])) + "XXXX";
+				$dateVals = explode("-", $row[3]);
+				$birthdateYear = "XXXX";//$dateVals[0];
+				$birthdateMonth = $dateVals[1];
+				$birthdateDay = $dateVals[2];
+				$masked_birthdate = $dateVals[1] . "/" . $dateVals[2] . "/XXXX";
+			}
 
-				if($row[3] == '1900-01-01') {
-					$birthdate = "";
-					$masked_birthdate = "";
+			if($row[4] == '') {
+				$ssn = "";
+			}
+			else {
+				$ssn = "XXX-XX-" . substr($row[4], 8);
+			}
+
+			$num = $row[4];
+			$busphone = $row[5];
+			$homephone = $row[6];
+			$cellphone = $row[7];
+			$email = $row[8];
+			$package = $row[9];
+			$compname = $row[10];
+			$gender = $row[11];
+			$emergcontact = $row[12];
+			$emergnumber = $row[13];
+			$No_Email = $row[14];
+			$selectstmt = "Select LastName, Changed from App_Alias where PersonID = :PersonID and AliasType ='M';";
+			$result2 = $dbo->prepare($selectstmt);
+			$result2->bindValue(':PersonID', $PersonID);
+			$result2->execute();
+			$namechg = "";
+			$maiden = '';
+			$row = $result2->fetch(PDO::FETCH_BOTH);
+
+			if($row[0] > '') {
+				$maiden = $row[0];
+
+				if($row[1] == '1900-01-01') {
+					$namechg = "";
 				}
 				else {
-					$birthdate = date("m/d/Y", strtotime($row[3]));
-					//$masked_birthdate = date("m/d/", strtotime($row[3])) + "XXXX";
-					$dateVals = split("-", $row[3]);
-					$masked_birthdate = $dateVals[1] . "/" . $dateVals[2] . "/XXXX";
-				}
-
-				if($row[4] == '') {
-					$ssn = "";
-				}
-				else {
-					$ssn = "XXX-XX-" . substr($row[4], 8);
-				}
-
-				$num = $row[4];
-				$busphone = $row[5];
-				$homephone = $row[6];
-				$cellphone = $row[7];
-				$email = $row[8];
-				$package = $row[9];
-				$compname = $row[10];
-				$gender = $row[11];
-				$emergcontact = $row[12];
-				$emergnumber = $row[13];
-				$No_Email = $row[14];
-				$selectstmt = "Select LastName, Changed from App_Alias where PersonID = :PersonID and AliasType ='M';";
-				$result2 = $dbo->prepare($selectstmt);
-				$result2->bindValue(':PersonID', $PersonID);
-				$result2->execute();
-				$namechg = "";
-				$maiden = '';
-				$row = $result2->fetch(PDO::FETCH_BOTH);
-
-				if($row[0] > '') {
-					$maiden = $row[0];
-
-					if($row[1] == '1900-01-01') {
-						$namechg = "";
-					}
-					else {
-						$namechg = $row[1];
-						$namechg = date("m/d/Y", strtotime($namechg));
-					}
+					$namechg = $row[1];
+					$namechgVals = explode("-", $namechg);
+					$namechgYear = $namechgVals[0];
+					$namechgMonth = $namechgVals[1];
+					$namechgDay = $namechgVals[2];
+					$namechg = date("m/d/Y", strtotime($namechg));
 				}
 			}
 		}
@@ -158,13 +148,23 @@ echo '					<strong>Please make sure that the first and last name is as it appear
 									<input type="text" name="maiden" id="maiden" value="' . htmlspecialchars($maiden) . '" maxlength="40" id="maiden">
 								</label>
 							</div>
-							<div class="cell small-12 medium-3">
+							<div class="cell small-12 medium-5">
 								<label>
-									Date Maiden Name Changed
-									<input type="text" name="namechg" id="namechg" maxlength="10" value="' . htmlspecialchars($namechg) . '" placeholder="mm/dd/yyyy" readonly>
+									Date Maiden Name Changed<br>
+									<select id="namechg_month" name="namechg_month" style="width: 35%">
+										' . buildMonthsList($namechgMonth) . '
+									</select>
+									/
+									<select id="namechg_day" name="namechg_day" style="width: 25%">
+										' . buildDaysList($namechgDay) . '
+									</select>
+									/
+									<select id="namechg_year" name="namechg_year" style="width: 30%">
+										' . buildYearsList($namechgYear) . '
+									</select>
 								</label>
 							</div>
-							<div class="cell medium-4"></div>
+							<div class="cell medium-2"></div>
 
 							<div class="cell small-12">
 								<strong>AKAs</strong>&nbsp;<small>(Any names used in the past, nicknames, etc.)</small><br />
@@ -183,45 +183,26 @@ echo '					<strong>Please make sure that the first and last name is as it appear
 									</thead>
 									<tbody id="aliasTable">';
 
-if(!$testLayout) {
-	$maxAliasID = $dbo->query("select max(AliasID) from App_Alias where PersonID = " . $PersonID . ";")->fetchColumn();
-}
-else {
-	$maxAliasID = 1;
-}
+$maxAliasID = $dbo->query("select max(AliasID) from App_Alias where PersonID = " . $PersonID . ";")->fetchColumn();
 
 if($maxAliasID > 0) {
 	$selectalias = "Select AliasID, FirstName, LastName, Changed from App_Alias where PersonID = :PersonID and AliasType = 'A';";
+	$alias_result = $dbo->prepare($selectalias);
+	$alias_result->bindValue(':PersonID', $PersonID);
+	$alias_result->execute();
 
-	if(!$testLayout) {
-		$alias_result = $dbo->prepare($selectalias);
-		$alias_result->bindValue(':PersonID', $PersonID);
-		$alias_result->execute();
+	while($Alias = $alias_result->fetch(PDO::FETCH_BOTH)) {
+		$dateUsed = date("m/d/Y", strtotime($Alias[3]));
 
-		while($Alias = $alias_result->fetch(PDO::FETCH_BOTH)) {
-			$dateUsed = date("m/d/Y", strtotime($Alias[3]));
-
-			echo '				<tr id="alias' . $Alias[0] . '">
-											<td>' . htmlspecialchars($Alias[1]) . '</td>
-											<td>' . htmlspecialchars($Alias[2]) . '</td>
-											<td>' . htmlspecialchars($dateUsed) . '</td>
-											<td class="center">
-												<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;
-												<a http="#" onclick="deleteaka(' . $Alias[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a>
-											</td>
-										</tr>';
-		}
-	}
-	else {
-		echo '					<tr id="alias1">
-											<td>Mikey</td>
-											<td>Pelirojo</td>
-											<td>01/01/2018</td>
-											<td class="center">
-												<a http="#" onclick="updateaka(1)"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;
-												<a http="#" onclick="deleteaka(1)"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a>
-											</td>
-										</tr>';
+		echo '				<tr id="alias' . $Alias[0] . '">
+										<td>' . htmlspecialchars($Alias[1]) . '</td>
+										<td>' . htmlspecialchars($Alias[2]) . '</td>
+										<td>' . htmlspecialchars($dateUsed) . '</td>
+										<td class="center">
+											<a http="#" onclick="updateaka(' . $Alias[0] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;
+											<a http="#" onclick="deleteaka(' . $Alias[0] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a>
+										</td>
+									</tr>';
 	}
 }
 else {
@@ -233,21 +214,30 @@ echo '						</tbody>
 							</div>
 							<div class="cell small-12"><hr></div>
 
-							<div class="cell small-6 medium-3">
+							<div class="cell small-12 medium-5">
 								<label>
-									Date of Birth <span class="required">*</span>
-									<input type="text" name="birthdate" id="birthdate" placeholder="mm/dd/yyyy" value="' . $masked_birthdate . '" readonly>
+									Date of Birth <span class="required">*</span><br>
+									<select id="birthdate_month" name="birthdate_month" onchange="updateDOB()" style="width: 35%">
+										' . buildMonthsList($birthdateMonth) . '
+									</select>
+									/
+									<select id="birthdate_day" name="birthdate_day" onchange="updateDOB()" style="width: 25%">
+										' . buildDaysList($birthdateDay) . '
+									</select>
+									/
+									<select id="birthdate_year" name="birthdate_year" onchange="updateDOB()" style="width: 30%">
+										' . buildYearsList($birthdateYear, true) . '
+									</select>
 									<input type="hidden" name="fbdate" id="fbdate" value="' . $birthdate . '">
 								</label>
 							</div>
-							<div class="cell small-6 medium-3">
+							<div class="cell small-12 medium-3">
 								<label>
 									SSN <span class="required">*</span>
 									<input type="tel" id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this, \'up\')" onKeyDown="return frmtssn(this, \'down\')" value="' . htmlspecialchars($ssn) . '" />
 								</label>
 							</div>
-							<div class="cell medium-3"></div>
-							<div class="cell medium-3"></div>';
+							<div class="cell medium-4"></div>';
 
 if($package == 'zinc') {
 	echo '			<div class="cell small-12"><hr></div>
@@ -311,10 +301,10 @@ echo '				<div class="cell small-12"><hr></div>
 
 					<div class="grid-x margins">
 						<div class="cell small-12 medium-6 padding-bottom">
-							<input name="save_person_info" class="float-center" id="save_person_info" type="button" value="Save the Data You Have Entered">
+							<input name="save_and_stay" class="float-center" id="save_and_stay" type="button" value="Save the Data You Have Entered">
 						</div>
 						<div class="cell small-12 medium-6">
-							<input name="add_person_info" class="float-center" id="add_person_info" type="button" value="Save Subject Data and Continue">
+							<input name="save_and_go" class="float-center" id="save_and_go" type="button" value="Save Subject Data and Continue">
 						</div>
 
 						<input type="hidden" name="AliasID" id="AliasID">
@@ -347,7 +337,17 @@ echo '				<div class="cell small-12"><hr></div>
 					Date Last Used
 				</div>
 				<div class="cell small-12">
-					<input type="text" name="akachanged" id="akachanged" maxlength="10" placeholder="mm/dd/yyyy" readonly>
+					<select id="akachanged_month" name="akachanged_month" style="width: 35%">
+						' . $months_list . '
+					</select>
+					/
+					<select id="akachanged_day" name="akachanged_day" style="width: 25%">
+						' . $days_list . '
+					</select>
+					/
+					<select id="akachanged_year" name="akachanged_year" style="width: 30%">
+						' . $years_list . '
+					</select>
 				</div>
 
 				<div class="cell small-12">
@@ -376,9 +376,6 @@ echo '				<div class="cell small-12"><hr></div>
 
  	$("#Alias_dialog").dialog({ autoOpen: false });
 	$("#NOMI_dialog").dialog({ autoOpen: false });
-	if($('#namechg')[0].type != 'date') $('#namechg').datepicker();
-	if($('#akachanged')[0].type != 'date') $('#akachanged').datepicker();
-	if($('#birthdate')[0].type != 'date') $('#birthdate').datepicker();
 
 	$(".add-alias").click(function() {
 		addAlias();
@@ -388,7 +385,9 @@ echo '				<div class="cell small-12"><hr></div>
 		$('#aliasid').val('');
 		$("#akafirstname").val('');
 		$("#akalastname").val('');
-		$("#akachanged").val('');
+		$("#akachanged_month").val('');
+		$("#akachanged_day").val('');
+		$("#akachanged_year").val('');
 
 		$("#Alias_dialog").dialog("option", "title", "Edit AKA");
 		$("#Alias_dialog").dialog("option", "modal", true);
@@ -399,6 +398,10 @@ echo '				<div class="cell small-12"><hr></div>
 	$("#close_alias").click(function() {
 		$("#Alias_dialog").dialog("close");
 	});
+
+	function updateDOB() {
+		$("#fbdate").val($("#birthdate_year").val() + '-' + $("#birthdate_month").val() + '-' + $("#birthdate_day").val());
+	}
 
 	function NoMI() {
 		if($("#nomi").attr('checked')) {
@@ -436,20 +439,17 @@ echo '				<div class="cell small-12"><hr></div>
 				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
-					var akaDate = '';
-
-					if($('#akachanged')[0].type != 'date') {
-						ad = obj2.Changed.split("-");
-						akaDate = ad[1] + "/" + ad[2] + "/" + ad[0];
-					}
-					else {
-						akaDate = obj2.Changed;
-					}
+					ad = obj2.Changed.split("-");
+					akaDateYear = ad[0];
+					akaDateMonth = ad[1];
+					akaDateDay = ad[2];
 
 					$("#aliasid").val(obj2.AliasID);
 					$("#akafirstname").val(obj2.FirstName);
 					$("#akalastname").val(obj2.LastName);
-					$("#akachanged").val(akaDate);
+					$("#akachanged_month").val(akaDateMonth);
+					$("#akachanged_day").val(akaDateDay);
+					$("#akachanged_year").val(akaDateYear);
 
 					$("#Alias_dialog").dialog("option", "title", "Edit AKA");
 					$("#Alias_dialog").dialog("option", "modal", true);
@@ -476,7 +476,7 @@ echo '				<div class="cell small-12"><hr></div>
 		if(aliasid > 0) {
 			saveLocation = "../App_Ajax_New/ajax_save_alias.php";
 		}
-		console.log(saveLocation);
+
 		if($("#akafirstname").val() == '' && $("#akalastname").val() == '' ) {
 			$("#akafirstname").focus();
 			alert("First or Last Name is required");
@@ -487,25 +487,23 @@ echo '				<div class="cell small-12"><hr></div>
 			var lastname = $("#akalastname").val();
 		}
 
-		if($("#akachanged").val() > '') {
-			var myDate = $("#akachanged").val();
-			var altDate = myDate.split("-");
-			var changed = myDate;
+		if($("#akachanged_month").val() > '' && $("#akachanged_day").val() > '' && $("#akachanged_year").val() > '') {
+			var changed =  $("#akachanged_month").val() + '/' + $("#akachanged_day").val() + '/' + $("#akachanged_year").val();
 		}
 		else {
-			$('#akachanged').focus();
+			$('#akachanged_day').focus();
 			alert("Date Last Used is required");
 			return;
 		}
 
-			var data = {
-			   personid: personid,
-			   aliasid: aliasid,
-			   firstname: firstname,
-			   lastname: lastname,
-			   middlename: '',
-			   changed: changed
-			};
+		var data = {
+		   personid: personid,
+		   aliasid: aliasid,
+		   firstname: firstname,
+		   lastname: lastname,
+		   middlename: '',
+		   changed: changed
+		};
 
 		console.log(data);
 		$.ajax({
@@ -522,7 +520,7 @@ echo '				<div class="cell small-12"><hr></div>
 				else {
 					$("#Alias_dialog").dialog("close");
 
-					if(aliasid > 0) { // updating
+					if(aliasid > 0) {
 						var rowToUpdate = $('#alias' + aliasid);
 
 						rowToUpdate.html('<td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + aliasid + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + aliasid + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td>');
@@ -532,9 +530,11 @@ echo '				<div class="cell small-12"><hr></div>
 						var newAliasID = maxAliasID + 1;
 
 						if(maxAliasRow) {
+							console.log("1");
 							maxAliasRow.after('<tr id="alias' + newAliasID + '"><td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + newAliasID + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + newAliasID + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>');
 						}
 						else {
+							console.log("2");
 							var aliasTable = $('#aliasTable');
 							aliasTable.apped('<tr id="alias' + newAliasID + '"><td>' + firstname + '</td><td>' + lastname + '</td><td>' + changed + '</td><td class="center"><a http="#" onclick="updateaka(' + newAliasID + ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit Alias" title="Edit Alias"/></a>&nbsp;&nbsp;&nbsp;<a http="#" onclick="deleteaka(' + newAliasID + ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete Alias" title="Delete Alias"/></a></td></tr>');
 						}
@@ -567,11 +567,7 @@ echo '				<div class="cell small-12"><hr></div>
 						return false;
 					}
 					else {
-						var rowToDelete = $('#alias' + aliasid);
-
-						rowToDelete.remove();
-
-						return;
+						window.location.reload();
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -582,7 +578,15 @@ echo '				<div class="cell small-12"><hr></div>
 		}
 	}
 
-	$("#add_person_info").click(function() {
+	$("#save_and_stay").click(function() {
+		save_person_info(false);
+	});
+
+	$("#save_and_go").click(function() {
+		save_person_info(true);
+	});
+
+	function save_person_info(moveOn=false) {
 		var packagename = $("#package").val();
 
 		if($("#newaka").val() > '' || $("#newakalast").val() > '' ) {
@@ -633,32 +637,28 @@ echo '				<div class="cell small-12"><hr></div>
 			var maiden = '';
 		}
 
-		if($("#namechg").val() == '') {
+		if($("#namechg_day").val() == "" || $("#namechg_month").val() == "" || $("#namechg_year").val() == "") {
 			if(maiden > '') {
-				$("#namechg").focus();
+				$("#namechg_day").focus();
 				alert("Date Maiden Name Changed is required");
 				return false;
 			}
 			else {
+				$("#namechg_day").val("");
+				$("#namechg_month").val("");
+				$("#namechg_year").val("");
 				var namechg = '1900-01-01';
 			}
 		}
 		else {
-			if(!isValidDate('namechg')) {
-				$('#namechg').focus();
-				alert("Invalid Date Maiden Name Changed");
-				return false;
-			}
-			else {
-				var namechg = $("#namechg").val();
-			}
+			var namechg = $("#namechg_year").val() + '-' + $("#namechg_month").val() + '-' + $("#namechg_day").val();
 		}
 
-		if($("#birthdate").val() > '') {
-			var birthdate = $("#birthdate").val();
+		if($("#fbdate").val() > '') {
+			var birthdate = $("#fbdate").val();
 		}
 		else {
-			$("#birthdate").focus();
+			$("#birthdate_day").focus();
 			alert("Date of Birth is required");
 			return false;
 		}
@@ -768,10 +768,30 @@ echo '				<div class="cell small-12"><hr></div>
 			var email = $("#email").val();
 		}
 
+		var data = {
+			personid: personid,
+			fname: fname,
+			mi: mi,
+			lname: lname,
+			maiden: maiden,
+			namechg: namechg,
+			birthdate: birthdate,
+			ssn: ssn,
+			busphone: busphone,
+			homephone: homephone,
+			cellphone: cellphone,
+			email: email,
+			gender: gender,
+			emergcontact: emergcontact,
+			emergnumber: emergnumber,
+			ipaddress: ipaddress
+		};
+
+		console.log(data);
 		$.ajax({
 			type: "POST",
 			url: "../App_Ajax_New/ajax_add_person.php",
-			data: { personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber,ipaddress: ipaddress },
+			data: data,
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
@@ -781,7 +801,12 @@ echo '				<div class="cell small-12"><hr></div>
 					return false;
 				}
 				else {
-		 			window.location = 'index.php?pg=' + nextPage + '&PersonID=' + personid + '&CD=' + cd;
+					if(moveOn) {
+						window.location = 'index.php?pg=' + nextPage + '&PersonID=' + personid + '&CD=' + cd;
+					}
+					else {
+						alert('Data saved successfully');
+					}
 				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -789,113 +814,15 @@ echo '				<div class="cell small-12"><hr></div>
 				alert('Error: ' + errorThrown);
 			}
 		});
-	});
-
-	$("#save_person_info").click(function() {
-		var packagename = $("#package").val();
-
-		if($("#newaka").val() > '' || $("#newakalast").val() > '' ) {
-			alert("Please Save the AKA record before moving on.");
-			return false;
-		}
-
-		var personid = $("#PersonID").val();
-		var ipaddress = $("#ipaddr").val();
-
-		var fname = $("#fname").val();
-		var mi = $("#mi").val();
-		var lname = $("#lname").val();
-		var maiden = $("#maiden").val();
-
-		if($("#namechg").val() == '') {
-			var namechg = '1900-01-01';
-		}
-		else {
-			var namechg = $("#namechg").val();
-		}
-
-		if($("#birthdate").val() > '') {
-			var birthdate = $("#birthdate").val();
-
-			if(birthdate.indexOf('XXXX') > 0) {
-				birthdate = $("#fbdate").val();
-			}
-		}
-		else {
-			birthdate = '1900-01-01';
-		}
-
-		if(packagename == 'zinc') {
-			var ssn = '';
-			var ins = $("#ins").val();
-			var passport = $("#passport").val();
-			var nationality = $("#nationality").val();
-			var mothermaiden = $("#mothermaiden").val();
-			var fathername = $("#fathername").val();
-		}
-		else {
-			var ins = '';
-			var passport = '';
-			var nationality = '';
-			var mothermaiden = '';
-			var fathername = '';
-
-			if($("#ssn").val() > '') {
-				var ssn = $("#ssn").val();
-
-				if(ssn.substring(0,3) == 'XXX') {
-					ssn = $("#num").val();
-				}
-			}
-			else {
-				ssn = '';
-			}
-		}
-
-		var busphone = $("#busphone").val();
-		var homephone = $("#homephone").val();
-		var cellphone = $("#cellphone").val();
-		var gender = '';
-		var emergcontact = '';
-		var emergnumber = '';
-
-		var email = $("#email").val();
-
-		$.ajax({
-			type: "POST",
-			url: "../App_Ajax_New/ajax_add_person.php",
-			data: { personid: personid, fname: fname, mi: mi, lname: lname, maiden: maiden, namechg: namechg, birthdate: birthdate, ssn: ssn, busphone: busphone, homephone: homephone, cellphone: cellphone, email: email, gender: gender, emergcontact: emergcontact, emergnumber: emergnumber, ipaddress: ipaddress },
-			datatype: "JSON",
-			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
-
-				if(obj2 > '') {
-					alert(obj2);
-					return false;
-				}
-				else {
-					alert('Data saved successfully');
-				}
-
-				return false;
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: ' + textStatus);
-				alert('Error: ' + errorThrown);
-			}
-		});
-	});
+	}
 
 	function validateSSN() {
-   		var patt = new RegExp("\d{3}[\-]\d{2}[\-]\d{4}");
-   		var x = $("#ssn");
-   		var res = patt.test(x.value);
+ 		var patt = new RegExp("\d{3}[\-]\d{2}[\-]\d{4}");
+ 		var x = $("#ssn");
+ 		var res = patt.test(x.value);
 
-   		if(!res){
-    		x.value = x.value
-        	.match(/\d*/g).join('')
-        	.match(/(\d{0,3})(\d{0,2})(\d{0,4})/).slice(1).join('-')
-        	.replace(/-*$/g, '');
-   		}
+ 		if(!res) {
+  		x.value = x.value.match(/\d*/g).join('').match(/(\d{0,3})(\d{0,2})(\d{0,4})/).slice(1).join('-').replace(/-*$/g, '');
+ 		}
 	}
 </script>

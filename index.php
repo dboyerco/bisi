@@ -96,6 +96,49 @@ else {
     $days_list .= '<option value="' . $day_string . '">' . $day_string . '</option>';
   }
 
+  function buildMonthsList($selectedMonth) {
+    $retVal = '<option value="" ' . ($selectedMonth == "" ? "selected" : "") . '>Month</option>
+              <option value="01" ' . ($selectedMonth == "01" ? "selected" : "") . '>January</option>
+              <option value="02" ' . ($selectedMonth == "02" ? "selected" : "") . '>February</option>
+              <option value="03" ' . ($selectedMonth == "03" ? "selected" : "") . '>March</option>
+              <option value="04" ' . ($selectedMonth == "04" ? "selected" : "") . '>April</option>
+              <option value="05" ' . ($selectedMonth == "05" ? "selected" : "") . '>May</option>
+              <option value="06" ' . ($selectedMonth == "06" ? "selected" : "") . '>June</option>
+              <option value="07" ' . ($selectedMonth == "07" ? "selected" : "") . '>July</option>
+              <option value="08" ' . ($selectedMonth == "08" ? "selected" : "") . '>August</option>
+              <option value="09" ' . ($selectedMonth == "09" ? "selected" : "") . '>September</option>
+              <option value="10" ' . ($selectedMonth == "10" ? "selected" : "") . '>October</option>
+              <option value="11" ' . ($selectedMonth == "11" ? "selected" : "") . '>November</option>
+              <option value="12" ' . ($selectedMonth == "12" ? "selected" : "") . '>December</option>';
+
+    return $retVal;
+  }
+
+  function buildDaysList($selectedDay) {
+    $retVal = '<option value="" ' . ($selectedDay == "" ? "selected" : "") . '>Day</option>';
+
+    for($day = 1; $day <= 31; $day++) {
+      $day_string = ($day < 10 ? "0" . $day : $day);
+      $retVal .= '<option value="' . $day_string . '" ' . ($selectedDay == $day_string ? "selected" : "") . '>' . $day_string . '</option>';
+    }
+
+    return $retVal;
+  }
+
+  function buildYearsList($selectedYear, $includeXXXX=false) {
+    $retVal = '<option>Year</option>';
+
+    if($includeXXXX) {
+      $retVal .= '<option value="XXXX" selected>XXXX</option>';
+    }
+
+    for($yr = date("Y"); $yr >= 1900; $yr--) {
+      $retVal .= '<option value="' . $yr . '" ' . ($selectedYear == $yr ? "selected" : "") . '>' . $yr . '</option>';
+    }
+
+    return $retVal;
+  }
+
   function assignPage($p) {
     global $pageOrder, $currentPage, $nextPage, $prevPage, $currentPageString;
 
