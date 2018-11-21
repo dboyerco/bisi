@@ -1,5 +1,4 @@
 <?php
-
 $days = 0;
 $YR = 0;
 $MO = 0;
@@ -235,14 +234,34 @@ echo '				<div class="cell medium-6 small-12">
 								From Date <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="fromdate" id="fromdate" size="10" maxlength="10" placeholder="mm/dd/yyyy" readonly>
+								<select id="fromdate_month" name="fromdate_month" style="width: 30%">
+									' . $months_list . '
+								</select>
+								/
+								<select id="fromdate_day" name="fromdate_day" style="width: 30%">
+									' . $days_list . '
+								</select>
+								/
+								<select id="fromdate_year" name="fromdate_year" style="width: 30%">
+									' . $years_list . '
+								</select>
 							</div>
 
 							<div class="cell medium-6 small-12">
 								To Date <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="todate" id="todate" size="10" maxlength="10" placeholder="mm/dd/yyyy" readonly>
+								<select id="todate_month" name="todate_month" style="width: 30%">
+									' . $months_list . '
+								</select>
+								/
+								<select id="todate_day" name="todate_day" style="width: 30%">
+									' . $days_list . '
+								</select>
+								/
+								<select id="todate_year" name="todate_year" style="width: 30%">
+									' . $years_list . '
+								</select>
 							</div>
 
 							<div class="cell small-12 padding-bottom">
@@ -261,8 +280,6 @@ echo '				<div class="cell medium-6 small-12">
 
 <script>
 	$("#Address_dialog").dialog({ autoOpen: false });
-	if($('#fromdate')[0].type != 'date' ) $('#fromdate').datepicker();
-	if($('#todate')[0].type != 'date' ) $('#todate').datepicker();
 
 <?php
 	if($days < 2557) {
@@ -293,8 +310,12 @@ echo '				<div class="cell medium-6 small-12">
 
 		$("#country").val('');
 		$("#zip").val('');
-		$("#fromdate").val('');
-		$("#todate").val('');
+		$("#fromdate_day").val('');
+		$("#fromdate_month").val('');
+		$("#fromdate_year").val('');
+		$("#todate_day").val('');
+		$("#todate_month").val('');
+		$("#todate_year").val('');
 
 		$("#Address_dialog").dialog("option", "title", "Add Address");
 		$("#Address_dialog").dialog("option", "modal", true);
@@ -323,22 +344,23 @@ echo '				<div class="cell medium-6 small-12">
 		if(mm < 10)
 			mm = '0' + mm;
 
-		//today = mm + '/' + dd + '/' + yyyy;
-		today = yyyy + '-' + mm + '-' + dd;
+		var today_str = yyyy + '-' + mm + '-' + dd;
 
-		return today;
+		return [today_str, yyyy, mm, dd];
 	}
 
 	function setdate() {
 		if($("#current").val() == 'Y') {
 			var today = getToday();
 
-			$("#todate").placeholder = '';
-			$("#todate").val(today);
+			$("#todate_day").val(today[3]);
+			$("#todate_month").val(today[2]);
+			$("#todate_year").val(today[1]);
 		}
 		else {
-			$("#todate").placeholder = 'mm/dd/yyyy';
-			$("#todate").val('');
+			$("#todate_day").val('');
+			$("#todate_month").val('');
+			$("#todate_year").val('');
 		}
 	}
 
@@ -423,26 +445,26 @@ echo '				<div class="cell medium-6 small-12">
 			return;
 		}
 
-		if($("#fromdate").val() > '') {
-			var fromdate = $("#fromdate").val();
+		if($("#fromdate_day").val() > '' && $("#fromdate_month").val() > '' && $("#fromdate_year").val() > '') {
+			var fromdate = $("#fromdate_year").val() + '-' + $("#fromdate_month").val() + '-' + $("#fromdate_day").val();
 		}
 		else {
-			$("#fromdate").focus();
+			$("#fromdate_day").focus();
 			alert("From Date is required");
 			return;
 		}
 
-		if($("#todate").val() > '') {
-			var todate = $("#todate").val();
+		if($("#todate_day").val() > '' && $("#todate_month").val() > '' && $("#todate_year").val() > '') {
+			var todate = $("#todate_year").val() + '-' + $("#todate_month").val() + '-' + $("#todate_day").val();
 		}
 		else {
-			$("#todate").focus();
+			$("#todate_day").focus();
 			alert("To Date is required");
 			return;
 		}
 
 		if(!isValidDiff(fromdate, todate)) {
-			$('#fromdate').focus();
+			$('#fromdate_day').focus();
 			alert("From Date can not be greater than To Date");
 			return false;
 		}
@@ -539,19 +561,14 @@ echo '				<div class="cell medium-6 small-12">
 				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
-					var fromDate = '';
-					var toDate = '';
-
-					if($('#fromdate')[0].type != 'date') {
-						fd = obj2.FromDate.split("-");
-						fromDate = fd[1] + "/" + fd[2] + "/" + fd[0];
-						td = obj2.ToDate.split("-");
-						toDate = td[1] + "/" + td[2] + "/" + td[0];
-					}
-					else {
-						fromDate = obj2.FromDate;
-						toDate = obj2.ToDate;
-					}
+					var fd = obj2.FromDate.split("-");
+					var fromDateDay = fd[2];
+					var fromDateMonth = fd[1];
+					var fromDateYear = fd[0];
+					var td = obj2.ToDate.split("-");
+					var toDateDay = td[2];
+					var toDateMonth = td[1];
+					var toDateYear = td[0];
 
 					$("#current").val(obj2.Current_Address);
 					$("#addrid").val(obj2.AddrID);
@@ -567,8 +584,12 @@ echo '				<div class="cell medium-6 small-12">
 
 					$("#country").val(obj2.StateOther);
 					$("#zip").val(obj2.ZipCode);
-					$("#fromdate").val(fromDate);
-					$("#todate").val(toDate);
+					$("#fromdate_day").val(fromDateDay);
+					$("#fromdate_month").val(fromDateMonth);
+					$("#fromdate_year").val(fromDateYear);
+					$("#todate_day").val(toDateDay);
+					$("#todate_month").val(toDateMonth);
+					$("#todate_year").val(toDateYear);
 
 					$("#Address_dialog").dialog("option", "title", "Edit Address");
 					$("#Address_dialog").dialog("option", "modal", true);
