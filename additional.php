@@ -22,10 +22,15 @@ if(isset($PersonID)) {
 			$Insurance_Company = $row['Insurance_Company'];
 
 			if($row['Insurance_Exp_Date'] == '1900-01-01') {
-				$Insurance_Exp_Date = '';
+				$Insurance_Exp_Date_Day = '';
+				$Insurance_Exp_Date_Month = '';
+				$Insurance_Exp_Date_Year = '';
 			}
 			else {
-				$Insurance_Exp_Date = date("m/d/Y", strtotime($row['Insurance_Exp_Date']));
+				$dateParts = explode("-", $row['Insurance_Exp_Date']);
+				$Insurance_Exp_Date_Day = $dateParts[2];
+				$Insurance_Exp_Date_Month = $dateParts[1];;
+				$Insurance_Exp_Date_Year = $dateParts[0];;
 			}
 		}
 	}
@@ -130,8 +135,21 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							<div class="cell small-12">
 								Insurance Exp. Date <span class="required">*</span>
 							</div>
-							<div class="cell small-12">
-								<input type="text" name="insuranceexpdate" id="insuranceexpdate" value="' . htmlspecialchars($Insurance_Exp_Date) . '" maxlength="10" placeholder="mm/dd/yyyy">
+							<div class="cell small-12 medium-6">
+								<select id="insuranceexpdate_month" name="insuranceexpdate_month" style="width: 35%">
+									' . buildMonthsList($Insurance_Exp_Date_Month) . '
+								</select>
+								/
+								<select id="insuranceexpdate_day" name="insuranceexpdate_day" style="width: 25%">
+									' . buildDaysList($Insurance_Exp_Date_Day) . '
+								</select>
+								/
+								<select id="insuranceexpdate_year" name="insuranceexpdate_year" style="width: 30%">
+									' . buildYearsList($Insurance_Exp_Date_Year) . '
+								</select>
+							</div>
+							<div class="cell medium-6">
+
 							</div>
 
 							<div class="cell small-12">
@@ -153,8 +171,6 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 ?>
 
 <script language="JavaScript" type="text/javascript">
-	if($('#insuranceexpdate')[0].type != 'date') $('#insuranceexpdate').datepicker();
-
 <?php
 	echo "setIndexes('" . $stype . "', '" . $empbefore . "', '" . $stationid . "');";
 ?>
@@ -170,7 +186,6 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 	}
 
 	$("#save_additional_info").click(function() {
-		// alert("In save_additional_info");
 		var personid = $("#PersonID").val();
 
 		if($("#empbefore").val() > '') {
@@ -236,19 +251,31 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			return false;
 		}
 
-		if($("#insuranceexpdate").val() > '') {
-			var insuranceexpdate = $("#insuranceexpdate").val();
+		if($("#insuranceexpdate_day").val() > '' && $("#insuranceexpdate_month").val() > '' && $("#insuranceexpdate_year").val() > '') {
+			var insuranceexpdate = $("#insuranceexpdate_year").val() + "-" + $("#insuranceexpdate_month").val() + "-" + $("#insuranceexpdate_day").val();
 		}
 		else {
-			$('insuranceexpdate').focus();
+			$('insuranceexpdate_day').focus();
 			alert("Insurance Exp. Date is required");
 			return false;
 		}
 
+		var data = {
+			personid: personid,
+			screentype: screentype,
+			cvname: cvname,
+			stationid: stationid,
+			position: position,
+			employer: employer,
+			empbefore: empbefore,
+			insurancecompany: insurancecompany,
+			insuranceexpdate: insuranceexpdate
+		};
+
 		$.ajax({
 			type: "POST",
 			url: "../App_Ajax/ajax_save_additional_info.php",
-			data: { personid: personid, screentype: screentype, cvname: cvname, stationid: stationid, position: position, employer: employer, empbefore: empbefore, insurancecompany: insurancecompany, insuranceexpdate: insuranceexpdate },
+			data: data,
 			datatype: "JSON",
 			success: function(valor) {
 				// alert('Valor: '+valor);
