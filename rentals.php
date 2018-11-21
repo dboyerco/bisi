@@ -42,14 +42,14 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				$fromdate = '';
 			}
 			else {
-				$fromdate = date("m/d/Y", strtotime($row[10]));
+				$fromdate = date("m/d/Y", strtotime($row[11]));
 			}
 
 			if($row[12] == '1900-01-01') {
 				$todate = '';
 			}
 			else {
-				$todate = date("m/d/Y", strtotime($row[11]));
+				$todate = date("m/d/Y", strtotime($row[12]));
 			}
 
 			echo '	<div class="cell small-12">
@@ -232,14 +232,34 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 										Move In Date <span class="required">*</span>
 									</div>
 									<div class="cell medium-6 small-12">
-										<input type="text" name="moveindate" id="moveindate" maxlength="10" placeholder="mm/dd/yyyy">
+										<select id="moveindate_month" name="moveindate_month" style="width: 30%">
+											' . $months_list . '
+										</select>
+										/
+										<select id="moveindate_day" name="moveindate_day" style="width: 30%">
+											' . $days_list . '
+										</select>
+										/
+										<select id="moveindate_year" name="moveindate_year" style="width: 30%">
+											' . $years_list . '
+										</select>
 									</div>
 
 									<div class="cell medium-6 small-12">
 										Move Out Date <span class="required">*</span>
 									</div>
 									<div class="cell medium-6 small-12">
-										<input type="text" name="moveoutdate" id="moveoutdate" maxlength="10" placeholder="mm/dd/yyyy">
+										<select id="moveoutdate_month" name="moveoutdate_month" style="width: 30%">
+											' . $months_list . '
+										</select>
+										/
+										<select id="moveoutdate_day" name="moveoutdate_day" style="width: 30%">
+											' . $days_list . '
+										</select>
+										/
+										<select id="moveoutdate_year" name="moveoutdate_year" style="width: 30%">
+											' . $years_list . '
+										</select>
 									</div>
 
 									<div class="cell small-12 padding-bottom">
@@ -257,8 +277,6 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 <script language="JavaScript" type="text/javascript">
  	$("#Rental_dialog").dialog({ autoOpen: false });
-	if($('#moveindate')[0].type != 'date' ) $('#moveindate').datepicker();
-	if($('#moveoutdate')[0].type != 'date' ) $('#moveoutdate').datepicker();
 
 	$('.button-prev').click(function() {
 		location.href = prevAction;
@@ -281,8 +299,12 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 		$("#rentalzipcode").val('');
 		$("#rentaltype").val('');
 		$("#rentalpayment").val('');
-		$("#moveindate").val('');
-		$("#moveoutdate").val('');
+		$("#moveindate_day").val('');
+		$("#moveindate_month").val('');
+		$("#moveindate_year").val('');
+		$("#moveoutdate_day").val('');
+		$("#moveoutdate_month").val('');
+		$("#moveoutdate_year").val('');
 
 		$("#Rental_dialog").dialog("option", "title", "Add Rental");
 		$("#Rental_dialog").dialog("option", "modal", true);
@@ -304,21 +326,23 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			mm = '0' + mm;
 		}
 
-		today = yyyy + '-' + mm + '-' + dd;
+		var today_str = yyyy + '-' + mm + '-' + dd;
 
-		return today;
+		return [today_str, yyyy, mm, dd];
 	}
 
 	function setdate() {
 		if($("#current").val() == 'Y') {
 			var today = getToday();
 
-			$("#moveoutdate").placeholder = '';
-			$("#moveoutdate").val(today);
+			$("#moveoutdate_day").val(today[3]);
+			$("#moveoutdate_month").val(today[2]);
+			$("#moveoutdate_year").val(today[1]);
 		}
 		else {
-			$("#moveoutdate").placeholder = 'mm/dd/yyyy';
-			$("#moveoutdate").val('');
+			$("#moveoutdate_day").val('');
+			$("#moveoutdate_month").val('');
+			$("#moveoutdate_year").val('');
 		}
 	}
 
@@ -414,26 +438,26 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			return;
 		}
 
-		if($("#moveindate").val() > '') {
-			var moveindate = $("#moveindate").val();
+		if($("#moveindate_day").val() > '' && $("#moveindate_month").val() > '' && $("#moveindate_year").val() > '') {
+			var moveindate = $("#moveindate_year").val() + '-' + $("#moveindate_month").val() + '-' + $("#moveindate_day").val();
 		}
 		else {
-			$("#moveindate").focus();
+			$("#moveindate_day").focus();
 			alert("Move In Date is required");
 			return;
 		}
 
-		if($("#moveoutdate").val() > '') {
-			var moveoutdate = $("#moveoutdate").val();
+		if($("#moveoutdate_day").val() > '' && $("#moveoutdate_month").val() > '' && $("#moveoutdate_year").val() > '') {
+			var moveoutdate = $("#moveoutdate_year").val() + '-' + $("#moveoutdate_month").val() + '-' + $("#moveoutdate_day").val();
 		}
 		else {
-			$("#moveoutdate").focus();
+			$("#moveoutdate_day").focus();
 			alert("Move Out Date is required");
 			return;
 		}
 
 		if(!isValidDiff(moveindate, moveoutdate)) {
-			$('#moveindate').focus();
+			$('#moveindate_day').focus();
 			alert("Move In Date can not be greater than Move Out Date");
 			return false;
 		}
@@ -492,16 +516,20 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
-					var movein = obj2.Rental_MoveIn_Date;
-					var moveout = obj2.Rental_MoveOut_Date;
-					var Rental_MoveIn_Date = movein.substr(5, 2) + "/" + movein.substr(8) + "/" + movein.substr(0,4);
-					var Rental_MoveOut_Date = moveout.substr(5, 2) + "/" + moveout.substr(8) + "/" + moveout.substr(0,4);
+					var movein = obj2.Rental_MoveIn_Date.split("-");
+					var moveout = obj2.Rental_MoveOut_Date.split("-");
+					var Rental_MoveIn_Date_Day = movein[2];
+					var Rental_MoveIn_Date_Month = movein[1];
+					var Rental_MoveIn_Date_Year = movein[0];
+					var Rental_MoveOut_Date_Day = moveout[2];
+					var Rental_MoveOut_Date_Month = moveout[1];
+					var Rental_MoveOut_Date_Year = moveout[0];
 
  					$("#current").val(obj2.CurrentRental);
 					$("#rentalid").val(obj2.RentalID);
-					$("#landlordname").val(obj2.LandlordName);
-					$("#landlordphone").val(obj2.LandlordPhone);
-					$("#landlordemail").val(obj2.LandlordEmail);
+					$("#landlordname").val(obj2.Landlord_Name);
+					$("#landlordphone").val(obj2.Landlord_Phone);
+					$("#landlordemail").val(obj2.Landlord_Email);
 					$("#rentaladdress").val(obj2.Rental_Address);
 					$("#rentalcity").val(obj2.Rental_City);
 					$("#rentalstate").val(obj2.Rental_State);
@@ -509,8 +537,12 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 					$("#rentalzipcode").val(obj2.Rental_ZipCode);
 					$("#rentaltype").val(obj2.Rental_Type);
 					$("#rentalpayment").val(obj2.Rental_Payment);
-					$("#moveindate").val(Rental_MoveIn_Date);
-					$("#moveoutdate").val(Rental_MoveOut_Date);
+					$("#moveindate_day").val(Rental_MoveIn_Date_Day);
+					$("#moveindate_month").val(Rental_MoveIn_Date_Month);
+					$("#moveindate_year").val(Rental_MoveIn_Date_Year);
+					$("#moveoutdate_day").val(Rental_MoveOut_Date_Day);
+					$("#moveoutdate_month").val(Rental_MoveOut_Date_Month);
+					$("#moveoutdate_year").val(Rental_MoveOut_Date_Year);
 
 					$("#Rental_dialog").dialog("option", "title", "Edit Rental");
 					$("#Rental_dialog").dialog("option", "modal", true);
