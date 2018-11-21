@@ -376,7 +376,6 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 				if(obj2) {
 					var fd = obj2.Formation_Date.split('-');
-					//var Formation_Date = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
 
 					$("#recid").val(obj2.RecID);
 					$("#businessaddress").val(obj2.Business_Address);
