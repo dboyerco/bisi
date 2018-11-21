@@ -150,8 +150,18 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 						<div class="cell medium-6 small-12">
 							Formation Date <span class="required">*</span>
 						</div>
-						<div class="cell medium-4 small-8">
-							<input type="text" name="formationdate" id="formationdate" maxlength="10" placeholder="mm/dd/yyyy">
+						<div class="cell medium-4 small-12">
+							<select id="formationdate_month" name="formationdate_month" style="width: 30%">
+								' . $months_list . '
+							</select>
+							/
+							<select id="formationdate_day" name="formationdate_day" style="width: 30%">
+								' . $days_list . '
+							</select>
+							/
+							<select id="formationdate_year" name="formationdate_year" style="width: 30%">
+								' . $years_list . '
+							</select>
 						</div>
 
 						<div class="cell medium-6 small-12">
@@ -184,7 +194,6 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 <script language="JavaScript" type="text/javascript">
 	$("#Business_dialog").dialog({ autoOpen: false });
-	if($('#formationdate')[0].type != 'date' ) $('#formationdate').datepicker();
 
 	$(".add-business").click(function() {
 		addBusiness();
@@ -202,7 +211,9 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 		$("#businesscity").val('');
 		$("#businessstate").val('');
 		$("#businesszip").val('');
-		$("#formationdate").val('');
+		$("#formationdate_day").val('');
+		$("#formationdate_month").val('');
+		$("#formationdate_year").val('');
 		$("#registered_agents").val('');
 		$("#agent_address").val('');
 		$("#status").val('');
@@ -277,11 +288,11 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			return;
 		}
 
-		if($("#formationdate").val() > '') {
-			var formationdate = $("#formationdate").val();
+		if($("#formationdate_day").val() > '' && $("#formationdate_month").val() > '' && $("#formationdate_year").val() > '') {
+			var formationdate = $("#formationdate_year").val() + '-' + $("#formationdate_month").val() + '-' + $("#formationdate_day").val();
 		}
 		else {
-			$("#formationdate").focus();
+			$("#formationdate_day").focus();
 			alert("Formation Date is required");
 			return;
 		}
@@ -327,7 +338,7 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			agent_address: agent_address,
 			status: status
 		};
-		
+
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
@@ -362,10 +373,10 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor)[0];
-				console.log(obj2);
+
 				if(obj2) {
-					var fd = obj2.Formation_Date;
-					var Formation_Date = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
+					var fd = obj2.Formation_Date.split('-');
+					//var Formation_Date = fd.substr(5, 2) + "/" + fd.substr(8) + "/" + fd.substr(0, 4);
 
 					$("#recid").val(obj2.RecID);
 					$("#businessaddress").val(obj2.Business_Address);
@@ -374,7 +385,9 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 					$("#businessstate").val(obj2.Business_State);
 					$("#businesszip").val(obj2.Business_Zip);
 					$("#businessid").val(obj2.BusinessID);
-					$("#formationdate").val(Formation_Date);
+					$("#formationdate_day").val(fd[2]);
+					$("#formationdate_month").val(fd[1]);
+					$("#formationdate_year").val(fd[0]);
 					$("#registered_agents").val(obj2.Registered_Agents);
 					$("#agent_address").val(obj2.Agent_Address);
 					$("#status").val(obj2.Status);
