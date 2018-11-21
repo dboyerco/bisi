@@ -95,7 +95,17 @@ echo '				<div class="cell small-12">
 								Expires <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<input type="text" name="dle" id="dle" maxlength="10" placeholder="mm/dd/yyyy" value="" readonly>
+								<select id="dle_month" name="dle_month" style="width: 30%">
+									' . $months_list . '
+								</select>
+								/
+								<select id="dle_day" name="dle_day" style="width: 30%">
+									' . $days_list . '
+								</select>
+								/
+								<select id="dle_year" name="dle_year" style="width: 30%">
+									' . $years_list . '
+								</select>
 							</div>
 							<div class="cell medium-6 small-12">
 								State/Country Issued <span class="required">*</span>
@@ -134,12 +144,11 @@ echo '				<div class="cell small-12">
 
 <script>
 	$("#DMV_dialog").dialog({ autoOpen: false });
-	if($('#dle')[0].type != 'date' ) $('#dle').datepicker();
 
 <?php
-if($maxRecID == 0) {
-	echo 'addDMV();';
-}
+	if($maxRecID == 0) {
+		echo 'addDMV();';
+	}
 ?>
 
 	$('.button-prev').click(function() {
@@ -149,7 +158,9 @@ if($maxRecID == 0) {
 	function addDMV() {
 		$("#recid").val('');
 		$("#dl").val('');
-		$("#dle").val('');
+		$("#dle_day").val('');
+		$("#dle_month").val('');
+		$("#dle_year").val('');
 		$("#dlstate").val('');
 		$("#dlcountry").val('');
 
@@ -176,22 +187,22 @@ if($maxRecID == 0) {
 			var dl = $("#dl").val();
 		}
 		else {
-			document.ALCATEL.newdl.focus();
+			$("#newdl").focus();
 			alert("Driver's License is required");
 			return false;
 		}
 
-		if($("#dle").val() > '') {
-			var dle = $("#dle").val();
+		if($("#dle_day").val() > '' && $("#dle_month").val() > '' && $("#dle_year").val() > '') {
+			var dle = $("#dle_year").val() + '-' + $("#dle_month").val() + '-' + $("#dle_day").val();
 		}
 		else {
-			document.ALCATEL.newdle.focus();
+			$("#dle_day").focus();
 			alert("Expiration Date is required");
 			return false;
 		}
 
 		if($("#dlstate").val() == '' && $("#dlcountry").val() == '' ) {
-			document.ALCATEL.newdlstate.focus();
+			$("#newdlstate").focus();
 			alert("State or Country of Issue is required");
 			return false;
 		}
@@ -225,7 +236,9 @@ if($maxRecID == 0) {
 					var RecID = obj2;
 
 					$("#dl").val('');
-					$("#dle").val('');
+					$("#dle_day").val('');
+					$("#dle_month").val('');
+					$("#dle_year").val('');
 					$("#dlstate").val('');
 					$("#dlcointry").val('');
 
@@ -254,17 +267,16 @@ if($maxRecID == 0) {
 				if(obj2) {
 					var dateExpires = '';
 
-					if($('#dle')[0].type != 'date') {
-						de = obj2.Date_Expires.split("-");
-						dateExpires = de[1] + "/" + de[2] + "/" + de[0];
-					}
-					else {
-						dateExpires = obj2.Date_Expires;
-					}
+					de = obj2.Date_Expires.split("-");
+					var dateExpiresDay = de[2];
+					var dateExpiresMonth = de[1];
+					var dateExpiresYear = de[0];
 
 					$("#recid").val(obj2.RecID);
 					$("#dl").val(obj2.Driver_License);
-					$("#dle").val(dateExpires);
+					$("#dle_day").val(dateExpiresDay);
+					$("#dle_month").val(dateExpiresMonth);
+					$("#dle_year").val(dateExpiresYear);
 					$("#dlstate").val(obj2.Issue_State);
 					$("#dlcountry").val(obj2.Issue_StateOther);
 
