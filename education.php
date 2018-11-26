@@ -1,6 +1,5 @@
 <?
 if($noemail == 'Y') {
-	// TODO
 	$FormAction = "index.php?pg=certification&PersonID=" . $PersonID . "&CD=" . $CD;
 }
 else {
@@ -28,113 +27,72 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 $highestdegree = 'N';
 
-if(!$testLayout) {
-	$maxEduID = $dbo->query("Select max(EduID) from App_Education where PersonID = " . $PersonID . ";")->fetchColumn();
+$maxEduID = $dbo->query("Select max(EduID) from App_Education where PersonID = " . $PersonID . ";")->fetchColumn();
 
-	if($maxEduID > 0) {
-		$selectstmt = "select EduID, EduCollegeName, EduCity, EduState, EduDatesAttendedFrom, EduDatesAttendedTo, EduCollegeMajor, EduCollegeDegree, EduGraduated, EduIsHighestDegree from App_Education where PersonID='$PersonID';";
-		$result2 = $dbo->prepare($selectstmt);
-		$result2->bindValue(':PersonID', $PersonID);
-		$result2->execute();
-		$i = 0;
+if($maxEduID > 0) {
+	$selectstmt = "select EduID, EduCollegeName, EduCity, EduState, EduDatesAttendedFrom, EduDatesAttendedTo, EduCollegeMajor, EduCollegeDegree, EduGraduated, EduIsHighestDegree from App_Education where PersonID='$PersonID';";
+	$result2 = $dbo->prepare($selectstmt);
+	$result2->bindValue(':PersonID', $PersonID);
+	$result2->execute();
+	$i = 0;
 
-		while($row = $result2->fetch(PDO::FETCH_BOTH)) {
-			if($row[9] == 'Y') {
-				$highestdegree = 'Y';
+	while($row = $result2->fetch(PDO::FETCH_BOTH)) {
+		if($row[9] == 'Y') {
+			$highestdegree = 'Y';
 
-				echo '<div class="cell small-12">
-								<h3>Highest Degree</h3>
-							</div>';
-			}
-
-			if($row[4] == '1900-01-01') {
-				$fromdate = '';
-			}
-			else {
-				$fromdate = date("m/d/Y", strtotime($row[4]));
-			}
-
-			if($row[5] == '1900-01-01') {
-				$todate = '';
-			}
-			else {
-				$todate = date("m/d/Y", strtotime($row[5]));
-			}
-
-			echo '	<div class="cell small-12 medium-11">
-								<div class="grid-x">
-									<div class="cell small-6 medium-2">
-										' . htmlspecialchars($row[1]) . '
-									</div>
-									<div class="cell small-6 medium-2">
-										' . htmlspecialchars($row[2]) . ', ' . htmlspecialchars($row[3]) . '
-									</div>
-									<div class="cell small-6 medium-3">
-										' . htmlspecialchars($fromdate) . ' - ' . htmlspecialchars($todate) . '
-									</div>
-									<div class="cell small-6 medium-2">
-										' . htmlspecialchars($row[6]) . '
-									</div>
-									<div class="cell small-6 medium-2">
-										' . htmlspecialchars($row[7]) . '
-									</div>
-									<div class="cell small-6 medium-1">
-										' . ($row[8] == 'Y' ? "Graduated" : "Did Not Graduate") . '
-									</div>
-								</div>
-							</div>
-
-							<div class="cell small-12 medium-1 top right">
-								<span onclick="updateedu(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Education" title="Edit Education"/></span>&nbsp;&nbsp;
-								<span onclick="deleteedu(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" alt="Delete Education" title="Delete Education"/></span>
-							</div>
-
-							<div class="cell small-12">
-								<hr>
-							</div>';
-
-			$i++;
+			echo '<div class="cell small-12">
+							<h3>Highest Degree</h3>
+						</div>';
 		}
-	}
-}
-else {
-	$maxEduID = 1;
 
-	echo '			<div class="cell small-12">
-								<h3>Highest Degree</h3>
-							</div>
+		if($row[4] == '1900-01-01') {
+			$fromdate = '';
+		}
+		else {
+			$fromdate = date("m/d/Y", strtotime($row[4]));
+		}
 
-							<div class="cell small-12 medium-11">
-								<div class="grid-x">
-									<div class="cell small-6 medium-2">
-										eduname
-									</div>
-									<div class="cell small-6 medium-2">
-										educity, CO
-									</div>
-									<div class="cell small-6 medium-3">
-										09/01/1987 - 05/21/1988
-									</div>
-									<div class="cell small-6 medium-2">
-										the major
-									</div>
-									<div class="cell small-6 medium-2">
-										Bachelor of Arts
-									</div>
-									<div class="cell small-6 medium-1">
-										Graduated
-									</div>
+		if($row[5] == '1900-01-01') {
+			$todate = '';
+		}
+		else {
+			$todate = date("m/d/Y", strtotime($row[5]));
+		}
+
+		echo '	<div class="cell small-12 medium-11">
+							<div class="grid-x">
+								<div class="cell small-6 medium-2">
+									' . htmlspecialchars($row[1]) . '
+								</div>
+								<div class="cell small-6 medium-2">
+									' . htmlspecialchars($row[2]) . ', ' . htmlspecialchars($row[3]) . '
+								</div>
+								<div class="cell small-6 medium-3">
+									' . htmlspecialchars($fromdate) . ' - ' . htmlspecialchars($todate) . '
+								</div>
+								<div class="cell small-6 medium-2">
+									' . htmlspecialchars($row[6]) . '
+								</div>
+								<div class="cell small-6 medium-2">
+									' . htmlspecialchars($row[7]) . '
+								</div>
+								<div class="cell small-6 medium-1">
+									' . ($row[8] == 'Y' ? "Graduated" : "Did Not Graduate") . '
 								</div>
 							</div>
+						</div>
 
-							<div class="cell small-12 medium-1 top right">
-								<span onclick="updateedu(1)"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Education" title="Edit Education"/></span>&nbsp;&nbsp;
-								<span onclick="deleteedu(1)"><img class="icon" src="images/deletetrashcan.png" alt="Delete Education" title="Delete Education"/></span>
-							</div>
+						<div class="cell small-12 medium-1 top right">
+							<span onclick="updateedu(' . $row[0] . ')"><img class="icon" src="images/pen-edit-icon.png" alt="Edit Education" title="Edit Education"/></span>&nbsp;&nbsp;
+							<span onclick="deleteedu(' . $row[0] . ')"><img class="icon" src="images/deletetrashcan.png" alt="Delete Education" title="Delete Education"/></span>
+						</div>
 
-							<div class="cell small-12">
-								<hr>
-							</div>';
+						<div class="cell small-12">
+							<hr>
+						</div>';
+
+		$i++;
+	}
 }
 
 echo '				<div class="cell small-12">
@@ -210,14 +168,34 @@ echo '				<div class="cell small-12 medium-6">
 								Attended From <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<input type="text" name="edufromdate" id="edufromdate" placeholder="mm/dd/yyyy" readonly>
+								<select id="edufromdate_month" name="edufromdate_month" style="width: 30%">
+									' . $months_list . '
+								</select>
+								/
+								<select id="edufromdate_day" name="edufromdate_day" style="width: 30%">
+									' . $days_list . '
+								</select>
+								/
+								<select id="edufromdate_year" name="edufromdate_year" style="width: 30%">
+									' . $years_list . '
+								</select>
 							</div>
 
 							<div class="cell small-12 medium-6">
 								Attended To <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<input type="text" name="edutodate" id="edutodate" placeholder="mm/dd/yyyy" readonly>
+								<select id="edutodate_month" name="edutodate_month" style="width: 30%">
+									' . $months_list . '
+								</select>
+								/
+								<select id="edutodate_day" name="edutodate_day" style="width: 30%">
+									' . $days_list . '
+								</select>
+								/
+								<select id="edutodate_year" name="edutodate_year" style="width: 30%">
+									' . $years_list . '
+								</select>
 							</div>
 
 							<div class="cell small-12 medium-6">
@@ -269,8 +247,6 @@ echo '				<div class="cell small-12 medium-6">
 
 <script language="JavaScript" type="text/javascript">
  	$("#Education_dialog").dialog({ autoOpen: false });
-	if($('#edufromdate')[0].type != 'date' ) $('#edufromdate').datepicker();
-	if($('#edutodate')[0].type != 'date' ) $('#edutodate').datepicker();
 
 <?php
 	if($maxEduID <= 0) {
@@ -292,8 +268,12 @@ echo '				<div class="cell small-12 medium-6">
 		$("#educity").val('');
 		$("#edustate").val('');
 		$("#educountry").val('');
-		$("#edufromdate").val('');
-		$("#edutodate").val('');
+		$("#edufromdate_month").val('');
+		$("#edufromdate_day").val('');
+		$("#edufromdate_year").val('');
+		$("#edutodate_month").val('');
+		$("#edutodate_day").val('');
+		$("#edutodate_year").val('');
 		$("#edumajor").val('');
 		$("#edudegree").val('');
 		$("#edugraduated").val('');
@@ -317,27 +297,26 @@ echo '				<div class="cell small-12 medium-6">
 				var obj2 = $.parseJSON(valor)[0];
 
 				if(obj2) {
-					var fromDate = '';
-					var toDate = '';
-
-					if($('#edufromdate')[0].type != 'date') {
-						fd = obj2.EduDatesAttendedFrom.split("-");
-						fromDate = fd[1] + "/" + fd[2] + "/" + fd[0];
-						td = obj2.EduDatesAttendedTo.split("-");
-						toDate = td[1] + "/" + td[2] + "/" + td[0];
-					}
-					else {
-						fromDate = obj2.EduDatesAttendedFrom;
-						toDate = obj2.EduDatesAttendedTo;
-					}
+					fd = obj2.EduDatesAttendedFrom.split("-");
+					var fromDateMonth = fd[1];
+					var fromDateDay = fd[2];
+					var fromDateYear = fd[0];
+					td = obj2.EduDatesAttendedTo.split("-");
+					var toDateMonth = td[1];
+					var toDateDay = td[2];
+					var toDateYear = td[0];
 
 					$("#EduID").val(obj2.EduID);
 					$("#eduname").val(obj2.EduCollegeName);
 					$("#educity").val(obj2.EduCity);
 					$("#edustate").val(obj2.EduState);
 					$("#educountry").val(obj2.EduStateOther);
-					$("#edufromdate").val(fromDate);
-					$("#edutodate").val(toDate);
+					$("#edufromdate_month").val(fromDateMonth);
+					$("#edufromdate_day").val(fromDateDay);
+					$("#edufromdate_year").val(fromDateYear);
+					$("#edutodate_month").val(toDateMonth);
+					$("#edutodate_day").val(toDateDay);
+					$("#edutodate_year").val(toDateYear);
 					$("#edumajor").val(obj2.EduCollegeMajor);
 					$("#edudegree").val(obj2.EduCollegeDegree);
 					$("#edugraduated").val(obj2.EduGraduated);
@@ -375,7 +354,7 @@ echo '				<div class="cell small-12 medium-6">
 			var eduname = $("#eduname").val();
 		}
 		else {
-			document.ALCATEL.eduname.focus();
+			$("#eduname").focus();
 			alert("Name of Instition is required");
 			return;
 		}
@@ -384,13 +363,13 @@ echo '				<div class="cell small-12 medium-6">
 			var educity = $("#educity").val();
 		}
 		else {
-			document.ALCATEL.educity.focus();
+			$("#educity").focus();
 			alert("City is required");
 			return;
 		}
 
 		if($("#edustate").val() == '' && $("#educountry").val() == '' ) {
-			document.ALCATEL.edustate.focus();
+			$("#edustate").val().focus();
 			alert("State or Country is required");
 			return;
 		}
@@ -399,20 +378,20 @@ echo '				<div class="cell small-12 medium-6">
 			var educountry = $("#educountry").val();
 		}
 
-		if($("#edufromdate").val() > '') {
-			var edufromdate = $("#edufromdate").val();
+		if($("#edufromdate_month").val() > '' && $("#edufromdate_day").val() > '' && $("#edufromdate_year").val() > '') {
+			var edufromdate = $("#edufromdate_year").val() + '-' + $("#edufromdate_month").val() + '-' + $("#edufromdate_day").val();
 		}
 		else {
-			document.ALCATEL.edufromdate.focus();
+			$("#edufromdate_day").focus();
 			alert("Attended From Date is required");
 			return;
 		}
 
-		if($("#edutodate").val() > '') {
-			var edutodate = $("#edutodate").val();
+		if($("#edutodate_month").val() > '' && $("#edutodate_day").val() > '' && $("#edutodate_year").val() > '') {
+			var edutodate = $("#edutodate_year").val() + '-' + $("#edutodate_month").val() + '-' + $("#edutodate_day").val();
 		}
 		else {
-			document.ALCATEL.edutodate.focus();
+			$("#edutodate_day").focus();
 			alert("Attended To Date is required");
 			return;
 		}
@@ -427,7 +406,7 @@ echo '				<div class="cell small-12 medium-6">
 			var edumajor = $("#edumajor").val();
 		}
 		else {
-			document.ALCATEL.edumajor.focus();
+			$("#edumajor").focus();
 			alert("Major is required");
 			return;
 		}
@@ -436,7 +415,7 @@ echo '				<div class="cell small-12 medium-6">
 			var edudegree = $("#edudegree").val();
 		}
 		else {
-			document.ALCATEL.edudegree.focus();
+			$("#edudegree").focus();
 			alert("Degree is required");
 			return;
 		}
@@ -530,7 +509,7 @@ echo '				<div class="cell small-12 medium-6">
 		var eduid = $("#EduID").val();
 
 		if(eduid == 0) {
-			document.ALCATEL.newbankname.focus();
+			$('#newbankname').focus();
 			alert('You have not entered your highest degree earned');
 			return false;
 		}
