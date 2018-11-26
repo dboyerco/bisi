@@ -646,9 +646,7 @@ echo '				<div class="cell medium-6 small-12">
 	frmvalidator.setAddnlValidationFunction("DoCustomValidation");
 
 	function DoCustomValidation() {
-		var addrid = $("#AddrID").val();
 		var nodays = $("#days").val();
-		var pname = $("#package").val();
 
 		if(nodays < 2557) {
 			alert('You have not entered at least 7 years of address information');

@@ -71,6 +71,7 @@ else {
   $pageUnder18 = 14;
   $pageCardInfo = 15;
   $pageThanks = 16;
+  $thisYear = date("Y");
   $days_list = '<option>Day</option>';
   $months_list = '<option value="">Month</option>
             <option value="01">January</option>
@@ -86,9 +87,14 @@ else {
             <option value="11">November</option>
             <option value="12">December</option>';
   $years_list = '<option>Year</option>';
+  $exp_years_list = '<option>Year</option>';
 
-  for($yr = date("Y"); $yr >= 1900; $yr--) {
+  for($yr = $thisYear; $yr >= 1900; $yr--) {
     $years_list .= '<option value="' . $yr . '">' . $yr . '</option>';
+  }
+
+  for($eyr = $thisYear; $eyr <= ($thisYear + 5); $eyr++) {
+    $exp_years_list .= '<option value="' . $eyr . '">' . $eyr . '</option>';
   }
 
   for($day = 1; $day <= 31; $day++) {

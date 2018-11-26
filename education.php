@@ -238,7 +238,7 @@ echo '				<div class="cell small-12 medium-6">
 							</div>
 
 							<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
-					  	<input type="hidden" name="EduID" id="EduID" value="">
+					  	<input type="hidden" name="EduID" id="EduID" value="' . $maxEduID . '">
 						</div>
 					</div>
 				</div>

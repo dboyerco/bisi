@@ -221,13 +221,17 @@ echo '<div class="cell small-6 required">
 				Expiration Date: <span class="required">*</span>
 			</div>
 			<div class="cell small-5 medium-2">
-				<input type="text" maxlength="2" name="expmonth" id="expmonth" placeholder="MM" />
+				<select id="expmonth" name="expmonth" style="width: 100%">
+					' . $months_list . '
+				</select>
 			</div>
 			<div class="cell small-2 medium-2 center">
 				&nbsp;/&nbsp;
 			</div>
 			<div class="cell small-5 medium-2">
-				<input type="text" maxlength="4" name="expyear" id="expyear" placeholder="YYYY" />
+				<select id="expyear" name="expyear" style="width: 100%">
+					' . $exp_years_list . '
+				</select>
 			</div>
 
 			<div class="cell small-12 medium-6">
@@ -293,7 +297,7 @@ echo 'var pageThanks = "' . $pageThanks . '";
 	}
 
 	function contact() {
-		var el = document.getElementById("contact");
+		var el = $("#contact");
 		el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 	}
 
@@ -319,7 +323,7 @@ echo 'var pageThanks = "' . $pageThanks . '";
 			eval("x." + focusField + ".focus()");
 			return false;
 		}
-		var amount = document.getElementById("amount").value;
+		var amount = $("#amount").val();
 		validateCard(amount);
 		return true;
 	}
@@ -327,22 +331,22 @@ echo 'var pageThanks = "' . $pageThanks . '";
 	function validateCard(amount){
 		$("#valcarddiv").css("visibility","visible");
 
-		var cardnum = document.getElementById("number").value;
-		var expmonth = document.getElementById("expmonth").value;
-		var expyear = document.getElementById("expyear").value;
-		var expdate = expmonth+expyear;
-		var fname = document.getElementById("firstName").value;
-		var lname = document.getElementById("lastName").value;
-		var company = document.getElementById("company").value;
-		var address = document.getElementById("address").value;
-		var city = document.getElementById("city").value;
-		var state = document.getElementById("state").value;
-		var zip = document.getElementById("zip").value;
-		var email = document.getElementById("contactEmail").value;
-		var ccv = document.getElementById("ccv").value;
-		var PersonID = document.getElementById("PersonID").value;
-		var AcctID = document.getElementById("acctid").value;
-		var CompName = document.getElementById("compname").value;
+		var cardnum = $("#number").val();
+		var expmonth = $("#expmonth").val();
+		var expyear = $("#expyear").val();
+		var expdate = expmonth + expyear;
+		var fname = $("#firstName").val();
+		var lname = $("#lastName").val();
+		var company = $("#company").val();
+		var address = $("#address").val();
+		var city = $("#city").val();
+		var state = $("#state").val();
+		var zip = $("#zip").val();
+		var email = $("#contactEmail").val();
+		var ccv = $("#ccv").val();
+		var PersonID = $("#PersonID").val();
+		var AcctID = $("#acctid").val();
+		var CompName = $("#compname").val();
 		var desc = AcctID+' - '+CompName+' background check';
 		// alert('Ready to validate');
 
