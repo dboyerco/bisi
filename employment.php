@@ -367,8 +367,7 @@ echo '<div class="cell small-12 padding-bottom">
 
 <script language="JavaScript" type="text/javascript">
  	$("#Employment_dialog").dialog({ autoOpen: false });
-	//if($('#empfromdate')[0].type != 'date' ) $('#empfromdate').datepicker();
-	//if($('#emptodate')[0].type != 'date' ) $('#emptodate').datepicker();
+
 	var currentEmployer = true;
 
 <?php
