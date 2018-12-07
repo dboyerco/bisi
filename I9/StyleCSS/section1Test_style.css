@@ -510,14 +510,14 @@ div.initials {
     -moz-appearance: textfield;
     -webkit-appearance: textfield;
     cursor: text;
-	width: 25px;  
+	width: 25px;
     height: 16px;
     resize: none;
 	text-align: left;
 	background-color: white;
     background-color: -moz-field;
     border: 1px solid darkgray;
-    box-shadow: 1px 1px 1px 0 lightgray inset;  
+    box-shadow: 1px 1px 1px 0 lightgray inset;
     font: -moz-field;
     font: -webkit-small-control;
     margin-top: 5px;
