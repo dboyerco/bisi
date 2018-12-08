@@ -1385,7 +1385,7 @@ include('Upload/UploadDialog.php');
 			}
 		});
 	}
-
+/*
 	function prepSign() {
 		var personid = $("#PersonID").val();
 		var CD = $("#CD").val();
@@ -1420,7 +1420,7 @@ include('Upload/UploadDialog.php');
 			}
 		});
 	}
-
+*/
 	function chkrequired() {
 		if(/\S/.test($("#lname").val())) {
 			$('#lname').removeClass('requiredInput');
