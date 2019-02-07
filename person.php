@@ -149,20 +149,18 @@ echo '					<strong>Please make sure that the first and last name is as it appear
 								</label>
 							</div>
 							<div class="cell small-12 medium-5">
-								<label>
-									Date Maiden Name Changed<br>
-									<select id="namechg_month" name="namechg_month" style="width: 35%">
-										' . buildMonthsList($namechgMonth) . '
-									</select>
-									/
-									<select id="namechg_day" name="namechg_day" style="width: 25%">
-										' . buildDaysList($namechgDay) . '
-									</select>
-									/
-									<select id="namechg_year" name="namechg_year" style="width: 30%">
-										' . buildYearsList($namechgYear) . '
-									</select>
-								</label>
+								<label>Date Maiden Name Changed</label>
+								<select id="namechg_month" name="namechg_month" style="width: 35%">
+									' . buildMonthsList($namechgMonth) . '
+								</select>
+								/
+								<select id="namechg_day" name="namechg_day" style="width: 25%">
+									' . buildDaysList($namechgDay) . '
+								</select>
+								/
+								<select id="namechg_year" name="namechg_year" style="width: 30%">
+									' . buildYearsList($namechgYear) . '
+								</select>
 							</div>
 							<div class="cell medium-2"></div>
 
@@ -215,21 +213,19 @@ echo '						</tbody>
 							<div class="cell small-12"><hr></div>
 
 							<div class="cell small-12 medium-5">
-								<label>
-									Date of Birth <span class="required">*</span><br>
-									<select id="birthdate_month" name="birthdate_month" onchange="updateDOB()" style="width: 35%">
-										' . buildMonthsList($birthdateMonth) . '
-									</select>
-									/
-									<select id="birthdate_day" name="birthdate_day" onchange="updateDOB()" style="width: 25%">
-										' . buildDaysList($birthdateDay) . '
-									</select>
-									/
-									<select id="birthdate_year" name="birthdate_year" onchange="updateDOB()" style="width: 30%">
-										' . buildYearsList($birthdateYear, true) . '
-									</select>
-									<input type="hidden" name="fbdate" id="fbdate" value="' . $birthdate . '">
-								</label>
+								<label>Date of Birth <span class="required">*</span></label>
+								<select id="birthdate_month" name="birthdate_month" onchange="updateDOB()" style="width: 35%">
+									' . buildMonthsList($birthdateMonth) . '
+								</select>
+								/
+								<select id="birthdate_day" name="birthdate_day" onchange="updateDOB()" style="width: 25%">
+									' . buildDaysList($birthdateDay) . '
+								</select>
+								/
+								<select id="birthdate_year" name="birthdate_year" onchange="updateDOB()" style="width: 30%">
+									' . buildYearsList($birthdateYear, true) . '
+								</select>
+								<input type="hidden" name="fbdate" id="fbdate" value="' . $birthdate . '">
 							</div>
 							<div class="cell small-12 medium-3">
 								<label>
