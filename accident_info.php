@@ -1,5 +1,6 @@
 <?php
 $Accident = 0;
+
 echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 				<div class="general-page">
 					<div class="sub-menu">&nbsp;</div>
@@ -28,52 +29,55 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
         							<option value="Yes">Yes</option>
       							</select>
 							</div>';
+
 $maxRecID = $dbo->query("Select max(RecID) from App_Accident_Info where PersonID = " . $PersonID . ";")->fetchColumn();
 
 if($maxRecID == '') {
 	$maxRecID = 0;
 }
 
-if ($maxRecID > 0) { 
+if($maxRecID > 0) {
 	$selectaccident="select * from App_Accident_Info where PersonID = :PersonID;";
-			
+
 	$accident_result = $dbo->prepare($selectaccident);
 	$accident_result->bindValue(':PersonID', $PersonID);
 	$accident_result->execute();
-	while($row = $accident_result->fetch(PDO::FETCH_BOTH)) {		
-		if ($row["Accident_Date"] == '1900-01-01') {
+
+	while($row = $accident_result->fetch(PDO::FETCH_BOTH)) {
+		if($row["Accident_Date"] == '1900-01-01') {
 			$accidentdate = '';
-		} else {
+		}
+		else {
 			$accidentdate = date("m/d/Y", strtotime($row["Accident_Date"]));
 		}
 
-echo '			<div class="grid-x margins person-form">
-					<div class="cell small-6 sub-heading">
-						&nbsp;' .	htmlspecialchars($accidentdate) . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					</div>
-					<div class="cell small-6 right">
-						<span onclick="updateaccident(' . $row["RecID"] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit License" title="Edit License"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<span onclick="deleteaccident(' . $row["RecID"] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete License" title="Delete License"/></span>
-					</div>
-					<div class="cell small-4 medium-3">
-						<b>Fatalities:</b> ' . htmlspecialchars($row["Fatalities"]) . '
-					</div>
-					<div class="cell small-4 medium-3">
-						<b>Injuries:</b> ' . htmlspecialchars($row["Injuries"]) . '
-					</div>
-					<div class="cell small-4 medium-3">
-						<b>HazMat Spill:</b> ' . htmlspecialchars($row["HazMat"]) . '
-					</div>		
-												
-					<div class="cell small-9 medium-9">
-						' . htmlspecialchars($row["Accident_Info"]) . '
-					</div>
-					<div class="cell small-12">
-						<hr>
-					</div>
-				</div>';	
+		echo '		<div class="cell small-6 sub-heading">
+								&nbsp;' .	htmlspecialchars($accidentdate) . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</div>
+							<div class="cell small-6 right">
+								<span onclick="updateaccident(' . $row["RecID"] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit License" title="Edit License"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span onclick="deleteaccident(' . $row["RecID"] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete License" title="Delete License"/></span>
+							</div>
+							<div class="cell small-4 medium-3">
+								<b>Fatalities:</b> ' . htmlspecialchars($row["Fatalities"]) . '
+							</div>
+							<div class="cell small-4 medium-3">
+								<b>Injuries:</b> ' . htmlspecialchars($row["Injuries"]) . '
+							</div>
+							<div class="cell small-4 medium-3">
+								<b>HazMat Spill:</b> ' . htmlspecialchars($row["HazMat"]) . '
+							</div>
+
+							<div class="cell small-9 medium-9">
+								' . htmlspecialchars($row["Accident_Info"]) . '
+							</div>
+							<div class="cell small-3 medium-3"></div>
+
+							<div class="cell small-12">
+								<hr>
+							</div>';
 	}
 }
 
@@ -86,7 +90,7 @@ echo '				<div class="cell small-12">
 							<div class="cell small-6">
 								<input class="button button-prev float-center" type="button" value="Prev">
 							</div>';
-#						if($maxRecID > 0 || $Accident == 'No') {	
+#						if($maxRecID > 0 || $Accident == 'No') {
 							echo '<div class="cell small-6">
 									<input class="button float-center" type="submit" id="next" value="Next">
 								</div>';
@@ -140,7 +144,7 @@ echo				'
 							<div class="cell medium-4 small-8">
 			      				<input name="hazmat" id="hazmat" maxlength="25">
 							</div>
-							
+
 							<div class="cell small-12 padding-bottom">
 								<br /><br /><input id="save_accident_info" class="float-center" type="button" value="Save Accident Infomation">
 							</div>
@@ -158,7 +162,7 @@ echo				'
  	$("#Accident_Info_dialog").dialog({ autoOpen: false });
 
 //<?php
-//	if($maxRecID == 0) {	
+//	if($maxRecID == 0) {
 //		echo 'addAccidentInfo();';
 //	}
 //?>
@@ -189,20 +193,20 @@ echo				'
 
 	$().ready(function() {
 		turnonquestions();
-	});	
+	});
 	function turnonquestions() {
 //		alert('turnonquestions');
 		if ($("#RecID").val() > 0) {
 			$("#accident").val('Yes');
-		}	
+		}
 		if ($("#accident").val() == 'Yes') {
 			if ($("#RecID").val() == 0) {
 				addAccidentInfo();
-			}	
-		} else {	
+			}
+		} else {
 			if ($("#accident").val() == 'No') {
 				$("#next").show();
-			} else {	
+			} else {
 				$("#next").hide();
 			}
 //			eldiv = document.getElementById("overlay");
@@ -276,7 +280,7 @@ echo				'
 
 		if($("#accident_info").val()) {
 			var accident_info = $("#accident_info").val();
-		} else {	
+		} else {
 			$("#accident_info").focus();
 			alert("Accident Info is required");
 			return;
