@@ -88,14 +88,13 @@ echo '				<div class="cell small-12">
 							</div>
 							<div class="cell small-6">
 								<input class="button button-prev float-center" type="button" value="Prev">
-							</div>';
-#						if($maxRecID > 0 || $Accident == 'No') {
-							echo '<div class="cell small-6">
-									<input class="button float-center" type="submit" id="next" value="Next">
-								</div>';
-#						}
-echo				'</div>';
-echo				'
+							</div>
+
+							<div class="cell small-6">
+								<input class="button float-center" type="submit" id="next" value="Next">
+							</div>
+						</div>
+
 						<div class="grid-x margins person-form" name="Accident_Info_dialog" id="Accident_Info_dialog" title="Dialog Title">
 							<div class="cell small-12 required">
 								* Required Fields To Continue
@@ -122,26 +121,26 @@ echo				'
 								Nature of Accident <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-			      				<textarea name="accident_info" id="accident_info" rows="5" cols="45" maxlength="256"></textarea>
+			      		<textarea name="accident_info" id="accident_info" rows="5" cols="45" maxlength="256"></textarea>
 							</div>
 							<div class="cell medium-6 small-12">
 								Fatalities?
 							</div>
 							<div class="cell medium-6 small-8">
-								<input name="fatalities" id="fatalities" maxlength="25">
+								<input type="text" name="fatalities" id="fatalities" maxlength="25">
 							</div>
 
 							<div class="cell medium-6 small-12">
 								Injuries? <span class="required">*</span>
 							</div>
 							<div class="cell medium-4 small-8">
-								<input name="injuries" id="injuries" maxlength="25">
+								<input type="text" name="injuries" id="injuries" maxlength="25">
 							</div>
 							<div class="cell medium-6 small-12">
 								Hazard Material Spill? <span class="required">*</span>
 							</div>
 							<div class="cell medium-4 small-8">
-			      				<input name="hazmat" id="hazmat" maxlength="25">
+			      		<input type="text" name="hazmat" id="hazmat" maxlength="25">
 							</div>
 
 							<div class="cell small-12 padding-bottom">
@@ -157,14 +156,9 @@ echo				'
 				</div>
 			</form>';
 ?>
+
 <script language="JavaScript" type="text/javascript">
  	$("#Accident_Info_dialog").dialog({ autoOpen: false });
-
-//<?php
-//	if($maxRecID == 0) {
-//		echo 'addAccidentInfo();';
-//	}
-//?>
 
 	$(".add-accident-info").click(function() {
 		addAccidentInfo();
