@@ -52,29 +52,27 @@ if($maxRecID > 0) {
 		}
 
 		echo '		<div class="cell small-6 sub-heading">
-								&nbsp;' .	htmlspecialchars($accidentdate) . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								' .	htmlspecialchars($accidentdate) . '
 							</div>
 							<div class="cell small-6 right">
 								<span onclick="updateaccident(' . $row["RecID"] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit License" title="Edit License"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<span onclick="deleteaccident(' . $row["RecID"] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete License" title="Delete License"/></span>
 							</div>
-							<div class="cell small-4 medium-3">
+							<div class="cell small-12 medium-3">
 								<b>Fatalities:</b> ' . htmlspecialchars($row["Fatalities"]) . '
 							</div>
-							<div class="cell small-4 medium-3">
+							<div class="cell small-12 medium-3">
 								<b>Injuries:</b> ' . htmlspecialchars($row["Injuries"]) . '
 							</div>
-							<div class="cell small-4 medium-3">
+							<div class="cell small-12 medium-3">
 								<b>HazMat Spill:</b> ' . htmlspecialchars($row["HazMat"]) . '
 							</div>
 							<div class="cell medium-3"></div>
 
-							<div class="cell small-9 medium-9">
+							<div class="cell small-12 medium-9">
 								' . htmlspecialchars($row["Accident_Info"]) . '
 							</div>
-							<div class="cell small-3 medium-3"></div>
+							<div class="cell medium-3"></div>
 
 							<div class="cell small-12">
 								<hr>
