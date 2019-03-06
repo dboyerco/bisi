@@ -58,6 +58,7 @@ if($maxRecID > 0) {
 								<span onclick="updateaccident(' . $row["RecID"] . ')"><img class="icon" src="images/pen-edit-icon.png" height="15" width="15" alt="Edit License" title="Edit License"/></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<span onclick="deleteaccident(' . $row["RecID"] . ')"><img class="icon" src="images/deletetrashcan.png" height="15" width="15" alt="Delete License" title="Delete License"/></span>
 							</div>
+
 							<div class="cell small-12 medium-3">
 								<b>Fatalities:</b> ' . htmlspecialchars($row["Fatalities"]) . '
 							</div>
@@ -83,9 +84,11 @@ if($maxRecID > 0) {
 echo '				<div class="cell small-12">
 								<span class="add-accident-info add-button"><img class="icon" src="images/plus.png" alt="Add Accident Information" title="Add Accident Information" /> Add Accident Information</span>
 							</div>
+
 							<div class="cell small-12">
 								<hr>
 							</div>
+
 							<div class="cell small-6">
 								<input class="button button-prev float-center" type="button" value="Prev">
 							</div>
@@ -104,15 +107,15 @@ echo '				<div class="cell small-12">
 								Accident Date <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<select id="accident_date_month" name="accident_date_month" style="width: 30%">
+								<select id="accident_date_month" name="accident_date_month" style="width: 33%">
 									' . $months_list . '
 								</select>
 								/
-								<select id="accident_date_day" name="accident_date_day" style="width: 30%">
+								<select id="accident_date_day" name="accident_date_day" style="width: 27%">
 									' . $days_list . '
 								</select>
 								/
-								<select id="accident_date_year" name="accident_date_year" style="width: 30%">
+								<select id="accident_date_year" name="accident_date_year" style="width: 29%">
 									' . $years_list . '
 								</select>
 							</div>
@@ -187,26 +190,35 @@ echo '				<div class="cell small-12">
 	$().ready(function() {
 		turnonquestions();
 	});
+
 	function turnonquestions() {
-//		alert('turnonquestions');
-		if ($("#RecID").val() > 0) {
+		console.log("turnonquestions: " + $("#RecID").val());
+		if($("#RecID").val() > 0) {
+			$('.add-accident-info').show();
 			$("#accident").val('Yes');
 		}
-		if ($("#accident").val() == 'Yes') {
-			if ($("#RecID").val() == 0) {
+		else {
+			$('.add-accident-info').hide();
+		}
+
+		if($("#accident").val() == 'Yes') {
+			if($("#RecID").val() == 0) {
 				addAccidentInfo();
 			}
-		} else {
+
+			$('.add-accident-info').show();
+		}
+		else {
 			if ($("#accident").val() == 'No') {
 				$("#next").show();
-			} else {
+			}
+			else {
 				$("#next").hide();
 			}
-//			eldiv = document.getElementById("overlay");
-//			eldiv.style.visibility = "hidden";
-//			eldiv2 = document.getElementById("overlay2");
-//			eldiv2.style.visibility = "visible";
-		};
+
+			$('.add-accident-info').hide();
+		}
+
 		return true;
 	}
 
