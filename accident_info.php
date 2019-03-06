@@ -69,6 +69,7 @@ if($maxRecID > 0) {
 							<div class="cell small-4 medium-3">
 								<b>HazMat Spill:</b> ' . htmlspecialchars($row["HazMat"]) . '
 							</div>
+							<div class="cell medium-3"></div>
 
 							<div class="cell small-9 medium-9">
 								' . htmlspecialchars($row["Accident_Info"]) . '
