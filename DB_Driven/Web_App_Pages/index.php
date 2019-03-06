@@ -1,20 +1,20 @@
 <?
-require_once('../pdotriton.php');
-$compname = $dbo->query("Select Company_Name from App_Person where PersonID = ".$PersonID.";")->fetchColumn();	
+require_once('../../pdotriton.php');
+$compname = $dbo->query("Select Company_Name from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
 $codeid = $dbo->query("Select CodeID from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
 if (!isset($CD)) {
 	$CD = '';
-}	
+}
 $mobile_browser = '0';
- 
+
 if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
     $mobile_browser++;
 }
- 
+
 if ((strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) {
     $mobile_browser++;
-}    
- 
+}
+
 $mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
 $mobile_agents = array(
     'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
@@ -26,19 +26,19 @@ $mobile_agents = array(
     'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
     'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
     'wapr','webc','winw','winw','xda ','xda-');
- 
+
 if (in_array($mobile_ua,$mobile_agents)) {
     $mobile_browser++;
 }
- 
+
 #if (strpos(strtolower($_SERVER['ALL_HTTP']),'OperaMini') > 0) {
 #    $mobile_browser++;
 #}
- 
+
 if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'windows') > 0) {
     $mobile_browser = 0;
 }
- 
+
 if ($mobile_browser > 0) {
 	echo '<html><body><br /><table style="border:5px solid black; border-radius:10px;"><tr><td>&nbsp;</td></tr><tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">PLEASE UTILIZE A COMPUTER TO COMPLETE THIS SUBMISSION - Phones and tables are not supported.</td></tr><tr><td>&nbsp;</td></table></body></html>';
 }
@@ -47,16 +47,16 @@ else {
 		echo '<html><body><br /><table style="border:5px solid black; border-radius:10px;"><tr><td>&nbsp;</td></tr><tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">To access the Background Screen Application please use the link in the email that was sent to you.</td></tr><tr><td>&nbsp;</td></table></body></html>';
 	} else {
 		$cnt = 1;
-		$end = strrpos($_SERVER['REQUEST_URI'], '/');	
+		$end = strrpos($_SERVER['REQUEST_URI'], '/');
 		$appname = substr($_SERVER['REQUEST_URI'],1,$end - 1);
 #		$cnt = $dbo->query("Select count(*) from App_Person where PersonID = ".$PersonID." and App_Name = '".$appname."';")->fetchColumn();
 		if ($PersonID == '' || $cnt == 0 || $codeid != $CD) {
-			if ($cnt == 0) { 
+			if ($cnt == 0) {
 				echo '<html><body><br /><table style="border:5px solid black; border-radius:10px;"><tr><td>&nbsp;</td></tr><tr><td><span style="font-size:large; font-family=Tahoma; color:red;">Invalid PersonID.</span><br /><span style="font-size:medium; font-family=Tahoma; color:#000000;">To access the Background Screen Application please use the link in the email that was sent to you.</td></tr><tr><td>&nbsp;</td></table></body></html>';
 			} else {
 				echo '<html><body><br /><table style="border:5px solid black; border-radius:10px;"><tr><td>&nbsp;</td></tr><tr><td><span style="font-size:medium; font-family=Tahoma; color:#000000;">To access the Background Screen Application please use the link in the email that was sent to you.</span></td></tr><tr><td>&nbsp;</td></table></body></html>';
-			}	
-		} else { 	
+			}
+		} else {
 			echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 			<html>
 			<head>
@@ -75,6 +75,6 @@ else {
 			</body></noframes>
 			</html>';
 		}
-	}	
-}   
-?>	
+	}
+}
+?>

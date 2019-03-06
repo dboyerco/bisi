@@ -66,8 +66,8 @@ else {
 		$country_options .= '<option value="' . $country_rows[0] . '">' . $country_rows[1] . '</option>';
 	}
 
-  //                     0          1          2         3               4                 5             6            7        8        9           10            11           12             13             14               15         16
-  $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+  //                     0          1          2         3               4                 5             6            7        8        9           10                11           12             13             14               15            16
+  $pageOrder = Array('person', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'address_custom', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
   $pageUnder18 = 14;
   $pageCardInfo = 15;
   $pageThanks = 16;
