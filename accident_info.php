@@ -18,8 +18,9 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							<div class="cell small-12">
 								<span class="sub-heading">Accident Information</span><br>
 								&nbsp;
-							</div>';
-					echo '	<div class="cell medium-6 small-12">
+							</div>
+
+							<div class="cell medium-6 small-12">
 								<b>Have you been in an accident within the last 3 years?</b>
 							</div>
 							<div class="cell medium-6 small-12">
@@ -126,6 +127,7 @@ echo '				<div class="cell small-12">
 							<div class="cell medium-6 small-12">
 			      		<textarea name="accident_info" id="accident_info" rows="5" cols="45" maxlength="256"></textarea>
 							</div>
+
 							<div class="cell medium-6 small-12">
 								Fatalities?
 							</div>
@@ -154,7 +156,7 @@ echo '				<div class="cell small-12">
 						<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
 						<input type="hidden" name=RecID" id="RecID" value="' . $maxRecID . '">
 						<input type="hidden" name=recid" id="recid" value="">
-						<input type="hidden" name=Accident" id="Accident" value="' .$Accident . '">
+						<input type="hidden" name=Accident" id="Accident" value="' . $Accident . '">
 					</div>
 				</div>
 			</form>';
@@ -192,7 +194,6 @@ echo '				<div class="cell small-12">
 	});
 
 	function turnonquestions() {
-		console.log("turnonquestions: " + $("#RecID").val());
 		if($("#RecID").val() > 0) {
 			$('.add-accident-info').show();
 			$("#accident").val('Yes');
@@ -224,6 +225,7 @@ echo '				<div class="cell small-12">
 
  	function updateaccident(recid) {
 		var personid = $("#PersonID").val();
+
 		$.ajax({
 			type: "POST",
 			url: "../App_Ajax_New/ajax_find_accident_info.php",
@@ -231,7 +233,7 @@ echo '				<div class="cell small-12">
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor)[0];
-				console.log(obj2);
+
 				if(obj2) {
 					$("#recid").val(obj2.RecID);
 					var fd = obj2.Accident_Date.split("-");
@@ -278,14 +280,15 @@ echo '				<div class="cell small-12">
 			var accident_date = $("#accident_date_year").val() + '-' + $("#accident_date_month").val() + '-' + $("#accident_date_day").val();
 		}
 		else {
-			$("#accident_date_day").focus();
+			$("#accident_date_month").focus();
 			alert("Accident Date is required");
 			return;
 		}
 
 		if($("#accident_info").val()) {
 			var accident_info = $("#accident_info").val();
-		} else {
+		}
+		else {
 			$("#accident_info").focus();
 			alert("Accident Info is required");
 			return;
@@ -299,6 +302,7 @@ echo '				<div class="cell small-12">
 			alert("Fatalities is required");
 			return;
 		}
+
 		if($("#injuries").val() > '') {
 			var injuries = $("#injuries").val();
 		}
@@ -307,6 +311,7 @@ echo '				<div class="cell small-12">
 			alert("Injuries is required");
 			return;
 		}
+
 		if($("#hazmat").val() > '') {
 			var hazmat = $("#hazmat").val();
 		}
@@ -333,12 +338,11 @@ echo '				<div class="cell small-12">
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
-				console.log(obj2);
+
 				if(obj2.length > 30) {
 					alert(obj2);
 				}
 				else {
-					$("#Accident_Info_dialog").dialog("close");
 					location.reload();
 				}
 
@@ -351,15 +355,14 @@ echo '				<div class="cell small-12">
 		});
 	});
 
-	function deleteaccident(RecID) {
-	alert('RecID: '+RecID);
+	function deleteaccident(recid) {
 		if(confirm('Are you sure you want to delete this Accident Information?')) {
 			var personid = $("#PersonID").val();
 
 			$.ajax({
 				type: "POST",
 				url: "../App_Ajax_New/ajax_delete_accident_info.php",
-				data: { personid: personid, RecID: RecID },
+				data: { personid: personid, recid: recid },
 				datatype: "JSON",
 				success: function(valor) {
 					var obj2 = $.parseJSON(valor);
