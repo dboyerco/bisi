@@ -66,11 +66,11 @@ else {
 		$country_options .= '<option value="' . $country_rows[0] . '">' . $country_rows[1] . '</option>';
 	}
 
-  //                     0           1                 2                  3                  4           5        6               7                8              9           10       11        12           13               14           15            16             17              18              19         20
-  $pageOrder = Array('person', 'accident_info', 'drv_experience', 'traffic_violations', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'address_custom', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
-  $pageUnder18 = 18;
-  $pageCardInfo = 19;
-  $pageThanks = 20;
+  //                     0           1                 2                  3                  4                 5           6         7               8                9             10           11       12       13            14              15            16            17             18             19              20         21
+  $pageOrder = Array('person', 'accident_info', 'drv_experience', 'traffic_violations', 'dot_employment', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'address_custom', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+  $pageUnder18 = 19;
+  $pageCardInfo = 20;
+  $pageThanks = 21;
   $thisYear = date("Y");
   $days_list = '<option>Day</option>';
   $months_list = '<option value="">Month</option>
