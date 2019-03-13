@@ -4,10 +4,10 @@ $YR = 0;
 $MO = 0;
 $DY = 0;
 $pastYears = 2;
+//$Package = 'package2';
 
 if($Package == 'package2' || $Package == 'package3') {
 	$releasefnd = $dbo->query("Select count(*) from App_Uploads where PersonID = " . $PersonID . " and UploadType = 'DOT Questionnaire FMCSA-PHMSA Form';")->fetchColumn();
-	//$FormAction = "drv_experience.php?PersonID=" . $PersonID;
 }
 else {
 	$releasefnd = 1;
@@ -200,8 +200,10 @@ $shownext = false;
 if($Package == 'package2' && $releasefnd > 0 && $days > 1095) {
 	$shownext = true;
 }
-
-if($Package == 'package3' && $releasefnd > 0 && $days > 730) {
+else if($Package == 'package3' && $releasefnd > 0 && $days > 730) {
+	$shownext = true;
+}
+else {
 	$shownext = true;
 }
 
