@@ -4,16 +4,16 @@ $YR = 0;
 $MO = 0;
 $DY = 0;
 $pastYears = 2;
-//$Package = 'package2';
+//$package = 'package2';
 
-if($Package == 'package2' || $Package == 'package3') {
+if($package == 'package2' || $package == 'package3') {
 	$releasefnd = $dbo->query("Select count(*) from App_Uploads where PersonID = " . $PersonID . " and UploadType = 'DOT Questionnaire FMCSA-PHMSA Form';")->fetchColumn();
 }
 else {
 	$releasefnd = 1;
 }
 
-if($Package == 'package2') {
+if($package == 'package2') {
 	$pastYears = 3;
 }
 
@@ -142,7 +142,7 @@ if($maxEmpID > 0) {
 							' . htmlspecialchars($row[14]) . '
 						</div>';
 
-		if($Package == "package2" || $Package == "package3") {
+		if($package == "package2" || $package == "package3") {
 			$dotreg = 'No';
 			$dottst = 'No';
 
@@ -197,10 +197,10 @@ echo '				<div class="cell small-12">
 
 $shownext = false;
 
-if($Package == 'package2' && $releasefnd > 0 && $days > 1095) {
+if($package == 'package2' && $releasefnd > 0 && $days > 1095) {
 	$shownext = true;
 }
-else if($Package == 'package3' && $releasefnd > 0 && $days > 730) {
+else if($package == 'package3' && $releasefnd > 0 && $days > 730) {
 	$shownext = true;
 }
 else {
@@ -374,7 +374,7 @@ echo '			</div>
 								<input type="text" name="semail" id="semail" maxlength="40">
 							</div>';
 
-if($Package == "package2" || $Package == "package3") {
+if($package == "package2" || $package == "package3") {
 	echo '			<div class="cell small-12 medium-6">
 								Were you subject to FMCSA or PHMSA Safety Regulations while employed? <span class="required">*</span>
 							</div>
