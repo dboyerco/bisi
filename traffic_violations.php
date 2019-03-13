@@ -217,6 +217,10 @@ echo '				<div class="cell small-12 add-traffic-violation-button">
 <script language="JavaScript" type="text/javascript">
  	$("#Traffic_Violation_dialog").dialog({ autoOpen: false });
 
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
+
 	$(".add-traffic-violation").click(function() {
 		addTrafficViolation();
 	});
