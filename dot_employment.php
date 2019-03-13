@@ -109,14 +109,6 @@ if($maxEmpID > 0) {
 						<div class="cell small-12 medium-3">
 							' . htmlspecialchars($fromdate) . ' - ' . htmlspecialchars($todate) . '
 						</div>
-						<div class="cell small-12 medium-6"></div>
-
-						<div class="cell small-12 medium-3">
-							<label>Position:</label>
-						</div>
-						<div class="cell small-12 medium-3">
-							' . htmlspecialchars($row[11]) . '
-						</div>
 						<div class="cell small-12 medium-3">
 							<label>Supervisor:</label>
 						</div>
@@ -125,10 +117,10 @@ if($maxEmpID > 0) {
 						</div>
 
 						<div class="cell small-12 medium-3">
-							<label>Phone:</label>
+							<label>Position:</label>
 						</div>
 						<div class="cell small-12 medium-3">
-							' . htmlspecialchars($row[12]) . '
+							' . htmlspecialchars($row[11]) . '
 						</div>
 						<div class="cell small-12 medium-3">
 							<label>Supervisor Phone:</label>
@@ -138,10 +130,10 @@ if($maxEmpID > 0) {
 						</div>
 
 						<div class="cell small-12 medium-3">
-							<label>Reason for Leaving:</label>
+							<label>Phone:</label>
 						</div>
 						<div class="cell small-12 medium-3">
-							' . htmlspecialchars($row[10]) . '
+							' . htmlspecialchars($row[12]) . '
 						</div>
 						<div class="cell small-12 medium-3">
 							<label>Supervisor Email:</label>
@@ -215,7 +207,7 @@ if($Package == 'package3' && $releasefnd > 0 && $days > 730) {
 
 if(!$shownext) {
 	echo '			<div class="cell small-12">
-								<input class="button float-center" type="button" id="requireddoc" value="Download/Upload DOT Questionnaire FMCSA-PHMSA Form">
+								<button class="button float-center" id="requireddoc" style="height: 4rem">Download/Upload DOT Questionnaire<br />FMCSA-PHMSA Form</button>
 							</div>
 
 							<div class="cell small-12">
@@ -322,15 +314,15 @@ echo '			</div>
 								From Date <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<select id="empfromdate_month" name="empfromdate_month" style="width: 30%">
+								<select id="empfromdate_month" name="empfromdate_month" style="width: 38%">
 									' . $months_list . '
 								</select>
 								/
-								<select id="empfromdate_day" name="empfromdate_day" style="width: 30%">
+								<select id="empfromdate_day" name="empfromdate_day" style="width: 24%">
 									' . $days_list . '
 								</select>
 								/
-								<select id="empfromdate_year" name="empfromdate_year" style="width: 30%">
+								<select id="empfromdate_year" name="empfromdate_year" style="width: 29%">
 									' . $years_list . '
 								</select>
 							</div>
@@ -339,15 +331,15 @@ echo '			</div>
 								To Date <span class="required">*</span>
 							</div>
 							<div class="cell small-12 medium-6">
-								<select id="emptodate_month" name="emptodate_month" style="width: 30%">
+								<select id="emptodate_month" name="emptodate_month" style="width: 38%">
 									' . $months_list . '
 								</select>
 								/
-								<select id="emptodate_day" name="emptodate_day" style="width: 30%">
+								<select id="emptodate_day" name="emptodate_day" style="width: 24%">
 									' . $days_list . '
 								</select>
 								/
-								<select id="emptodate_year" name="emptodate_year" style="width: 30%">
+								<select id="emptodate_year" name="emptodate_year" style="width: 29%">
 									' . $years_list . '
 								</select>
 							</div>
@@ -378,13 +370,6 @@ echo '			</div>
 							</div>
 							<div class="cell small-12 medium-6">
 								<input type="text" name="semail" id="semail" maxlength="40">
-							</div>
-
-							<div class="cell small-12 medium-6">
-								Reason for leaving <span class="required">*</span>
-							</div>
-							<div class="cell small-12 medium-6">
-								<input type="text" name="reason" id="reason" maxlength="40">
 							</div>';
 
 if($Package == "package2" || $Package == "package3") {
@@ -455,6 +440,22 @@ echo '				<div class="cell small-12 padding-bottom">
  	$("#Employment_dialog").dialog({ autoOpen: false });
 	$("#reqdoc").dialog({ autoOpen: false });
 
+	var currentEmployer = true;
+
+<?php
+	if($currentEmployer == 'N') {
+		echo 'currentEmployer = false;';
+	}
+
+	if($days < 2557 && $empCount < 3) {
+		echo 'addEmployment();';
+	}
+?>
+
+	$('.button-prev').click(function() {
+		location.href = prevAction;
+	});
+
 	$(document).ready(function() {
 		if($("#releasefnd").val() > 0) {
 			$("#submitid").show();
@@ -462,10 +463,6 @@ echo '				<div class="cell small-12 padding-bottom">
 	});
 
 	function downloadForm() {
-//   		el = $("#submitid");
-//  		elbutton = $("#dlform");
-//		elbutton.style.visibility = "hidden";
-//		el.style.visibility = "visible";
 		window.open('https://proteus.bisi.com/pusgcorpoffice/Peak-Utility-Services-Group-DOT-Form-2-2019.pdf');
 	}
 
@@ -476,6 +473,58 @@ echo '				<div class="cell small-12 padding-bottom">
 		$("#reqdoc").dialog("open");
 	});
 
+	$(".add-employment").click(function() {
+		addEmployment();
+	});
+
+	function addEmployment() {
+		$("#current").val('N');
+		$("#empid").val('');
+		$("#contact").val('');
+		$("#empname").val('');
+		$("#empstreet").val('');
+		$("#empcity").val('');
+		$("#empstate").val('');
+		$("#empcountry").val('');
+		$("#empfromdate_month").val('');
+		$("#empfromdate_day").val('');
+		$("#empfromdate_year").val('');
+		$("#emptodate_month").val('');
+		$("#emptodate_day").val('');
+		$("#emptodate_year").val('');
+		$("#empsuper").val('');
+		$("#emptitle").val('');
+		$("#empphone").val('');
+		$("#sphone").val('');
+		$("#semail").val('');
+
+		if($("#Package").val() == 'mountain') {
+			$("#empdotreg").val('');
+			$("#empdottst").val('');
+		}
+
+		if(currentEmployer) {
+			hideCurrentEmployer();
+		}
+		else {
+			showCurrentEmployer();
+		}
+
+		$("#Employment_dialog").dialog("option", "title", "Add Employment");
+		$("#Employment_dialog").dialog("option", "modal", true);
+		$("#Employment_dialog").dialog("option", "width", "100%");
+		$("#Employment_dialog").dialog("open");
+	}
+
+	function showCurrentEmployer() {
+		$(".current-emp").css("display", "block");
+	}
+
+	function hideCurrentEmployer() {
+		$(".current-emp").css("display", "none");
+		$("#current").val('N');
+	}
+
  	function updateemp(empid) {
 		var personid = $("#PersonID").val();
 
@@ -485,238 +534,281 @@ echo '				<div class="cell small-12 padding-bottom">
 			data: { personid: personid, empid: empid },
 			datatype: "JSON",
 			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
+				var obj2 = $.parseJSON(valor)[0];
 
-				if(valor.length > 0) {
-					for (var i = 0; i < obj2.length; i++) {
-						var EmpID = obj2[i].EmpID;
-						var EmpName = obj2[i].EmpName;
-						var EmpStreet = obj2[i].EmpStreet;
-						var EmpCity = obj2[i].EmpCity;
-						var EmpState = obj2[i].EmpState;
-						var EmpStateOther = obj2[i].EmpStateOther;
-						var fd = obj2[i].EmpDateFrom;
-						var EmpDateFrom = fd.substr(5,2)+"/"+fd.substr(8)+"/"+fd.substr(0,4);
-						var td = obj2[i].EmpDateTo;
-						var EmpDateTo = td.substr(5,2)+"/"+td.substr(8)+"/"+td.substr(0,4);
-						var EmpSupervisor = obj2[i].EmpSupervisor;
-//						var EmpReasonForLeaving = obj2[i].EmpReasonForLeaving;
-						var EmpTitle = obj2[i].EmpTitle;
-						var EmpPhone = obj2[i].EmpPhone;
-						var EmpCurrent = obj2[i].EmpCurrent;
-						var EmpMayWeContact = obj2[i].EmpMayWeContact;
-						var EmpSupervisorPhone = obj2[i].EmpSupervisorPhone;
-						var EmpSupervisorEmail = obj2[i].EmpSupervisorEmail;
-						var EmpDotReg = obj2[i].EmpDotReg;
-						var EmpDotTst = obj2[i].EmpDotTst;
-			    	}
-					$("#dlgempid").val() = EmpID;
-					$("#dlgcontact").val() = EmpMayWeContact;
-					$("#dlgcurrent").val() = EmpCurrent;
-					$("#dlgempname").val() = EmpName;
-					$("#dlgaddr").val() = EmpStreet;
-					$("#dlgcity").val() = EmpCity;
-					$("#dlgstate").val() = EmpState;
-					$("#dlgstateother").val() = EmpStateOther;
-					$("#dlgfromdate").val() = EmpDateFrom;
-					$("#dlgtodate").val() = EmpDateTo;
-					$("#dlgsuper").val() = EmpSupervisor;
-//					$("#dlgreason").val() = EmpReasonForLeaving;
-					$("#dlgtitle").val() = EmpTitle;
-					$("#dlgphone").val() = EmpPhone;
-					$("#dlgsphone").val() = EmpSupervisorPhone;
-					$("#dlgsemail").val() = EmpSupervisorEmail;
-					if ($("#Package").val() == 'package2' || $("#Package").val() == "package3") {
-						$("#dlgempdotreg").val() = EmpDotReg;
-						$("#dlgempdottst").val() = EmpDotTst;
+				if(obj2) {
+					var fd = obj2.EmpDateFrom.split("-");
+					var fromDateMonth = fd[1];
+					var fromDateDay = fd[2];
+					var fromDateYear = fd[0];
+					var td = obj2.EmpDateTo.split("-");
+					var toDateMonth = td[1];
+					var toDateDay = td[2];
+					var toDateYear = td[0];
+
+					$("#empid").val(obj2.EmpID);
+					$("#contact").val(obj2.EmpMayWeContact);
+					$("#current").val(obj2.EmpCurrent == "Y" ? "Y" : "N");
+					$("#empname").val(obj2.EmpName);
+					$("#empstreet").val(obj2.EmpStreet);
+					$("#empcity").val(obj2.EmpCity);
+					$("#empstate").val(obj2.EmpState);
+					$("#empcountry").val(obj2.EmpStateOther);
+					$("#empfromdate_month").val(fromDateMonth);
+					$("#empfromdate_day").val(fromDateDay);
+					$("#empfromdate_year").val(fromDateYear);
+					$("#emptodate_month").val(toDateMonth);
+					$("#emptodate_day").val(toDateDay);
+					$("#emptodate_year").val(toDateYear);
+					$("#empsuper").val(obj2.EmpSupervisor);
+					$("#emptitle").val(obj2.EmpTitle);
+					$("#empphone").val(obj2.EmpPhone);
+					$("#sphone").val(obj2.EmpSupervisorPhone);
+					$("#semail").val(obj2.EmpSupervisorEmail);
+
+					if($("#Package").val() == 'package2' || $("#Package").val() == 'package3') {
+						$("#empdotreg").val(obj2.EmpDotReg);
+						$("#empdottst").val(obj2.EmpDotTst);
 					}
 
-					$( "#Employment_dialog" ).dialog( "option", "title", "Edit Employment");
-					$( "#Employment_dialog" ).dialog( "option", "modal", true );
-					$( "#Employment_dialog" ).dialog( "option", "width", 700 );
-					$( "#Employment_dialog" ).dialog( "open" );
-				} else {
+					if(currentEmployer) {
+						if($("#current").val() == "Y") {
+							showCurrentEmployer();
+						}
+						else {
+							hideCurrentEmployer();
+						}
+					}
+
+					$("#Employment_dialog").dialog("option", "title", "Edit Employment");
+					$("#Employment_dialog").dialog("option", "modal", true);
+					$("#Employment_dialog").dialog("option", "width", "100%");
+					$("#Employment_dialog").dialog("open");
+				}
+				else {
 					alert('No Employment Data Found');
 				}
+
 				return;
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: '+textStatus); alert('Error: '+errorThrown);
+				alert('Status: ' + textStatus);
+				alert('Error: ' + errorThrown);
 			}
 		});
 	}
 
  	$("#save_employment").click(function() {
 		var personid = $("#PersonID").val();
-		var empid = $("#dlgempid").val();
-		var current_employment = $("#dlgcurrent").val();
+		var empid = $("#empid").val();
+		var current = $("#current").val();
+		var saveLocation = "../App_Ajax_New/ajax_add_employment.php";
 
-		if ($("#dlgempname").val() > '') {
-			var empname = $("#dlgempname").val();
-		} else {
-			document.ALCATEL.dlgempname.focus();
-			$('#dlgempname').focus();
+		if(empid > 0) {
+			saveLocation = "../App_Ajax_New/ajax_save_employment.php";
+		}
+
+		if($("#empname").val() > '') {
+			var empname = $("#empname").val();
+		}
+		else {
+			$('#empname').focus();
 			alert("Company Name is required");
 			return;
 		}
-		contact = $("#dlgcontact").val();
 
-		if ($("#dlgaddr").val() > '') {
-			var addr = $("#dlgaddr").val();
-		} else {
-			$('#dlgaddr').focus();
-			alert("Street is required");
+		empcontact = $("#empcontact").val();
+
+		if($("#empstreet").val() > '') {
+			var empstreet = $("#empstreet").val();
+		}
+		else {
+			$("#empstreet").focus();
+			alert("Address is required");
 			return;
 		}
 
-		if ($("#dlgcity").val() > '') {
-			var city = $("#dlgcity").val();
-		} else {
-			document.ALCATEL.dlgcity.focus();
-			$('#dlgcity').focus();
+		if($("#empcity").val() > '') {
+			var empcity = $("#empcity").val();
+		}
+		else {
+			$("#empcity").focus();
 			alert("City is required");
 			return;
 		}
 
-		if ($("#dlgstate").val() == '' && $("#dlgstateother").val() == '' ) {
-			$('#dlgstate').focus();
+		if($("#empstate").val() == '' && $("#empcountry").val() == '' ) {
+			$("#empstate").focus();
 			alert("State or Country is required");
 			return;
-		} else {
-			var state = $("#dlgstate").val();
-			var stateother = $("#dlgstateother").val();
 		}
-		if ($("#dlgphone").val() > '') {
-			var phone = $("#dlgphone").val();
-		} else {
-			$('#dlgphone').focus();
+		else {
+			var empstate = $("#empstate").val();
+			var empcountry = $("#empcountry").val();
+		}
+
+		if($("#empphone").val() > '') {
+			var empphone = $("#empphone").val();
+		}
+		else {
+			$("#empphone").focus();
 			alert("Phone is required");
 			return;
 		}
 
-		if ($("#dlgfromdate").val() > '') {
-			if (!isValidDate('dlgfromdate')) {
-				$('#dlgfromdate').focus();
-				alert("Invalid From Date");
-				return false;
-			} else {
-				var fromdate = $("#dlgfromdate").val();
-			}
-		} else {
-			document.ALCATEL.dlgfromdate.focus();
+		if($("#empfromdate_month").val() == "" || $("#empfromdate_day").val() == "" || $("#empfromdate_year").val() == "") {
+			$("#empfromdate_month").focus();
 			alert("From Date is required");
 			return;
 		}
+		else {
+			var empfromdate = $("#empfromdate_year").val() + "-" + $("#empfromdate_month").val() + "-" + $("#empfromdate_day").val();
+		}
 
-		if ($("#dlgtodate").val() > '') {
-			if (!isValidDate('dlgtodate')) {
-				$('#dlgtodate').focus();
-				alert("Invalid To Date");
-				return false;
-			} else {
-				var todate = $("#dlgtodate").val();
-			}
-		} else {
-			document.ALCATEL.dlgtodate.focus();
-			$('#dlgtodate').focus();
+		if($("#emptodate_month").val() == "" || $("#emptodate_day").val() == "" || $("#emptodate_year").val() == "") {
+			$("#emptodate_month").focus();
 			alert("To Date is required");
 			return;
 		}
-		if (!isValidDiff(fromdate,todate)) {
-			$('#dlgfromdate').focus();
+		else {
+			var emptodate = $("#emptodate_year").val() + "-" + $("#emptodate_month").val() + "-" + $("#emptodate_day").val();
+		}
+
+		if(!isValidDiff(empfromdate, emptodate)) {
+			$('#empfromdate').focus();
 			alert("From Date can not be greater than To Date");
 			return false;
 		}
 
-		if ($("#dlgtitle").val() > '') {
-			var position = $("#dlgtitle").val();
-		} else {
-			$('#dlgtitle').focus();
+		if($("#emptitle").val() > '') {
+			var emptitle = $("#emptitle").val();
+		}
+		else {
+			$("#emptitle").focus();
 			alert("Position is required");
 			return;
 		}
 
-		if ($("#dlgsuper").val() > '') {
-			var supervisor = $("#dlgsuper").val();
-		} else {
-			$('#dlgsuper').focus();
+		if($("#empsuper").val() > '') {
+			var empsuper = $("#empsuper").val();
+		}
+		else {
+			$("#empsuper").focus();
 			alert("Supervisor is required");
 			return;
 		}
-		if ($("#dlgsphone").val() > '') {
-			var sphone = $("#dlgsphone").val();
-		} else {
-			$('#dlgsphone').focus();
-			alert("Supervisor Phone is required");
+
+		if($("#sphone").val() > '') {
+			var sphone = $("#sphone").val();
+		}
+		else {
+			$("#sphone").focus();
+			alert("Supervisor Phone # is required");
 			return;
 		}
-		if ($("#dlgsemail").val() > '') {
-			var semail = $("#dlgsemail").val();
-		} else {
-			$('#dlgsemail').focus();
-			alert("Supervisor Email is required");
+
+		if($("#semail").val() > '') {
+			var semail = $("#semail").val();
+		}
+		else {
+			$("#semail").focus();
+			alert("Supervisor Email Address is required");
 			return;
 		}
+
 		var reason = '';
-		if ($("#Package").val() == "package2" || $("#Package").val() == "package3") {
-			var empdotreg = $("#dlgempdotreg").val();
-			var empdottst = $("#dlgempdottst").val();
-		} else {
+
+		if($("#Package").val() == "package2" || $("#Package").val() == "package3") {
+			var empdotreg = $("#empdotreg").val();
+			var empdottst = $("#empdottst").val();
+		}
+		else {
 			var empdotreg = '';
 			var empdottst = '';
 		}
 
+		var data = {
+			personid: personid,
+			empid: empid,
+			empname: empname,
+			addr: empstreet,
+			city: empcity,
+			state: empstate,
+			stateother: empcountry,
+			phone: empphone,
+			fromdate: empfromdate,
+			todate: emptodate,
+			current_employment: current,
+			contact: empcontact,
+			position: emptitle,
+			supervisor: empsuper,
+			sphone: sphone,
+			semail: semail,
+			reason: reason,
+			empdotreg: empdotreg,
+			empdottst: empdottst
+		};
+
 		$.ajax({
 			type: "POST",
-			url: "../App_Ajax/ajax_save_employment.php",
-			data: {personid: personid, empid: empid, empname: empname, addr: addr, city: city, state: state, stateother: stateother, phone: phone, fromdate: fromdate, todate: todate, current_employment: current_employment, contact: contact, position: position, supervisor: supervisor, sphone: sphone, semail: semail, reason: reason, empdotreg: empdotreg, empdottst: empdottst},
+			url: saveLocation,
+			data: data,
 			datatype: "JSON",
 			success: function(valor) {
 				var obj2 = $.parseJSON(valor);
-				if (obj2 > '' ) {
+
+				if(obj2.length > 30) {
 					alert(obj2);
-				} else {
-					$( "#Employment_dialog" ).dialog( "close" );
+				}
+				else {
+					$("#Employment_dialog").dialog("close");
 					location.reload();
 				}
+
 				return;
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: '+textStatus); alert('Error: '+errorThrown);
+				alert('Status: ' + textStatus);
+				alert('Error: ' + errorThrown);
 			}
 		});
 	});
 
 	function deleteemp(EmpID) {
-//		alert("In dltaka");
-		if (confirm('Are you sure you want to delete this employment record?')) {
+		if(confirm('Are you sure you want to delete this employment record?')) {
 			var personid = $("#PersonID").val();
+
 			$.ajax({
 				type: "POST",
 				url: "../App_Ajax/ajax_delete_employment.php",
-				data: {personid: personid, EmpID: EmpID},
+				data: { personid: personid, EmpID: EmpID },
 				datatype: "JSON",
 				success: function(valor) {
 					var obj2 = $.parseJSON(valor);
-					if (obj2.substring(0,4) == 'Error') {
+
+					if(obj2.substring(0, 4) == 'Error') {
 						alert(obj2);
 						return false;
-					} else {
+					}
+					else {
 						location.reload();
 						return;
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					alert('Status: '+textStatus); alert('Error: '+errorThrown);
+					alert('Status: ' + textStatus);
+					alert('Error: ' + errorThrown);
 				}
 			});
 		}
 	}
-	$( "#close_employment" ).click(function() {
-		$( "#Employment_dialog" ).dialog( "close" );
+
+	$("#close_employment").click(function() {
+		$("#Employment_dialog").dialog("close");
 	});
- 	$( "#close_reqdoc" ).click(function() {
-		$( "#reqdoc" ).dialog( "close" );
+
+ 	$("#close_reqdoc").click(function() {
+		$("#reqdoc").dialog("close");
 		location.reload(true);
 	});
 
