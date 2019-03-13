@@ -108,11 +108,11 @@ echo '				<div class="cell small-12">
 								Accident Date <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<select id="accident_date_month" name="accident_date_month" style="width: 33%">
+								<select id="accident_date_month" name="accident_date_month" style="width: 38%">
 									' . $months_list . '
 								</select>
 								/
-								<select id="accident_date_day" name="accident_date_day" style="width: 27%">
+								<select id="accident_date_day" name="accident_date_day" style="width: 24%">
 									' . $days_list . '
 								</select>
 								/

@@ -139,15 +139,15 @@ echo '				<div class="cell small-12 add-traffic-violation-button">
 								Date <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<select id="Violation_Date_month" name="Violation_Date_month" style="width: 30%">
+								<select id="Violation_Date_month" name="Violation_Date_month" style="width: 38%">
 									' . $months_list . '
 								</select>
 								/
-								<select id="Violation_Date_day" name="Violation_Date_day" style="width: 30%">
+								<select id="Violation_Date_day" name="Violation_Date_day" style="width: 24%">
 									' . $days_list . '
 								</select>
 								/
-								<select id="Violation_Date_year" name="Violation_Date_year" style="width: 30%">
+								<select id="Violation_Date_year" name="Violation_Date_year" style="width: 29%">
 									' . $years_list . '
 								</select>
 							</div>
