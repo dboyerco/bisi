@@ -819,7 +819,7 @@ echo '				<div class="cell small-12 padding-bottom">
 
 	function DoCustomValidation() {
 		var empid = $("#EmpID").val();
-		var nodays = $("#days").val();
+		var nodays = $("#nodays").val();
 
 		if(nodays >= 3650) {
 			return true;
