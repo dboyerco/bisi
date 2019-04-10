@@ -122,6 +122,7 @@ else {
 echo '				<div class="cell small-12">
 								<span class="add-address add-button"><img class="icon" src="images/plus.png" alt="Add Address" title="Add Address" /> Add Address</span>
 							</div>
+
 							<div class="cell small-12">
 								<hr>
 							</div>';
@@ -270,9 +271,9 @@ echo '				<div class="cell medium-6 small-12">
 						</div>
 
 						<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
-					  <input type="hidden" name="addrid" id="addrid" value="' . $maxAddrID . '">
-					  <input type="hidden" name="package" id="package" value="' . $package . '">
-					  <input type="hidden" name="days" id="days" value="' . $days . '">
+					  <input type="hidden" name="addrid"   id="addrid"   value="' . $maxAddrID . '">
+					  <input type="hidden" name="package"  id="package"  value="' . $package . '">
+					  <input type="hidden" name="days"     id="days"     value="' . $days . '">
 					</div>
 				</div>
 			</form>';
@@ -627,7 +628,6 @@ echo '				<div class="cell medium-6 small-12">
 					}
 					else {
 						location.reload();
-						return;
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {

@@ -353,16 +353,17 @@ if($package == "mountain") {
 				</div>';
 }
 
-echo '<div class="cell small-12 padding-bottom">
-				<input id="save_employment" class="float-center" type="button" value="Save Employment">
+echo '	<div class="cell small-12 padding-bottom">
+					<input id="save_employment" class="float-center" type="button" value="Save Employment">
+				</div>
+
+				<input type="hidden" name="empid" id="empid">
+				<input type="hidden" name="PersonID" id="PersonID" value="' . $PersonID . '">
+		  	<input type="hidden" name="EmpID" id="EmpID" value=" ' . $maxEmpID . '">
+		  	<input type="hidden" name="Package" id="Package" value="' . $package . '">
+		  	<input type="hidden" name="nodays" ID="nodays" value=" ' . $days . '">
 			</div>
-		<input type="hidden" name="empid" id="empid">
-			<input type="hidden" name="PersonID" id="PersonID" VALUE="' . $PersonID . '">
-	  	<input type="hidden" name="EmpID" id="EmpID" VALUE=" ' . $maxEmpID . '">
-	  	<input type="hidden" name="Package" id="Package" VALUE="' . $package . '">
-	  	<input type="hidden" name="nodays" ID="nodays" VALUE=" ' . $days . '">
-		</div>
-	</form>';
+		</form>';
 ?>
 
 <script language="JavaScript" type="text/javascript">
@@ -429,12 +430,10 @@ echo '<div class="cell small-12 padding-bottom">
 	}
 
 	function showCurrentEmployer() {
-		console.log("showCurrentEmployer");
 		$(".current-emp").css("display", "block");
 	}
 
 	function hideCurrentEmployer() {
-		console.log("hideCurrentEmployer");
 		$(".current-emp").css("display", "none");
 		$("#current").val('N');
 	}
@@ -528,6 +527,7 @@ echo '<div class="cell small-12 padding-bottom">
 		if(empid > 0) {
 			saveLocation = "../App_Ajax_New/ajax_save_employment.php";
 		}
+
 		if($("#empname").val() > '') {
 			var empname = $("#empname").val();
 		}
@@ -593,23 +593,6 @@ echo '<div class="cell small-12 padding-bottom">
 		else {
 			var emptodate = $("#emptodate_year").val() + "-" + $("#emptodate_month").val() + "-" + $("#emptodate_day").val();
 		}
-		// if($("#empfromdate").val() > '') {
-		// 	var empfromdate = $("#empfromdate").val();
-		// }
-		// else {
-		// 	$("#empfromdate").focus();
-		// 	alert("From Date is required");
-		// 	return;
-		// }
-		//
-		// if($("#emptodate").val() > '') {
-		// 	var emptodate = $("#emptodate").val();
-		// }
-		// else {
-		// 	$("#emptodate").focus();
-		// 	alert("To Date is required");
-		// 	return;
-		// }
 
 		if(!isValidDiff(empfromdate, emptodate)) {
 			$('#empfromdate').focus();
@@ -692,15 +675,16 @@ echo '<div class="cell small-12 padding-bottom">
 			empdotreg: empdotreg,
 			empdottst: empdottst
 		};
+
 		$.ajax({
 			type: "POST",
 			url: saveLocation,
 			data: data,
 			datatype: "JSON",
 			success: function(valor) {
-				console.log(valor);
 				var obj2 = $.parseJSON(valor);
-				if (obj2.length > 30) {
+
+				if(obj2.length > 30) {
 					alert(obj2);
 				}
 				else {
@@ -732,7 +716,7 @@ echo '<div class="cell small-12 padding-bottom">
 				success: function(valor) {
 					var obj2 = $.parseJSON(valor);
 
-					if(obj2.substring(0,4) == 'Error') {
+					if(obj2.substring(0, 4) == 'Error') {
 						alert(obj2);
 						return false;
 					}
@@ -764,7 +748,7 @@ echo '<div class="cell small-12 padding-bottom">
 			return true;
 		}
 		else {
-			document.ALCATEL.newempname.focus();
+			$("#newempname").focus();
 			alert('You have not entered at least 3 employments or 7 years of employments');
 			return false;
 		}
