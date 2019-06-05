@@ -8,11 +8,9 @@ $testLayout = false;
 $ipaddress = getenv("REMOTE_ADDR");
 $currentPage = 0;
 $currentPageString = "person";
-$dob = "";
 $nextPage = 1;
 $prevPage = 0;
 
-require_once('pdobisitest.php');
 require_once('../pdotriton.php');
 
 echo '<!DOCTYPE HTML>
@@ -45,39 +43,11 @@ if(!isSet($PersonID)) {
         </div>';
 }
 else {
-  $sql = "SELECT
-						c.Company_Name,
-            c.App_Name,
-            c.bisAcct,
-						p.Package,
-						p.CodeID,
-						p.No_Email,
-            p.Email_Type,
-            p.Date_of_Birth
-					FROM
-						App_Person p
-              INNER JOIN App_HR_Company c
-                ON p.Company_Name = c.Company_Name
-					WHERE
-						p.PersonID = :PersonID";
-	$result = $dbo->prepare($sql);
-	$result->bindValue(':PersonID', $PersonID);
-	$result->execute();
-  $row = $result->fetch(PDO::FETCH_BOTH);
-
-  // echo "<pre>";
-  // print_r($row);
-  // echo "</pre>";
-  // die("HERE");
-
-  $compname = $row['Company_Name'];
-  $cocode = $row['bisAcct'];
-  //$package = $row['Package'];
-  $package = 'package4';
-  $codeid = $row['CodeID'];
-  $noemail = $row['No_Email'];
-  $etype = $row['Email_Type'];
-  $dob = $row['Date_of_Birth'];
+  $compname = $dbo->query("Select Company_Name from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+  $package = $dbo->query("Select Package from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+  $codeid = $dbo->query("Select CodeID from App_Person where PersonID = " . $PersonID . ";")->fetchColumn();
+  $noemail = $dbo->query("Select No_Email from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
+  $etype = $dbo->query("Select Email_Type from App_Person where PersonID = ".$PersonID.";")->fetchColumn();
 
   // states & countries (almost all forms use this)
 	$state_result = $dbo->prepare("Select Name, Abbrev from State order by Name");
@@ -96,67 +66,11 @@ else {
 		$country_options .= '<option value="' . $country_rows[0] . '">' . $country_rows[1] . '</option>';
 	}
 
-  $sql = "SELECT
-						available.Page_ID,
-						available.Page_Value,
-						available.Page_Name,
-						assigned.Page_Order
-					FROM
-						WebAppAvailablePages available
-						 	INNER JOIN WebAppAssignedPages assigned
-								ON assigned.Company_No = :Company_No and assigned.Package_Value = :Package_Value
-					WHERE
-						available.Page_ID = assigned.Page_ID
-					ORDER BY
-						assigned.Page_Order";
-	$row = $dboTest->prepare($sql);
-	$row->bindValue(':Company_No', $cocode);
-	$row->bindValue(':Package_Value', $package);
-	$row->execute();
-
-  $companyPages = array();
-  $pageOrder = array();
-
-	while($result = $row->fetch(PDO::FETCH_BOTH)) {
-		$companyPages[] = array('Page_ID' => $result['Page_ID'], 'Page_Value' => $result['Page_Value'], 'Page_Name' => $result['Page_Name'], 'Page_Order' => $result['Page_Order']);
-
-    if(strpos($result['Page_Value'], ',') === true) {
-      $values = explode(',', $result['Page_Value']);
-
-      for($v = 0; $v < count($values); $v++) {
-        array_push($pageOrder, $values[$v]);
-      }
-    }
-    else {
-      array_push($pageOrder, $result['Page_Value']);
-    }
-	}
-
-  function isUnder18($d) {
-    $DOB = date("m/d/Y", strtotime($d));
-  	$date = date("m/d/Y");
-  	$datediff = strtotime($date) - strtotime($DOB);
-  	$days = floor($datediff / (60 * 60 * 24));
-
-    if($days < 6570) {
-      return true;
-    }
-
-    return false;
-  }
-
-  if(isSet($noemail) && $noemail != "") {
-    unset($pageOrder[count($pageOrder) - 3]);
-    array_splice($pageOrder, count($pageOrder) - 2, 0, 'certification');
-  }
-
-  if(isSet($dob) && $dob != "" && isUnder18($dob)) {
-    array_splice($pageOrder, count($pageOrder) - 2, 0, 'under18release');
-  }
-
-  $pageUnder18 = count($pageOrder) - 3;
-  $pageCardInfo = count($pageOrder) - 2;
-  $pageThanks = count($pageOrder) - 1;
+  //                     0           1                 2                  3                  4                 5           6         7               8                9             10           11       12       13            14              15            16            17             18             19              20         21
+  $pageOrder = Array('person', 'accident_info', 'drv_experience', 'traffic_violations', 'dot_employment', 'additional', 'bank', 'business', 'dmv_with_vehicle', 'proflicense', 'references', 'rentals', 'dmv', 'address', 'address_custom', 'employment', 'education', 'disclosure1', 'disclosure2', 'under18release', 'cardinfo', 'Thanks');
+  $pageUnder18 = 19;
+  $pageCardInfo = 20;
+  $pageThanks = 21;
   $thisYear = date("Y");
   $days_list = '<option>Day</option>';
   $months_list = '<option value="">Month</option>
@@ -272,7 +186,7 @@ else {
   echo '<script>
           var nextPage = "' . $nextPage . '";
           var cd = "' . $CD . '";
-          var prevAction = "index2.php?pg=' . $prevPage . '&PersonID=' . $PersonID . '&CD=' . $CD . '";
+          var prevAction = "index.php?pg=' . $prevPage . '&PersonID=' . $PersonID . '&CD=' . $CD . '";
         </script>';
 
 	$cnt = 1;
@@ -318,13 +232,8 @@ else {
             </div>
           </div>';
 
-    $FormAction = "index2.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
+    $FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 
-    // echo "<pre>";
-    // print_r($pageOrder);
-    // echo "</pre>";
-    // die();
-    echo "<br>CURRENT PAGE:" . $currentPageString . "<br>";
     include_once("{$currentPageString}.php");
 	}
 }
