@@ -16,10 +16,11 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 
 							<div class="cell small-12">
 								<span class="sub-heading">Professional References</span><br>
-								List 3 References, which are not related to you and not a current employee of ' . $compname . '.<br />&nbsp;
+								List ' . $numReferences . ' Reference(s), which are not related to you and not a current employee of ' . $compname . '.<br />&nbsp;
 							</div>';
 
 $maxRefID = $dbo->query("Select max(RefID) from App_References where PersonID = " . $PersonID . ";")->fetchColumn();
+$curNumRefs = 0;
 
 if($maxRefID > 0) {
   $selectstmt = "select RefID, RefCompany, RefCompanyPhone, RefFirstName, RefLastName, RefPhone, RefEmail, RefStreet1, RefStreet2, RefCity, RefState, RefZip, RefCounty , RefCountry, RefRelate from App_References where PersonID = :PersonID;";
@@ -51,6 +52,8 @@ if($maxRefID > 0) {
               <div class="cell small-12">
   							<hr>
   						</div>';
+
+		$curNumRefs++;
   }
 }
 
@@ -59,15 +62,18 @@ echo '				<div class="cell small-12">
 							</div>
 							<div class="cell small-12">
 								<hr>
-							</div>
+							</div>';
 
-							<div class="cell small-6">
+if($numReferences == 0 || ($curNumRefs >= $numReferences)) {
+	echo '			<div class="cell small-6">
 								<input class="button button-prev float-center" type="button" value="Prev">
 							</div>
 							<div class="cell small-6">
 								<input class="button float-center" type="submit" value="Next">
-							</div>
-						</div>
+							</div>';
+}
+
+echo '			</div>
 
             <div class="grid-x margins person-form" name="Reference_dialog" id="Reference_dialog" title="Dialog Title">
 							<div class="cell small-12 required">

@@ -14,8 +14,16 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							</div>
 
 							<div class="cell small-12">
-								<span class="sub-heading">Professional License(s)</span><br>
-								List all or any professional license(s) in relation to this position.<br />&nbsp;
+								<span class="sub-heading">Professional License(s)</span><br>';
+
+if($profLicense == "Y") {
+	echo 'List all professional license(s) in relation to this position <span class="required">(at least one is required)</span>.';
+}
+else {
+	echo 'List all or any professional license(s) in relation to this position.';
+}
+
+echo '					<br />&nbsp;
 							</div>';
 
 $maxProfID = $dbo->query("Select max(ProfID) from App_ProfLicenses where PersonID = " . $PersonID . ";")->fetchColumn();
@@ -64,15 +72,18 @@ echo '				<div class="cell small-12">
 
 							<div class="cell small-12">
 								<hr>
-							</div>
+							</div>';
 
-							<div class="cell small-6">
+if(!$profLicense || $maxProfID > 0) {
+	echo '			<div class="cell small-6">
 								<input class="button button-prev float-center" type="button" value="Prev">
 							</div>
 							<div class="cell small-6">
 								<input class="button float-center" type="submit" value="Next">
-							</div>
-						</div>
+							</div>';
+}
+
+echo '			</div>
 
 						<div class="grid-x margins person-form" name="ProfLicense_dialog" id="ProfLicense_dialog" title="Dialog Title">
 							<div class="cell small-12 required">

@@ -12,7 +12,7 @@ $dob = "";
 $nextPage = 1;
 $prevPage = 0;
 
-require_once('pdobisitest.php');
+//require_once('pdobisitest.php');
 require_once('../pdotriton.php');
 
 echo '<!DOCTYPE HTML>
@@ -73,8 +73,8 @@ else {
   $compname = $row['Company_Name'];
   $appname = $row['App_Name'];
   $cocode = $row['bisAcct'];
-  //$package = $row['Package'];
-  $package = 'package4';
+  $package = $row['Package'];
+  //$package = 'package4';
   $codeid = $row['CodeID'];
   $noemail = $row['No_Email'];
   $etype = $row['Email_Type'];
@@ -101,7 +101,12 @@ else {
 						available.Page_ID,
 						available.Page_Value,
 						available.Page_Name,
-						assigned.Page_Order
+						assigned.Page_Order,
+            assigned.Address_Years,
+            assigned.Capture_MI,
+            assigned.Capture_SSN,
+						assigned.Num_References,
+            assigned.Require_Prof_License
 					FROM
 						WebAppAvailablePages available
 						 	INNER JOIN WebAppAssignedPages assigned
@@ -110,17 +115,18 @@ else {
 						available.Page_ID = assigned.Page_ID
 					ORDER BY
 						assigned.Page_Order";
-	$row = $dboTest->prepare($sql);
+	$row = $dbo->prepare($sql);
 	$row->bindValue(':Company_No', $cocode);
 	$row->bindValue(':Package_Value', $package);
 	$row->execute();
 
-  $companyPages = array();
   $pageOrder = array();
+  $addressYears = 0;
+  $captureMI = "";
+  $captureSSN = "";
+  $numReferences = 0;
 
 	while($result = $row->fetch(PDO::FETCH_BOTH)) {
-		$companyPages[] = array('Page_ID' => $result['Page_ID'], 'Page_Value' => $result['Page_Value'], 'Page_Name' => $result['Page_Name'], 'Page_Order' => $result['Page_Order']);
-
     if(strpos($result['Page_Value'], ',') === true) {
       $values = explode(',', $result['Page_Value']);
 
@@ -129,6 +135,20 @@ else {
       }
     }
     else {
+      if($result['Page_Value'] == 'person') {
+        $captureMI = $result['Capture_MI'] == "Y" ? true : false;
+        $captureSSN = $result['Capture_SSN'] == "Y" ? true : false;
+      }
+      else if($result['Page_Value'] == 'address') {
+        $addressYears = $result['Address_Years'];
+      }
+      else if($result['Page_Value'] == 'references') {
+        $numReferences = $result['Num_References'];
+      }
+      else if($result['Page_Value'] == 'proflicense') {
+        $profLicense = $result['Require_Prof_License'];
+      }
+
       array_push($pageOrder, $result['Page_Value']);
     }
 	}
@@ -149,9 +169,9 @@ else {
   if(isSet($noemail) && $noemail != "") {
     unset($pageOrder[count($pageOrder) - 3]);
     array_splice($pageOrder, count($pageOrder) - 2, 0, 'certification');
+    // skips disclosure, authorization & credit card forms
   }
-
-  if(isSet($dob) && $dob != "" && isUnder18($dob)) {
+  else if(isSet($dob) && $dob != "" && isUnder18($dob)) {
     array_splice($pageOrder, count($pageOrder) - 2, 0, 'under18release');
   }
 
@@ -273,12 +293,11 @@ else {
   echo '<script>
           var nextPage = "' . $nextPage . '";
           var cd = "' . $CD . '";
-          var prevAction = "index2.php?pg=' . $prevPage . '&PersonID=' . $PersonID . '&CD=' . $CD . '";
+          var prevAction = "index.php?pg=' . $prevPage . '&PersonID=' . $PersonID . '&CD=' . $CD . '";
         </script>';
 
 	$cnt = 1;
 	$end = strrpos($_SERVER['REQUEST_URI'], '/');
-	//$appname = substr($_SERVER['REQUEST_URI'], 1, $end - 1);
   $cnt = $dbo->query("Select count(*) from App_Person where PersonID = " . $PersonID . " and App_Name = '" . $appname . "';")->fetchColumn();
 
 	if($PersonID == '' || $cnt == 0 || $codeid != $CD) {
@@ -319,7 +338,7 @@ else {
             </div>
           </div>';
 
-    $FormAction = "index2.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
+    $FormAction = "index.php?pg={$nextPage}&PersonID=" . $PersonID . "&CD=" . $CD;
 
     // echo "<pre>";
     // print_r($pageOrder);

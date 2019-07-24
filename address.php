@@ -19,34 +19,42 @@ echo '<form method="post" action="' . $FormAction . '" name="ALCATEL">
 							</div>
 
 							<div class="cell small-12">
-								<span class="sub-heading">Address Information</span><br>
-								Please provide your address information for the past 7 years. starting with your current address.<br />
-								Please be as detailed as possible when providing this information to include a full 7 years.<br />&nbsp;
+								<span class="sub-heading">Address Information</span><br>';
+
+if($addressYears == 0) {
+	echo '				Please provide/verify your current address information.';
+}
+else {
+	echo '				Please provide your address information for the past ' . $addressYears . ' years starting with your current address.<br />
+								Please be as detailed as possible when providing this information to include a full ' . $addressYears . ' years.';
+}
+
+echo '					<br />&nbsp;
 							</div>';
 
 $currentaddress = 'N';
 $maxAddrID = $dbo->query("Select max(AddrID) from App_Address where PersonID = " . $PersonID . ";")->fetchColumn();
 
 if($maxAddrID > 0) {
-	$selectaddr = "select AddrID, Addr1, Apt, City, State_addr, StateOther, County, ZipCode, FromDate, ToDate, Current_Address from App_Address where PersonID = " . $PersonID . ";";
+	$selectaddr = "select AddrID, Addr1, Apt, City, State_addr, StateOther, ZipCode, FromDate, ToDate, Current_Address from App_Address where PersonID = " . $PersonID . ";";
 	$addr_result = $dbo->prepare($selectaddr);
 	$addr_result->bindValue(':PersonID', $PersonID);
 	$addr_result->execute();
 	$i = 0;
 
 	while($row = $addr_result->fetch(PDO::FETCH_BOTH)) {
-		if($row[8] == '1900-01-01') {
+		if($row[7] == '1900-01-01') {
 			$fromdate = '';
 		}
 		else {
-			$fromdate = date("m/d/Y", strtotime($row[8]));
+			$fromdate = date("m/d/Y", strtotime($row[7]));
 		}
 
-		if($row[9] == '1900-01-01') {
+		if($row[8] == '1900-01-01') {
 			$todate = '';
 		}
 		else {
-			$todate = date("m/d/Y", strtotime($row[9]));
+			$todate = date("m/d/Y", strtotime($row[8]));
 		}
 
 		if($fromdate != '' && $todate != '') {
@@ -54,9 +62,9 @@ if($maxAddrID > 0) {
 			$days = $days + floor($datediff / (60 * 60 * 24));
 		}
 
-		if($row[10] == 'Y') {
+		if($row[9] == 'Y') {
 			$addressType = "Current";
-			$currentaddress = $row[10];
+			$currentaddress = $row[9];
 		}
 		else {
 			$addressType = "Additional";
@@ -93,9 +101,6 @@ if($maxAddrID > 0) {
 		echo '	<div class="cell small-4 medium-3">
 							' . htmlspecialchars($row[6]) . '
 						</div>
-						<div class="cell small-2">
-							' . htmlspecialchars($row[7]) . '
-						</div>
 
 						<div class="cell small-12">
 							<hr>
@@ -127,7 +132,7 @@ echo '				<div class="cell small-12">
 								<hr>
 							</div>';
 
-if($days >= 2557) {
+if($days >= ($addressYears * 365)) {
 	echo '			<div class="cell small-6">
 								<input class="button button-prev float-center" type="button" value="Prev">
 							</div>
@@ -193,7 +198,7 @@ else {
 								State <span class="required">*</span>
 							</div>
 							<div class="cell medium-6 small-12">
-								<select name="state" id="state" onchange="loadcounties(\'state\',\'\')">
+								<select name="state" id="state">
 									<option value="">Select a State</option>
 									<option value="">-Other-</option>
 									' . $state_options . '
@@ -211,15 +216,6 @@ else {
 								<select name="country" id="country">
 									<option value="">Select a Country</option>
 									' . $country_options . '
-								</select>
-							</div>
-
-							<div class="cell medium-6 small-12">
-								County <span class="required">*</span>
-							</div>
-							<div class="cell medium-6 small-12">
-								<select name="county" id="county">
-									<option value="">Select a County</option>
 								</select>
 							</div>';
 }
@@ -283,7 +279,9 @@ echo '				<div class="cell medium-6 small-12">
 	$("#Address_dialog").dialog({ autoOpen: false });
 
 <?php
-	if($days < 2557) {
+	echo 'var maxDays = ' . $addressYears * 365 . ';';
+
+	if($days < ($addressYears * 365)) {
 		echo 'addAddress();';
 	}
 ?>
@@ -305,8 +303,6 @@ echo '				<div class="cell medium-6 small-12">
 
 		if($("#package").val() != 'zinc') {
 			$("#state").val('');
-			loadcounties("state", '');
-			$("#county").val('');
 		}
 
 		$("#country").val('');
@@ -403,7 +399,6 @@ echo '				<div class="cell medium-6 small-12">
 
 		if(pname == 'zinc') {
 			var state = '';
-			var county = '';
 
 			if($("#country").val() == '' ) {
 				$('#country').focus();
@@ -423,17 +418,6 @@ echo '				<div class="cell medium-6 small-12">
 			else {
 				var state = $("#state").val();
 				var stateother = $("#country").val();
-			}
-
-			if($("#state").val() != '') {
-				if($("#county").val() > '') {
-					var county = $("#county").val();
-				}
-				else {
-					$("#county").focus();
-					alert("County is required");
-					return;
-				}
 			}
 		}
 
@@ -482,7 +466,7 @@ echo '				<div class="cell medium-6 small-12">
 			fromdate: fromdate,
 			todate: todate,
 			current_address: current_address,
-			county: county
+			county: ''
 		};
 
 		$.ajax({
@@ -514,41 +498,6 @@ echo '				<div class="cell medium-6 small-12">
 		});
 	});
 
-	function loadcounties(ddl, county) {
-		st = $("#state").val();
-
-		$.ajax({
-			type: "POST",
-			url: "../App_Ajax_New/ajax_load_counties.php",
-			data: {st: st},
-			datatype: "JSON",
-			success: function(valor) {
-				var obj2 = $.parseJSON(valor);
-
-				if(valor.length > 0) {
-					$('#county').find('option').remove();
-					$('#county').append('<option value="">Select a County</option>');
-
-					for(var i = 0; i < obj2.length; i++) {
-						var County_Name = obj2[i].County_Name;
-
-						$('#county').append('<option value="' + County_Name + '">' + County_Name + '</option>');
-					}
-
-					$("#county").val(county);
-				}
-				else {
-					alert('No Counties Data Found for State Selected');
-				}
-				return;
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert('Status: ' + textStatus);
-				alert('Error: ' + errorThrown);
-			}
-		});
-	}
-
 	function updateaddr(addrid) {
 		var personid = $("#PersonID").val();
 		var pname = $("#package").val();
@@ -579,8 +528,6 @@ echo '				<div class="cell medium-6 small-12">
 
 					if(pname != 'zinc') {
 						$("#state").val(obj2.State_addr);
-						loadcounties("state", obj2.County);
-						$("#county").val(obj2.County);
 					}
 
 					$("#country").val(obj2.StateOther);
@@ -648,7 +595,7 @@ echo '				<div class="cell medium-6 small-12">
 	function DoCustomValidation() {
 		var nodays = $("#days").val();
 
-		if(nodays < 2557) {
+		if(nodays < maxDays) {
 			alert('You have not entered at least 7 years of address information');
 			return false;
 		}

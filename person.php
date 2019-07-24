@@ -1,4 +1,5 @@
 <?php
+
 if(isSet($PersonID)) {
 	if($PersonID > '') {
 		$selectstmt="Select First_Name, Middle_Name, Last_Name, Date_of_Birth, SSN, Business_Phone, Home_Phone, mobile_Phone, Email, Package, Company_Name, Gender, Emergency_Contact, Emergency_Number, No_Email from App_Person where PersonID = :PersonID;";
@@ -54,6 +55,9 @@ if(isSet($PersonID)) {
 			$result2->bindValue(':PersonID', $PersonID);
 			$result2->execute();
 			$namechg = "";
+			$namechgYear = "1900";
+			$namechgMonth = "01";
+			$namechgDay = "01";
 			$maiden = '';
 			$row = $result2->fetch(PDO::FETCH_BOTH);
 
@@ -115,34 +119,50 @@ echo '					<strong>Please make sure that the first and last name is as it appear
 						<div class="grid-x margins person-form">
 							<div class="cell small-12 required">
 								* Required Fields To Continue
-							</div>
+							</div>';
 
-							<div class="cell small-12 medium-5">
-								<label>
-									First Name <span class="required">*</span><br />
-									<input type="text" name="fname" id="fname" value="' . htmlspecialchars($fname) . '" maxlength="40">
-								</label>
-							</div>
-							<div class="cell small-6 medium-1">
-								<label>
-									M.I. <span class="required">*</span>
-									<input type="text" name="mi" id="mi" value="' . htmlspecialchars($mi) . '" maxlength="1">
-								</label>
-							</div>
-							<div class="cell small-6 medium-1">
-								<label>
-									No M.I.<br />
-									&nbsp;&nbsp;&nbsp;<input type="checkbox" name="nomi" id="nomi" onclick="NoMI()">
-								</label>
-							</div>
-							<div class="cell small-12 medium-5">
-								<label>
-									Last Name <span class="required">*</span>
-									<input type="text" name="lname" id="lname" value="' . htmlspecialchars($lname) . '" maxlength="40">
-								</label>
-							</div>
+if($captureMI) {
+	echo '		<div class="cell small-12 medium-5">
+							<label>
+								First Name <span class="required">*</span><br />
+								<input type="text" name="fname" id="fname" value="' . htmlspecialchars($fname) . '" maxlength="40">
+							</label>
+						</div>
+						<div class="cell small-6 medium-1">
+							<label>
+								M.I. <span class="required">*</span>
+								<input type="text" name="mi" id="mi" value="' . htmlspecialchars($mi) . '" maxlength="1">
+							</label>
+						</div>
+						<div class="cell small-6 medium-1">
+							<label>
+								No M.I.<br />
+								&nbsp;&nbsp;&nbsp;<input type="checkbox" name="nomi" id="nomi" onclick="NoMI()">
+							</label>
+						</div>
+						<div class="cell small-12 medium-5">
+							<label>
+								Last Name <span class="required">*</span>
+								<input type="text" name="lname" id="lname" value="' . htmlspecialchars($lname) . '" maxlength="40">
+							</label>
+						</div>';
+}
+else {
+	echo '		<div class="cell small-12 medium-6">
+							<label>
+								First Name <span class="required">*</span><br />
+								<input type="text" name="fname" id="fname" value="' . htmlspecialchars($fname) . '" maxlength="40">
+							</label>
+						</div>
+						<div class="cell small-12 medium-6">
+							<label>
+								Last Name <span class="required">*</span>
+								<input type="text" name="lname" id="lname" value="' . htmlspecialchars($lname) . '" maxlength="40">
+							</label>
+						</div>';
+}
 
-							<div class="cell small-12 medium-5">
+echo '				<div class="cell small-12 medium-5">
 								<label>
 									Maiden Name
 									<input type="text" name="maiden" id="maiden" value="' . htmlspecialchars($maiden) . '" maxlength="40" id="maiden">
@@ -226,14 +246,20 @@ echo '						</tbody>
 									' . buildYearsList($birthdateYear, true) . '
 								</select>
 								<input type="hidden" name="fbdate" id="fbdate" value="' . $birthdate . '">
-							</div>
-							<div class="cell small-12 medium-3">
+							</div>';
+
+if($captureSSN) {
+	echo '			<div class="cell small-12 medium-3">
 								<label>
 									SSN <span class="required">*</span>
 									<input type="tel" id="ssn" name="ssn" placeholder="###-##-####" maxlength="11" onBlur = "validateSSN()" onKeyUp="return frmtssn(this, \'up\')" onKeyDown="return frmtssn(this, \'down\')" value="' . htmlspecialchars($ssn) . '" />
 								</label>
 							</div>
 							<div class="cell medium-4"></div>';
+}
+else {
+	echo '			<div class="cell medium-7"></div>';
+}
 
 if($package == 'zinc') {
 	echo '			<div class="cell small-12"><hr></div>
@@ -364,10 +390,20 @@ echo '				<div class="cell small-12"><hr></div>
 ?>
 
 <script language="JavaScript" type="text/javascript">
+	var captureMI = true;
+	var captureSSN = true;
 
 <?php
 	echo 'var maxAliasID = ' . $maxAliasID . ';
 				var nextPage = ' . $nextPage . ';';
+
+	if(!$captureMI) {
+		echo 'captureMI = false;';
+	}
+
+	if(!$captureSSN) {
+		echo 'captureSSN = false;';
+	}
 ?>
 
  	$("#Alias_dialog").dialog({ autoOpen: false });
@@ -603,17 +639,20 @@ echo '				<div class="cell small-12"><hr></div>
 			return false;
 		}
 
-		if($("#nomi").is(':checked')) {
-			var mi = '';
-		}
-		else {
-			if($("#mi").val() > '') {
-				var mi = $("#mi").val();
+		var mi = '';
+		if(captureMI) {
+			if($("#nomi").is(':checked')) {
+				mi = '';
 			}
 			else {
-				$("#mi").focus();
-				alert("Middle Initial is required");
-				return false;
+				if($("#mi").val() > '') {
+					mi = $("#mi").val();
+				}
+				else {
+					$("#mi").focus();
+					alert("Middle Initial is required");
+					return false;
+				}
 			}
 		}
 
@@ -659,9 +698,8 @@ echo '				<div class="cell small-12"><hr></div>
 			return false;
 		}
 
+		var ssn = '';
 		if(packagename == 'zinc') {
-			var ssn = '';
-
 			if($("#ins").val() > '') {
 				var ins = $("#ins").val();
 			}
@@ -714,24 +752,26 @@ echo '				<div class="cell small-12"><hr></div>
 			var mothermaiden = '';
 			var fathername = '';
 
-			if($("#ssn").val() > '') {
-				var ssn = $("#ssn").val();
+			if(captureSSN) {
+				if($("#ssn").val() > '') {
+					var ssn = $("#ssn").val();
 
-				if(ssn.length < 11) {
-					$("#ssn").focus();
-					alert("Invalid SSN - Require format ###-##-####");
-					return false;
-				}
-				else {
-					if(ssn.substring(0,3) == 'XXX') {
-						ssn = $("#num").val();
+					if(ssn.length < 11) {
+						$("#ssn").focus();
+						alert("Invalid SSN - Require format ###-##-####");
+						return false;
+					}
+					else {
+						if(ssn.substring(0,3) == 'XXX') {
+							ssn = $("#num").val();
+						}
 					}
 				}
-			}
-			else {
-				$("#ssn").focus();
-				alert("SSN is required");
-				return false;
+				else {
+					$("#ssn").focus();
+					alert("SSN is required");
+					return false;
+				}
 			}
 		}
 		var gender = '';
